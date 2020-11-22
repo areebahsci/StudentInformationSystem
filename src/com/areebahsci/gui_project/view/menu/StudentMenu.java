@@ -36,8 +36,9 @@ public class StudentMenu extends Menu {
 			String column[]= {"ID","NAME","MAJOR"};    
 			
 			personalTable = new JTable(data, column); 
-			label.setVisible(false);
-			panel.add(new JScrollPane(personalTable));
+			personalTable.setRowHeight(0, 50);
+            JScrollPane scroll = new JScrollPane(personalTable);
+            panel.add(scroll);
 			
 		}
 		else if(e.getSource()==help) {

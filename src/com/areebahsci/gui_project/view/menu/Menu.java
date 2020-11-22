@@ -63,7 +63,7 @@ public class Menu extends JPanel implements ActionListener {
 				
 		label = new JLabel("<html>Welcome! Please select what actions you want to perform<br/>from the menu options<html>");
 		label.setHorizontalAlignment(JLabel.CENTER);
-		panel.add(label);
+		panel.add(label, BorderLayout.NORTH);
 		this.setLayout(new BorderLayout());
 		this.add(menuBar, BorderLayout.NORTH);
 		this.add(panel, BorderLayout.CENTER);
@@ -89,7 +89,7 @@ public class Menu extends JPanel implements ActionListener {
 	
 	protected void actionPerformedAbout() {
 		panel.removeAll();
-		panel.add(label, BorderLayout.CENTER);
+		panel.add(label, BorderLayout.NORTH);
 		label.setText("Made by Areebah Iqbal as an end of course project for GUI.");
 	}
 	
