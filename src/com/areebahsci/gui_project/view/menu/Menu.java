@@ -15,18 +15,21 @@ public class Menu extends JPanel implements ActionListener {
 	
 	protected JMenuBar menuBar;
 	protected JMenu view, edit, more;
-	protected JMenuItem about, help, courseInfo, personalInfo, allInfo, addCourse, removeCourse;
+	protected JMenuItem about, help, courseInfo, personalInfo, allInfo, addCourse, removeCourse,
+	defaultScreen;
 	protected JTable personalTable, courseTable;
 	
-	protected JPanel panel;
+	protected JPanel defaultPanel, aboutPanel, mainPanel;
 	
-	protected JLabel label;
+	protected JLabel defaultLabel, aboutLabel;
 	
 	public Menu() {
 		
 		menuBar = new JMenuBar();
 		
-		panel = new JPanel(new BorderLayout());
+		defaultPanel = new JPanel(new BorderLayout());
+		aboutPanel = new JPanel(new BorderLayout());
+		mainPanel = new JPanel(new BorderLayout());
 		
 		personalTable = new JTable();
 		courseTable = new JTable();
@@ -42,6 +45,7 @@ public class Menu extends JPanel implements ActionListener {
 		removeCourse = new JMenuItem("");
 		about = new JMenuItem("About");
 		help = new JMenuItem("Help");
+		defaultScreen = new JMenuItem("Display default page");
 		
 		view.add(personalInfo);
 		view.addSeparator();
@@ -56,17 +60,28 @@ public class Menu extends JPanel implements ActionListener {
 		more.add(about);
 		more.addSeparator();
 		more.add(help);
+		more.addSeparator();
+		more.add(defaultScreen);
 		
 		menuBar.add(view);
 		menuBar.add(edit);
 		menuBar.add(more);
 				
-		label = new JLabel("<html>Welcome! Please select what actions you want to perform<br/>from the menu options<html>");
-		label.setHorizontalAlignment(JLabel.CENTER);
-		panel.add(label, BorderLayout.NORTH);
+		aboutLabel = new JLabel();
+		aboutLabel.setHorizontalAlignment(JLabel.CENTER);
+		
+		defaultLabel = new JLabel("<html>Welcome! Please select what actions you want to perform<br/>from the menu options<html>");
+		defaultLabel.setHorizontalAlignment(JLabel.CENTER);
+		defaultPanel.add(defaultLabel, BorderLayout.CENTER);
+		
+		mainPanel.add(defaultPanel);
+		
+		aboutPanel.add(defaultLabel, BorderLayout.CENTER);
+		aboutPanel.add(aboutLabel, BorderLayout.SOUTH);
+		
 		this.setLayout(new BorderLayout());
 		this.add(menuBar, BorderLayout.NORTH);
-		this.add(panel, BorderLayout.CENTER);
+		this.add(mainPanel, BorderLayout.CENTER);
 		
 		this.setSize(new Dimension(WIDTH, HEIGHT));
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -84,13 +99,18 @@ public class Menu extends JPanel implements ActionListener {
 		removeCourse.addActionListener(menu);
 		about.addActionListener(menu);
 		help.addActionListener(menu);
+		defaultScreen.addActionListener(menu);
 		
 	}
 	
 	protected void actionPerformedAbout() {
-		panel.removeAll();
-		panel.add(label, BorderLayout.NORTH);
-		label.setText("Made by Areebah Iqbal as an end of course project for GUI.");
+		mainPanel.removeAll();
+		mainPanel.add(aboutPanel, BorderLayout.CENTER);
+	}
+	
+	protected void actionPerformedDefaultScreen() {
+		mainPanel.removeAll();
+		mainPanel.add(defaultPanel, BorderLayout.CENTER);
 	}
 	
 	@Override
@@ -189,11 +209,11 @@ public class Menu extends JPanel implements ActionListener {
 	}
 
 	public JLabel getLabel() {
-		return label;
+		return defaultLabel;
 	}
 
 	public void setLabel(JLabel label) {
-		this.label = label;
+		this.defaultLabel = label;
 	}
 	
 }

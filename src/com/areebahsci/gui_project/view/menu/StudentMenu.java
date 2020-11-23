@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
@@ -15,15 +17,19 @@ public class StudentMenu extends Menu {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JTable gpaTable;
+	private JPanel personalPanel;
+	private JLabel personalLabel;
 	
 	public StudentMenu() {
 		
-		panel.setBorder(new TitledBorder("Student Data"));
+		mainPanel.setBorder(new TitledBorder("Student Data"));
+		
+		personalPanel = new JPanel(new BorderLayout());
+		personalLabel = new JLabel("Student Personal Data");
+		personalPanel.add(personalLabel, BorderLayout.NORTH);
+		
 		addCourse.setText("Register courses");
 		removeCourse.setText("Drop courses");
-	
-		gpaTable= new JTable();
 		
 		addActionListener(this);
 	}
@@ -31,16 +37,23 @@ public class StudentMenu extends Menu {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getSource()==personalInfo) {  
-			String[][]data=Controller.displayStudentData();   
-			String column[]= {"ID","NAME","MAJOR"};    
+		if (e.getSource()==personalInfo) { 
 			
+			// data of the table
+			String[][]data=Controller.displayStudentData();   
+			String column[]= {"ID","NAME","MAJOR"}; 
+			
+			// table beign set
 			personalTable = new JTable(data, column); 
 			personalTable.setRowHeight(0, 50);
-            JScrollPane scroll = new JScrollPane(personalTable);
-            panel.add(scroll);
 			
+            personalPanel.add(new JScrollPane(personalTable), BorderLayout.CENTER);
+            
+            mainPanel.removeAll();
+            mainPanel.add(personalPanel, BorderLayout.CENTER);
+           
 		}
+		
 		else if(e.getSource()==help) {
 			
 		}

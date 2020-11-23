@@ -9,14 +9,14 @@ public class Controller {
 	
 	private static  Model model = new Model();
 	private static View view = new View();
-	private static Student studentLoggedIn = new Student("","","","","");
-	private static Professor professorLoggedIn = new Professor("","","","","");
+	private static Student studentLoggedIn = model.getStudentsArray().get(0);
+	private static Professor professorLoggedIn = null;
 
 	public static boolean loginStudent(String username, String password) {
 		for (int i=0;i<model.getStudentCount();i++) {
 			if (model.getStudentsArray().get(i).getUsername().equals(username)) {
 				if (model.getStudentsArray().get(i).getPassword().equals(password)) {
-					studentLoggedIn.equals(model.getStudentsArray().get(i));
+					studentLoggedIn=model.getStudentsArray().get(i);
 					return true;
 				}
 				return false; // if the username hits a match but the password doesnt, that means 
@@ -30,7 +30,7 @@ public class Controller {
 		for (int i=0;i<model.getProfessorCount();i++) {
 			if (model.getProfessorsArray().get(i).getUsername().equals(username)) {
 				if (model.getProfessorsArray().get(i).getPassword().equals(password)) {
-					professorLoggedIn.equals(model.getProfessorsArray().get(i));
+					professorLoggedIn=model.getProfessorsArray().get(i);
 					return true;
 				}
 				return false; // if the username hits a match but the password doesnt, that means 
