@@ -2,11 +2,13 @@ package com.areebahsci.gui_project.model.user;
 
 public abstract class User {
 	
+	// every user will have a name, username, password and ID
 	protected String name;
 	protected String username;
 	protected String password;
 	protected String ID;
 	
+	// constructor 
 	public User(String ID, String name, String username, String password) {
 		this.name=name;
 		this.username=username;
@@ -14,9 +16,11 @@ public abstract class User {
 		this.ID=ID;
 	}
 	
+	/* used to print data for validation purposes to ensure the methods are functioning the way they are
+	 * supposed to be */
 	public abstract void printData();
 	
-	//GETTERS AND SETTERS
+	// GENERIC GETTERS AND SETTERS
 
 	public String getName() {
 		return name;

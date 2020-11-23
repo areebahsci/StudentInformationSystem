@@ -7,22 +7,23 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+// menu is a panel and implements actionlistener 
 public class Menu extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
+	// these are the dimensions of the login panel
 	private static final int WIDTH = 700, HEIGHT = 400;
 	
 	protected JMenuBar menuBar;
 	protected JMenu view, edit, more;
 	protected JMenuItem about, help, courseInfo, personalInfo, allInfo, addCourse, removeCourse,
-	defaultScreen;
+	                    defaultScreen;
 	protected JTable personalTable, courseTable;
-	
 	protected JPanel defaultPanel, aboutPanel, mainPanel;
-	
 	protected JLabel defaultLabel, aboutLabel;
 	
+	// constructor 
 	public Menu() {
 		
 		menuBar = new JMenuBar();
@@ -67,18 +68,17 @@ public class Menu extends JPanel implements ActionListener {
 		menuBar.add(edit);
 		menuBar.add(more);
 				
-		aboutLabel = new JLabel();
+		aboutLabel = new JLabel("This was created as an end-of-course project for my GUI class in my university.");
 		aboutLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		defaultLabel = new JLabel("<html>Welcome! Please select what actions you want to perform<br/>from the menu options<html>");
 		defaultLabel.setHorizontalAlignment(JLabel.CENTER);
 		defaultPanel.add(defaultLabel, BorderLayout.CENTER);
 		
+		aboutPanel.add(aboutLabel, BorderLayout.CENTER);
+		
 		mainPanel.add(defaultPanel);
-		
-		aboutPanel.add(defaultLabel, BorderLayout.CENTER);
-		aboutPanel.add(aboutLabel, BorderLayout.SOUTH);
-		
+	
 		this.setLayout(new BorderLayout());
 		this.add(menuBar, BorderLayout.NORTH);
 		this.add(mainPanel, BorderLayout.CENTER);
@@ -90,6 +90,8 @@ public class Menu extends JPanel implements ActionListener {
 		
 	}	
 	
+	/* this method is used to add actionlistener without having to type it out 3 different types for the
+	 * 3 different menues */
 	protected void addActionListener(Menu menu) {
 		
 		courseInfo.addActionListener(menu);
@@ -103,14 +105,34 @@ public class Menu extends JPanel implements ActionListener {
 		
 	}
 	
+	/* this method will be called when the about menu item is selected. we created the method here
+	 * so that it could be called in all 3 menus without rewriting the entire code as the about 
+	 * menu option will work the same across all three */
 	protected void actionPerformedAbout() {
-		mainPanel.removeAll();
-		mainPanel.add(aboutPanel, BorderLayout.CENTER);
+		
+		// it will explain in a line what this project is about 
+		clearMainPanel();
+        mainPanel.add(aboutPanel, BorderLayout.CENTER);
 	}
 	
+	/* this method will be called when the default menu item is selected. we created the method here
+	 * so that it could be called in all 3 menus without rewriting the entire code as the defaultscreen 
+	 * menu option will work the same across all three */
 	protected void actionPerformedDefaultScreen() {
-		mainPanel.removeAll();
+		
+		// it will show the screen that was showed when the window first popped open
+		clearMainPanel();
 		mainPanel.add(defaultPanel, BorderLayout.CENTER);
+		
+	}
+	
+	/* this method clears the main panel and is made so when we want to clear the panel whenever a 
+	 * button is pressed, we dont have to call 3 different methods but rather one function to make it 
+	 * more convenient */
+	protected void clearMainPanel() {
+		mainPanel.removeAll();
+		mainPanel.revalidate();
+        mainPanel.repaint();
 	}
 	
 	@Override
@@ -118,15 +140,17 @@ public class Menu extends JPanel implements ActionListener {
 		
 	}
 	
+	// returns the width of this panel
 	public int getWidth() {
 		return WIDTH;
 	}
 	
+	// returns the height of this panel
 	public int getHeight() {
 		return HEIGHT;
 	}
 	
-	// GETTERS AND SETTERS
+	// GENERIC GETTERS AND SETTERS
 
 	public JMenuBar getMenuBar() {
 		return menuBar;

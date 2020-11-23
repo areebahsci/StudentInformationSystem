@@ -10,16 +10,16 @@ import com.areebahsci.gui_project.view.menu.Menu;
 import com.areebahsci.gui_project.view.menu.ProfessorMenu;
 import com.areebahsci.gui_project.view.menu.StudentMenu;
 
+/* this class holds the main frame shown to the users and is responsible for switching between the panels
+ * dependant on what we want to show the user next */
 public class View { 
 	
 	/*   I am not extending this as a frame just incase I need my view to adapt the program to being an
 	applet or dialog or anything */
 	
-	/* frames need variables for their title, width and height but in our application
-	the title is set using the ViewManager and there doesnt seem to be a need for it to be saved
-	in its own variable as it is not used at all, and the width and height are dependant on the
-	width and height of the panel they are currently holding so again the frame width frame height
-	variables arent being used so therefore i havent included them */
+	/* frames need variables for their width and height but since the width and height 
+	 * of the frame is dependant on the width and height of the panel they are currently 
+	 * holding, i havent made any variables to hold these figures.  */
 	
 	private static JFrame frame; // used to create a window on the screen
 	private static Menu menu;
@@ -27,9 +27,14 @@ public class View {
 	private static UserType userType;
 	private static Menu studentMenu, professorMenu, adminMenu;
 	
-	public static int type = 0;
+	/* the type variable will be used to store whether the system is being used by a student, a professor
+	 * or the admin. this is needed to show them their appropriate windows */
+	public static int type = 0; 
+	
+	// this variable stores which semester we are currently in
 	public static String semester = "Spring 2020";
 	
+	// constructor 
 	public View() {
 		
 	    frame = new JFrame("Student Information System");
@@ -47,21 +52,27 @@ public class View {
 		frame.setVisible(true);
 		
 		// initial panel that should be displayed on the frame
-		//frame.setSize(userType.getWidth(), userType.getHeight());
-		//frame.add(userType);
+		// frame.setSize(userType.getWidth(), userType.getHeight());
+		// frame.add(userType);
 		
 		frame.setSize(studentMenu.getWidth(), studentMenu.getHeight());
 		frame.add(studentMenu);
 		
-		frame.pack();/* it resizes the frame so that all its contents are at or above their 
-		preferred sizes so its for a good fit to ensure everything is visible*/
+		/* it resizes the frame so that all its contents are at or above their 
+		 * preferred sizes so its for a good fit to ensure everything is visible*/
+		frame.pack();
 		
-		frame.setLocationRelativeTo(null);//this centers the window to the center of your screen
+		// this centers the window to the center of your screen
+		frame.setLocationRelativeTo(null);
 		
-		frame.setResizable(false);//we don't want the user to resize the window
+		// we don't want the user to resize the window
+		frame.setResizable(false);
 
 	}
 	
+	/* this method is used to switch panels depending on what we want to show the user, and this
+	 * will also in turn affect the width and height of the frame as we want it to match its width and 
+	 * height with the panel its holding */
 	public static void switchPanel(JPanel panelBefore, JPanel panelAfter) {
 		
 		frame.remove(panelBefore);
@@ -72,7 +83,7 @@ public class View {
 		frame.setResizable(false);
 	}
 	
-	// GETTERS AND SETTERS
+	// GENERIC GETTERS AND SETTERS
 
 	public static JFrame getFrame() {
 		return frame;

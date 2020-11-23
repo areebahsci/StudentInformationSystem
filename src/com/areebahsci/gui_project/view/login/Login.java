@@ -13,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.view.View;
 
+// login is a panel and implements actionlistener 
 public class Login extends JPanel implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
@@ -20,19 +21,22 @@ public class Login extends JPanel implements ActionListener {
 	private JLabel usernameLabel, passwordLabel, status, statusMarker;
 	private JTextField usernameInput;
 	private JPasswordField passwordInput;
-	private JButton loginButton, resetButton, backButton;
+	private JButton loginButton, resetButton, backButton, showButton;
 	private JPanel buttonPanel, inputPanelLabels, inputPanelFields, inputPanel, mainPanel;
 	
+	// these are the dimensions of the login panel 
 	private static final int HEIGHT = 180, 
 			                WIDTH = 480;
 	
-	private int count=3;
+	// this count is used keeping track of login attempts 
+	private int loginAttempts=3;
 	
+	// constructor 
 	public Login() {
 		
 		usernameLabel = new JLabel("Username:");
 		passwordLabel = new JLabel("Password:");
-		status = new JLabel("3");
+		status = new JLabel(loginAttempts+"");
 		statusMarker = new JLabel("Attempts remaining:");
 		
 		usernameInput = new JTextField(20);
@@ -41,15 +45,18 @@ public class Login extends JPanel implements ActionListener {
 		loginButton = new JButton("Login");
 		resetButton = new JButton("Reset text fields");
 		backButton = new JButton("Go back");
+		showButton = new JButton("Show password");
 		
 		loginButton.addActionListener(this);
 		resetButton.addActionListener(this);
 		backButton.addActionListener(this);
+		showButton.addActionListener(this);
 		
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 2));
-		buttonPanel.add(loginButton);
-		buttonPanel.add(resetButton);
 		buttonPanel.add(backButton);
+		buttonPanel.add(resetButton);
+		buttonPanel.add(loginButton);
+		buttonPanel.add(showButton);
 		
 		inputPanelLabels = new JPanel(new GridLayout(3, 1, 3, 3));
 		inputPanelLabels.add(usernameLabel);
@@ -85,7 +92,10 @@ public class Login extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		// if the login button is clicked 
 		if (e.getSource() == loginButton) {
+			
+			// this if statement deals with if any text fields were empty when we tried logging in
 			if (usernameInput.getText().isEmpty()) {
 				status.setText("3. (ERROR: Username text field is empty!)");
 				return;
@@ -98,31 +108,41 @@ public class Login extends JPanel implements ActionListener {
 				status.setText("3. (ERROR: Both text fields are empty!)");
 				return;
 			}
-			count--;
+			
+			// if they werent empty, then we decrement our login count 
+			loginAttempts--;
+			
+			// we get the text entered into the fields 
 			String username = this.usernameInput.getText();
 			String password = this.passwordInput.getText();
+			
+			// if the type variable is set to 1 that means that a student is logging in
 			if (View.type==1) { 
-				// since the type is set to 1, that means that a student is logging in
+				
+				// this if statement checks whether the credentials entered matched with any records
 				if (!Controller.loginStudent(username, password)) {
-					if(count!=0) {
-						status.setText(count+". Try again.");
+					// if the credentials didnt match with any records then..
+					if(loginAttempts!=0) {
+						status.setText(loginAttempts+". Try again.");
 					}
 					else {
+						// incase all login attempts were used up
 						status.setText("Maximum login attempts reached!");
 						JOptionPane.showMessageDialog(View.getFrame(), "Maximum login attempts reached", "ERROR", JOptionPane.ERROR_MESSAGE);
 		                loginButton.setEnabled(false);
 					}
 				}
 				else {
+					// if the credentials did hit a match, it will switch to the menu for students 
 					View.switchPanel(this, View.getStudentMenu());
 				}
 			}
+			// if the type variable is set to 2 that means that a student is logging in
+			// the rest of the code checking for login validation is similar to that of the code above 
 			else if (View.type==2) { 
-				// if its 2, then its a professor logging in
-				// since the type is set to 1, that means that a student is logging in
 				if (!Controller.loginProfessor(username, password)) {
-					if(count!=0) {
-						status.setText(count+". Try again.");
+					if(loginAttempts!=0) {
+						status.setText(loginAttempts+". Try again.");
 					}
 					else {
 						status.setText("Maximum login attempts reached!");
@@ -131,14 +151,16 @@ public class Login extends JPanel implements ActionListener {
 					}
 				}
 				else {
+					// if the credentials did hit a match, it will switch to the menu for professors 
 					View.switchPanel(this, View.getProfessorMenu());
 				}
 			}
 			else {
-				// since the type is set to 1, that means that a student is logging in
+				// if the type variable is set to 3 that means that a student is logging in
+				// the rest of the code checking for login validation is similar to that of the code above
 				if (!Controller.loginAdmin(username, password)) {
-					if(count!=0) {
-						status.setText(count+". Try again.");
+					if(loginAttempts!=0) {
+						status.setText(loginAttempts+". Try again.");
 					}
 					else {
 						status.setText("Maximum login attempts reached!");
@@ -147,27 +169,45 @@ public class Login extends JPanel implements ActionListener {
 					}
 				}
 				else {
+					// if the credentials did hit a match, it will switch to the menu for admin 
 					View.switchPanel(this, View.getAdminMenu());
 				}
 			}
 		}
+		
+		// if the reset button was pressed 
 		else if (e.getSource() == resetButton) {
+			
+			// it clears the textfields 
 			usernameInput.setText("");
 			passwordInput.setText("");
 		}
+		
+		// if the back button was pressed 
 		else if (e.getSource() == backButton) {
-			count=3;
+			
+			// resets login attempts 
+			loginAttempts=3;
 			loginButton.setEnabled(true);
-			status.setText("3");
+			status.setText(loginAttempts+"");
+			
+			// it switches back to the user type selection window panel
 			View.switchPanel(this, View.getUserType());
+		}
+		
+		// if the show button is pressed 
+		else if(e.getSource()==showButton) {
+			passwordInput.setEchoChar((char)0); 
 		}
 		
 	}
 
+	// returns the height of this panel
 	public int getHeight() {
 		return HEIGHT;
 	}
 
+	// returns the width of this panel
 	public int getWidth() {
 		return WIDTH;
 	}

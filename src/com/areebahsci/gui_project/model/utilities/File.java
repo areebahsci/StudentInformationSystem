@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import com.areebahsci.gui_project.model.Model;
 import com.areebahsci.gui_project.model.course.Course;
-import com.areebahsci.gui_project.model.user.professor.Professor;
-import com.areebahsci.gui_project.model.user.student.Student;
+import com.areebahsci.gui_project.model.user.Professor;
+import com.areebahsci.gui_project.model.user.Student;
 
 public class File {
 	
@@ -54,23 +54,22 @@ public class File {
 			// this is where we start adding into the course array
 			
 			int profCourseCount=Utilities.parseInt(tokens[6]);
-			Course[]coursesTeachingArray=new Course[3];
 			int k=7;
 			for (int j=0;j<profCourseCount;j++) {
 				String courseName=tokens[k];
 				int courseID=Utilities.parseInt(tokens[k+1]),
 						credits=Utilities.parseInt(tokens[k+2]);
-				Course course =new Course(professor, courseID, courseName, credits);
-				coursesTeachingArray[j]=course;
+				Course course = new Course(professor, courseID, courseName, credits);
+				
+				// this function is used to add the course to the array of courses the professor has
+				// and increment the number of courses the professor is teaching
+				professor.addCourse(course);
 				
 				/* at this point, all the current course information we can set has been set so we are
 				adding it to the arraylist of courses */
 				model.getCoursesArray().add(course);
 				k+=3;
 			}
-			
-			professor.setCoursesTeachingArray(coursesTeachingArray);
-			professor.setNumberOfCourses(profCourseCount);
 			
 			// at this point, all the professor info is set so we add it to the arraylist of professors
 			model.getProfessorsArray().add(professor);
@@ -79,6 +78,7 @@ public class File {
 
 	}
 	
+	// this function is very similar to the loadProfessorsIntoArray function
 	public static void loadStudentsIntoArray(Model model, String path) {
 		
 		String file=Utilities.loadFileAsString(path);
@@ -92,48 +92,50 @@ public class File {
 					username=tokens[3], 
 					password=tokens[4], 
 					major=tokens[5];
-			
-			Student student=new Student(ID, name, username, password, major);
-			
-			// here we add more information to the courses 
-			
-			//104 Fatima Asghar fatimaasghar passwordstudent BIO 0 0;
-			
 			double GPA=Utilities.parseDouble(tokens[6]);
-			student.setGPA(GPA);
 			
+			Student student=new Student(ID, name, username, password, major, GPA);
+			
+			// here we add more information to the courses
 			int studentCourseCount=Utilities.parseInt(tokens[7]);
 			int k=8;
 			for (int j=0;j<studentCourseCount;j++) {
 				
 				int courseID=Utilities.parseInt(tokens[k]);
 				double grade=Utilities.parseDouble(tokens[k+1]);
+				
+				// this function adds the course to the student
 				student.addCourse(courseID, grade); 
 				
 				/* at this point, all student information is set so we can add the student to the
 				arraylist in the model and use the student to update the course information with
 				the student taking the course */
-				model.getStudentsArray().add(student);
+				
+				// the function 'addStudent' adds the student to the course 
 				model.getCourse(courseID).addStudent(student);
+				
+				model.getStudentsArray().add(student);
 				k+=2;
 				
 			}
 		}
 	}
 	
+	/* this function writes all the courses in a format of [courseID; courseName; courseCredits]
+	 * into a file */
 	public static void loadCoursesIntoFile(Model model, String path) {
 		try {
+			
+			// we create a filewriter object that writes into the path passed into its constructor
 			FileWriter mycin = new FileWriter(path);
-			for (int i=0;i<model.getProfessorCount();i++) {
-				int numberOfCourses = model.getProfessorsArray().get(i).getNumberOfCourses();
-				for (int j=0;j<numberOfCourses;j++) {
-					Course course = model.getProfessorsArray().get(i).getCoursesTeachingArray()[j];
-					mycin.write(course.getCourseID()+"; "+course.getCourseName()+"; "+
-					course.getCredits()+";\n");
-				}
+		
+			for (int i=0;i<model.getCourseCount();i++) {
+				Course course = model.getCoursesArray().get(i);
+				mycin.write(course.getCourseID()+"; "+course.getCourseName()+"; "+
+						course.getCredits()+";\n");
 			}
 			mycin.close();
-		}catch (IOException e) {
+		} catch (IOException e) {
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
 		}
