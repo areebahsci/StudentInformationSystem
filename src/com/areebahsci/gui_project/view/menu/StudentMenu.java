@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
@@ -17,10 +18,6 @@ import com.areebahsci.gui_project.controller.Controller;
 public class StudentMenu extends Menu {
 	
 	private static final long serialVersionUID = 1L;
-	
-	private JPanel personalPanel;
-	private JLabel personalLabel;
-	BorderLayout personalLayout;
 	
 	// constructor 
 	public StudentMenu() {
@@ -34,17 +31,25 @@ public class StudentMenu extends Menu {
 		
 		addActionListener(this);
 		
+		border = BorderFactory.createEmptyBorder(15,0,0,0);
+		
 		// PERSONAL PANEL GUI
 		
-		personalLayout = new BorderLayout();
-		personalLayout.setVgap(15);
+		createLabel(personalLabel, "Student Personal Data");
 		
-		personalLabel = new JLabel("Student Personal Data");
-		personalLabel.setHorizontalAlignment(JLabel.CENTER);
-		
-		personalPanel = new JPanel(personalLayout);
-		personalPanel.setBorder(BorderFactory.createEmptyBorder(15,0,0,0));
+		personalPanel = new JPanel(innerPanelLayout);
+		personalPanel.setBorder(border);
 		personalPanel.add(personalLabel, BorderLayout.NORTH);
+		
+		// COURSE PANEL GUI
+		
+		courseLabel = new JLabel("Student Course Data");
+		courseLabel.setFont(labelFont);
+		courseLabel.setHorizontalAlignment(JLabel.CENTER);
+		
+		coursePanel = new JPanel(innerPanelLayout);
+		coursePanel.setBorder(border);
+		coursePanel.add(courseLabel, BorderLayout.NORTH);
 		
 	}
 
@@ -59,7 +64,7 @@ public class StudentMenu extends Menu {
 			String[][]data=Controller.displayStudentData();   
 			String column[]= {"ID","NAME","MAJOR"}; 
 			
-			// table beign set
+			// table being set
 			personalTable = new JTable(data, column); 
 			personalTable.setRowHeight(0, 50);
 			
@@ -68,6 +73,21 @@ public class StudentMenu extends Menu {
             clearMainPanel();
             mainPanel.add(personalPanel, BorderLayout.CENTER);
            
+		}
+		
+		else if (e.getSource()==courseInfo) {
+			// similar to the way personalInfo table was made
+			
+			String[][]data=Controller.displayStudentCourses();
+			String column[]= {"Courses", "Name", "ID", "Credits", "Grade"};
+			
+			courseTable = new JTable(data column);
+			courseTable.setRowHeight(0, 50);
+			
+			coursePanel.add(new JScrollPane(courseTable), BorderLayout.CENTER);
+			clearMainPanel();
+			mainPanel.add(coursePanel, BorderLayout.CENTER);
+			
 		}
 		
 		/* if the help menu item is selected it will display information about what each menu item

@@ -2,10 +2,12 @@ package com.areebahsci.gui_project.view.menu;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 // menu is a panel and implements actionlistener 
 public class Menu extends JPanel implements ActionListener {
@@ -13,27 +15,34 @@ public class Menu extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	// these are the dimensions of the login panel
-	private static final int WIDTH = 700, HEIGHT = 400;
+	private static final int WIDTH = 750, HEIGHT = 400;
 	
 	protected JMenuBar menuBar;
 	protected JMenu view, edit, more;
 	protected JMenuItem about, help, courseInfo, personalInfo, allInfo, addCourse, removeCourse,
 	                    defaultScreen;
+	
+	protected JPanel personalPanel, coursePanel, defaultPanel, aboutPanel, mainPanel;
+	protected JLabel personalLabel, courseLabel, defaultLabel, aboutLabel;
 	protected JTable personalTable, courseTable;
-	protected JPanel defaultPanel, aboutPanel, mainPanel;
-	protected JLabel defaultLabel, aboutLabel;
+	
+	protected BorderLayout innerPanelLayout;
+	protected Border border;
+	protected Font labelFont;
 	
 	// constructor 
 	public Menu() {
 		
 		menuBar = new JMenuBar();
 		
-		defaultPanel = new JPanel(new BorderLayout());
-		aboutPanel = new JPanel(new BorderLayout());
-		mainPanel = new JPanel(new BorderLayout());
+		labelFont = new Font("", Font.ITALIC, 15);
+		innerPanelLayout = new BorderLayout();
+		innerPanelLayout.setVgap(15);
 		
-		personalTable = new JTable();
-		courseTable = new JTable();
+		createInnerPanel(defaultPanel);
+		createInnerPanel(aboutPanel);
+
+		mainPanel = new JPanel(new BorderLayout());
 		
 		view = new JMenu("View Information");
 		edit = new JMenu("Courses");
@@ -68,15 +77,13 @@ public class Menu extends JPanel implements ActionListener {
 		menuBar.add(edit);
 		menuBar.add(more);
 				
-		aboutLabel = new JLabel("This was created as an end-of-course project for my GUI class in my university.");
-		aboutLabel.setHorizontalAlignment(JLabel.CENTER);
-		
-		defaultLabel = new JLabel("<html>Welcome! Please select what actions you want to perform<br/>from the menu options<html>");
-		defaultLabel.setHorizontalAlignment(JLabel.CENTER);
-		defaultPanel.add(defaultLabel, BorderLayout.CENTER);
-		
+		createLabel(aboutLabel,"This was created as an end-of-course project for my GUI class in my university.");
 		aboutPanel.add(aboutLabel, BorderLayout.CENTER);
 		
+		createLabel(defaultLabel, "<html>Welcome! Please select what actions you want to perform<br/>from the menu options<html>");
+		defaultPanel.add(defaultLabel, BorderLayout.CENTER);
+		
+		// the main panel will showcase the defaultPanel first
 		mainPanel.add(defaultPanel);
 	
 		this.setLayout(new BorderLayout());
@@ -133,6 +140,23 @@ public class Menu extends JPanel implements ActionListener {
 		mainPanel.removeAll();
 		mainPanel.revalidate();
         mainPanel.repaint();
+	}
+	
+	/* i created this method so i would only have to write one line of code rather than three when creating
+	 * my labels since they are all made the same, with the same font and alignement and method of 
+	 * construction */
+	protected void createLabel(JLabel label, String text) {
+		label = new JLabel(text);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setFont(labelFont);
+	}
+	
+	/* i created this method because all my inner panels, which are the panels that will exist in the
+	 * main panel, are constucted the same way and have the same border so as to not constantly repeat
+	 * the two lines of code in 4 menu java files, this will substitute as a single line of code */
+	protected void createInnerPanel(JPanel panel) {
+		panel=new JPanel(innerPanelLayout);
+		panel.setBorder(border);
 	}
 	
 	@Override
