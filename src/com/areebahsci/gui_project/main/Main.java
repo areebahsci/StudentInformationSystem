@@ -7,8 +7,8 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// just runs an instance of the controller which handles the model and view 
-		new Controller();
-		
+		Controller controller = new Controller();
+		controller.getModel().printStudentArray();
 	}
 
 }

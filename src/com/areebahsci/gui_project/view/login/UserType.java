@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
+import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.view.View;
 
 // usertype is a panel and implements actionlistener 
@@ -60,17 +61,17 @@ public class UserType extends JPanel implements ActionListener {
 		
 		// if the user selects student, it sets the type variable to 1 
 		if (e.getSource() == studentButton) {
-			View.type=1;
+			Controller.setType(1);
 		}
 		
 		// if the user selects professor, it sets the type variable to 2
 		else if(e.getSource()==professorButton) {
-			View.type=2;
+			Controller.setType(2);
 		}
 		
 		// if the user selects admin, it sets the type variable to 3
 		else if(e.getSource()==adminButton) {
-			View.type=3;
+			Controller.setType(3);
 		}
 		
 		// regardless of which selection was made, the same login will be shown so it switches to that panel

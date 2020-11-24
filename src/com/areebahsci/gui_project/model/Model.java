@@ -2,6 +2,7 @@ package com.areebahsci.gui_project.model;
 
 import java.util.ArrayList;
 
+import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.model.user.Administrator;
 import com.areebahsci.gui_project.model.user.Professor;
@@ -38,10 +39,10 @@ public class Model {
 	}
 	
 	// this method returns the course based on the courseID passed
-	public Course getCourse(int courseID) {
+	public Course getCourse(double d) {
 		Course course;
 		for (int i=0;i<getCourseCount();i++) {
-			if ((course=courses.get(i)).getCourseID()==courseID) {
+			if ((course=courses.get(i)).getCourseID()==d) {
 				return course;
 			}
 		}

@@ -1,8 +1,6 @@
 package com.areebahsci.gui_project.model.user;
 
-import com.areebahsci.gui_project.model.Model;
 import com.areebahsci.gui_project.model.course.Course;
-import com.areebahsci.gui_project.model.user.User;
 
 // student is a user
 public class Student extends User {
@@ -58,6 +56,16 @@ public class Student extends User {
 		enrolledCourses[coursesTaken][1]=-1;
 		coursesTaken++;
 		course.addStudent(this);
+	}
+	
+	// retrieves the student's grade in a course 
+	public double getGradeOfCourse(Course course) {
+		for (int i=0;i<coursesTaken;i++) {
+			if (course.getCourseID()==enrolledCourses[i][0]) {
+				return enrolledCourses[i][1];
+			}
+		}
+		return 0;
 	}
 
 	// this method calculates the GPA of the student 

@@ -26,17 +26,14 @@ public class Login extends JPanel implements ActionListener {
 	
 	// these are the dimensions of the login panel 
 	private static final int HEIGHT = 180, 
-			                WIDTH = 480;
-	
-	// this count is used keeping track of login attempts 
-	private int loginAttempts=3;
+			                WIDTH = 520;
 	
 	// constructor 
 	public Login() {
 		
 		usernameLabel = new JLabel("Username:");
 		passwordLabel = new JLabel("Password:");
-		status = new JLabel(loginAttempts+"");
+		status = new JLabel(Controller.getLoginAttempts()+"");
 		statusMarker = new JLabel("Attempts remaining:");
 		
 		usernameInput = new JTextField(20);
@@ -52,7 +49,7 @@ public class Login extends JPanel implements ActionListener {
 		backButton.addActionListener(this);
 		showButton.addActionListener(this);
 		
-		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 2));
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 2));
 		buttonPanel.add(backButton);
 		buttonPanel.add(resetButton);
 		buttonPanel.add(loginButton);
@@ -95,84 +92,39 @@ public class Login extends JPanel implements ActionListener {
 		// if the login button is clicked 
 		if (e.getSource() == loginButton) {
 			
-			// this if statement deals with if any text fields were empty when we tried logging in
-			if (usernameInput.getText().isEmpty()) {
-				status.setText("3. (ERROR: Username text field is empty!)");
-				return;
-			}
-			else if (passwordInput.getText().isEmpty()) {
-				status.setText("3. (ERROR: Password text field is empty!)");
-				return;
-			}
-			else if (usernameInput.getText().isEmpty()&&passwordInput.getText().isEmpty()) {
-				status.setText("3. (ERROR: Both text fields are empty!)");
-				return;
-			}
-			
-			// if they werent empty, then we decrement our login count 
-			loginAttempts--;
-			
 			// we get the text entered into the fields 
 			String username = this.usernameInput.getText();
-			String password = this.passwordInput.getText();
-			
-			// if the type variable is set to 1 that means that a student is logging in
-			if (View.type==1) { 
-				
-				// this if statement checks whether the credentials entered matched with any records
-				if (!Controller.loginStudent(username, password)) {
-					// if the credentials didnt match with any records then..
-					if(loginAttempts!=0) {
-						status.setText(loginAttempts+". Try again.");
-					}
-					else {
-						// incase all login attempts were used up
-						status.setText("Maximum login attempts reached!");
-						JOptionPane.showMessageDialog(View.getFrame(), "Maximum login attempts reached", "ERROR", JOptionPane.ERROR_MESSAGE);
-		                loginButton.setEnabled(false);
-					}
-				}
-				else {
-					// if the credentials did hit a match, it will switch to the menu for students 
-					View.switchPanel(this, View.getStudentMenu());
-				}
-			}
-			// if the type variable is set to 2 that means that a student is logging in
-			// the rest of the code checking for login validation is similar to that of the code above 
-			else if (View.type==2) { 
-				if (!Controller.loginProfessor(username, password)) {
-					if(loginAttempts!=0) {
-						status.setText(loginAttempts+". Try again.");
-					}
-					else {
-						status.setText("Maximum login attempts reached!");
-						JOptionPane.showMessageDialog(View.getFrame(), "Maximum login attempts reached", "ERROR", JOptionPane.ERROR_MESSAGE);
-		                loginButton.setEnabled(false);
-					}
-				}
-				else {
-					// if the credentials did hit a match, it will switch to the menu for professors 
-					View.switchPanel(this, View.getProfessorMenu());
-				}
-			}
-			else {
-				// if the type variable is set to 3 that means that a student is logging in
-				// the rest of the code checking for login validation is similar to that of the code above
-				if (!Controller.loginAdmin(username, password)) {
-					if(loginAttempts!=0) {
-						status.setText(loginAttempts+". Try again.");
-					}
-					else {
-						status.setText("Maximum login attempts reached!");
-						JOptionPane.showMessageDialog(View.getFrame(), "Maximum login attempts reached", "ERROR", JOptionPane.ERROR_MESSAGE);
-		                loginButton.setEnabled(false);
-					}
-				}
-				else {
-					// if the credentials did hit a match, it will switch to the menu for admin 
-					View.switchPanel(this, View.getAdminMenu());
-				}
-			}
+		    String password = this.passwordInput.getText();
+		    
+		    switch(Controller.login(username, password)) {
+		    
+		    case 1:
+		    	/* if the credentials did hit a match, the method will return 1 which indicates a 
+		    	 * student has successfully logged in so it will switch to the menu for students */
+				View.switchPanel(this, View.getStudentMenu());
+		    	break;
+		    case 2:
+		    	/* if the credentials did hit a match, the method will return 2 which indicates a 
+		    	 * professor has successfully logged in so it will switch to the menu for professor */
+				View.switchPanel(this, View.getProfessorMenu());
+		    	break;
+		    case 3:
+		    	/* if the credentials did hit a match, the method will return 3 which indicates the 
+		    	 * admin has successfully logged in so it will switch to the menu for student */
+		    	View.switchPanel(this, View.getAdminMenu());
+		    	break;
+		    case -1:
+		    	status.setText(Controller.getLoginAttempts()+". (ERROR: Do not leave text fields empty!)");
+		    	break;
+		    case -2:
+		    	status.setText(Controller.getLoginAttempts()+". Try again.");
+		    	break;
+		    case -3:
+		    	status.setText("Maximum login attempts reached!");
+				JOptionPane.showMessageDialog(View.getFrame(), "Maximum login attempts reached", "ERROR", JOptionPane.ERROR_MESSAGE);
+                loginButton.setEnabled(false);
+		    	break;
+		    }
 		}
 		
 		// if the reset button was pressed 
@@ -187,9 +139,9 @@ public class Login extends JPanel implements ActionListener {
 		else if (e.getSource() == backButton) {
 			
 			// resets login attempts 
-			loginAttempts=3;
+			Controller.setLoginAttempts(3);
 			loginButton.setEnabled(true);
-			status.setText(loginAttempts+"");
+			status.setText(Controller.getLoginAttempts()+"");
 			
 			// it switches back to the user type selection window panel
 			View.switchPanel(this, View.getUserType());

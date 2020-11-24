@@ -2,6 +2,8 @@ package com.areebahsci.gui_project.view.menu;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JPanel;
+
 /* professormenu is a menu which is a panel so adminmenu is also a panel
  * also since menu implements actionlistener, so does professormenu */
 public class ProfessorMenu extends Menu {
@@ -16,6 +18,16 @@ public class ProfessorMenu extends Menu {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+	}
+
+	@Override
+	protected void createPersonalPanel() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void createCoursePanel() {
+		// TODO Auto-generated method stub
 	}
 
 }

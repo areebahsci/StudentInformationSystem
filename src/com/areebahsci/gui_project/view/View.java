@@ -3,6 +3,7 @@ package com.areebahsci.gui_project.view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.view.login.Login;
 import com.areebahsci.gui_project.view.login.UserType;
 import com.areebahsci.gui_project.view.menu.AdminMenu;
@@ -22,14 +23,9 @@ public class View {
 	 * holding, i havent made any variables to hold these figures.  */
 	
 	private static JFrame frame; // used to create a window on the screen
-	private static Menu menu;
 	private static Login login;
 	private static UserType userType;
 	private static Menu studentMenu, professorMenu, adminMenu;
-	
-	/* the type variable will be used to store whether the system is being used by a student, a professor
-	 * or the admin. this is needed to show them their appropriate windows */
-	public static int type = 0; 
 	
 	// this variable stores which semester we are currently in
 	public static String semester = "Spring 2020";
@@ -38,7 +34,6 @@ public class View {
 	public View() {
 		
 	    frame = new JFrame("Student Information System");
-		menu = new Menu();
 		login = new Login();
 		userType = new UserType();
 		studentMenu = new StudentMenu();
@@ -52,11 +47,8 @@ public class View {
 		frame.setVisible(true);
 		
 		// initial panel that should be displayed on the frame
-		// frame.setSize(userType.getWidth(), userType.getHeight());
-		// frame.add(userType);
-		
-		frame.setSize(studentMenu.getWidth(), studentMenu.getHeight());
-		frame.add(studentMenu);
+		frame.setSize(userType.getWidth(), userType.getHeight());
+		frame.add(userType);
 		
 		/* it resizes the frame so that all its contents are at or above their 
 		 * preferred sizes so its for a good fit to ensure everything is visible*/
@@ -91,14 +83,6 @@ public class View {
 
 	public static void setFrame(JFrame frame) {
 		View.frame = frame;
-	}
-
-	public static Menu getMenu() {
-		return menu;
-	}
-
-	public static void setMenu(Menu menu) {
-		View.menu = menu;
 	}
 
 	public static Login getLogin() {
