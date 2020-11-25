@@ -13,8 +13,10 @@ public class MenuTable extends JTable {
 	
 	/* I created this class so that whenever we have to create a table, which will be quite a few times
 	 * across the menu gui classes, we can just write one peice of code which is the MenuTable 
-	 * constructor rather than 5 more lines each time. This ensures I dont forget to center or set
-	 * row height or make a DefaultTableCellRenderer object to center my data in the table. */
+	 * constructor rather than writing all the lines of code written below over and over again. 
+	 * This ensures I dont forget to center cell data or set row height or make a 
+	 * DefaultTableCellRenderer object to center my data in the table or make all my cells uneditable by
+	 * default. */
 
 	private static final long serialVersionUID = 1L;
 	
@@ -28,8 +30,17 @@ public class MenuTable extends JTable {
 	    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for(int i=0; i < column.length; i++){
 	         this.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		 }		
+		}
+		this.isCellEditable(data.length, column.length);
+
 	}
+	
+	// this override helps me set all my cells in the table to not be editable
+	@Override
+    public boolean isCellEditable(int row, int column) {
+       //all cells false
+       return false;
+    }
 	
 	/* this function is used when we want to add the course table to a panel as a scrollPane
 	 * and it also ensures the size of the scrollpane matches that of the table so it allows us to add

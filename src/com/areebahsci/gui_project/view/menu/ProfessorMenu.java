@@ -8,11 +8,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
@@ -24,53 +25,16 @@ public class ProfessorMenu extends Menu {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JMenuItem changePassword, changeUsername;
-	private InnerPanel changePasswordPanel, changeUsernamePanel;
-	private MenuLabel changePasswordLabel, changeUsernameLabel;
-	private JTextField changeUsernameInput;
-	private JPasswordField changePasswordInput;
-	private JButton changeButton, returnButton, viewPassword;
-	private JPanel usernameButtonPanel, passwordButtonPanel;
+	private JMenuItem changeGrade;
+	private InnerPanel changeGradePanel;
+	private MenuTable changeGradeTable;
+	private JTextField studentIDInput, gradeInput;
+	private MenuLabel studentIDLabel, gradeLabel;
+	private JButton changeButton_2, returnButton_2, showGrades;
+	private JPanel changeGradeButtonPanel, courseSelectionPanel;
 	
 	// constructor 
 	public ProfessorMenu() {
-		
-		changeButton = new JButton("Submit");
-		returnButton = new JButton("Go back");
-		
-		// CHANGE USERNAME PANEL GUI
-		
-		changeUsernamePanel = new InnerPanel();
-		
-		changeUsername = new JMenuItem("Change your username");
-		changeUsernameInput = new JTextField(32);
-		changeUsernameLabel = new MenuLabel("Enter your new username");
-		
-		usernameButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
-		usernameButtonPanel.add(returnButton);
-		usernameButtonPanel.add(changeButton);
-		
-		changeUsernamePanel.add(changeUsernameLabel, BorderLayout.NORTH);
-		changeUsernamePanel.add(changeUsernameInput, BorderLayout.CENTER);
-		changeUsernamePanel.add(usernameButtonPanel);
-		
-		// CHANGE PASSWORD PANEL GUI
-		
-		changePasswordPanel = new InnerPanel();
-		
-		changePassword = new JMenuItem("Change your password");
-		changePasswordInput = new JPasswordField(32);
-		viewPassword = new JButton("Show password");
-		changePasswordLabel = new MenuLabel("Enter your new password");
-		
-		passwordButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
-		passwordButtonPanel.add(returnButton);
-		passwordButtonPanel.add(changeButton);
-		passwordButtonPanel.add(viewPassword);
-		
-		changePasswordPanel.add(changePasswordLabel, BorderLayout.NORTH);
-		changePasswordPanel.add(changePasswordInput, BorderLayout.CENTER);
-		changePasswordPanel.add(passwordButtonPanel);
 		
 		// PERSONAL PANEL GUI
 		
@@ -84,26 +48,43 @@ public class ProfessorMenu extends Menu {
 		coursePanel = new InnerPanel();
 		coursePanel.add(courseLabel, BorderLayout.NORTH);
 		
-		// GENERAL GUI 
-		
 		// GENERAL GUI OF MENU 
+		
+		mainPanel.setBorder(new TitledBorder("Professor Data"));
 		
 	    addCourse.setText("Register to teach courses");
 		removeCourse.setText("Drop courses");
-				
-		mainPanel.setBorder(new TitledBorder("Professor Data"));
-				
+		
 		view.add(allInfo);
+		edit.addSeparator();
 		edit.add(changeUsername);
 		edit.addSeparator();
 		edit.add(changePassword);
+		
+		// CHANGE GRADE OF STUDENTS GUI 
+		
+		changeGrade = new JMenuItem("Change Students Grade");
+		
+		changeGradePanel = new InnerPanel();
+		studentIDInput = new JTextField(10);
+		gradeInput = new JTextField(10);
+		studentIDLabel = new MenuLabel("Enter the ID of the student whose grade you wish to change: ");
+		gradeLabel = new MenuLabel("Enter the new grade: ");
+		changeButton_2 = new JButton("Change Grade");
+		returnButton_2 = new JButton("Go back");
+		showGrades = new JButton("Display All Grades");
+		
+		courseSelectionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
+		changeGradeButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
+		changeGradeButtonPanel.add(returnButton_2);
+		changeGradeButtonPanel.add(changeButton_2);
+		
+		// MORE GENERAL GUI
+		
+		edit.addSeparator();
+		edit.add(changeGrade);
 			
 		addActionListener(this);
-		changeUsername.addActionListener(this);
-		changePassword.addActionListener(this);
-		changeButton.addActionListener(this);
-		returnButton.addActionListener(this);
-		viewPassword.addActionListener(this);
 		
 	}
 
@@ -193,5 +174,30 @@ public class ProfessorMenu extends Menu {
 		allInfoPanel.add(coursePanel);
 		allInfoPanel.setLayout((new BoxLayout(allInfoPanel, BoxLayout.Y_AXIS)));
 		
+	}
+	
+	protected void createChangeGradePanel() {
+		Course[] courses = Controller.getTeachingCourseArray();
+		for (int i=0;i<courses.length;i++) {
+			JRadioButton radioButton = new JRadioButton(courses[i].getCourseName());
+			courseSelectionPanel.add(radioButton);
+		}
+		courseSelectionPanel.add(showGrades);
+		changeGradePanel.add(courseSelectionPanel, BorderLayout.NORTH);
+		changeGradePanel.add(changeGradeButtonPanel, BorderLayout.SOUTH);
+		
+	}
+	
+	protected void createGradeTable(Course course) {
+		// data of the table
+		String[][]data=Controller.getAllGradesInCourse(course);
+		String column[]= {"Student ID", "Student Name", "Grade"};
+				
+	    // table being set
+		changeGradeTable = new MenuTable (data, column);
+				
+		// table being added to the inner panel
+		changeGradePanel.add(changeGradeTable.createJScrollPane(), BorderLayout.CENTER);
+
 	}
 }

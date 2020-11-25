@@ -2,6 +2,7 @@ package com.areebahsci.gui_project.view.menu;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,14 +24,24 @@ public abstract class Menu extends JPanel implements ActionListener {
 	protected JMenu view, edit, more;
 	protected JMenuItem about, help, courseInfo, personalInfo, allInfo, addCourse, removeCourse,
 	                    defaultScreen;
-	
 	protected InnerPanel personalPanel, coursePanel, defaultPanel, aboutPanel, helpPanel;
 	protected JPanel allInfoPanel, mainPanel;
 	protected MenuLabel personalLabel, courseLabel, defaultLabel, aboutLabel, helpLabel;
 	protected MenuTable personalTable, courseTable;
 	
+	// used only by admin and professor 
+	protected JMenuItem changePassword, changeUsername;
+	protected InnerPanel changePasswordPanel, changeUsernamePanel;
+	protected MenuLabel changePasswordLabel, changeUsernameLabel;
+	protected JTextField changeUsernameInput;
+	protected JPasswordField changePasswordInput;
+	protected JButton changeButton_1, returnButton_1, viewPassword;
+	protected JPanel usernameButtonPanel, passwordButtonPanel;
+	
 	// constructor 
 	public Menu() {
+		
+		// GENERAL MENU GUI
 		
 		menuBar = new JMenuBar();
 	
@@ -72,8 +83,46 @@ public abstract class Menu extends JPanel implements ActionListener {
 		
 	    defaultLabel= new MenuLabel("Welcome! Use the menu options to perform your desired actions.");
 	    defaultPanel.add(defaultLabel, BorderLayout.CENTER);
+	    
+	    changeButton_1 = new JButton("Submit");
+		returnButton_1 = new JButton("Go back");
+		
+		// CHANGE USERNAME PANEL GUI
+		
+		changeUsernamePanel = new InnerPanel();
+		
+		changeUsername = new JMenuItem("Change your username");
+		changeUsernameInput = new JTextField(32);
+		changeUsernameLabel = new MenuLabel("Enter your new username");
+		
+		usernameButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
+		usernameButtonPanel.add(returnButton_1);
+		usernameButtonPanel.add(changeButton_1);
+		
+		changeUsernamePanel.add(changeUsernameLabel, BorderLayout.NORTH);
+		changeUsernamePanel.add(changeUsernameInput, BorderLayout.CENTER);
+		changeUsernamePanel.add(usernameButtonPanel);
+		
+		// CHANGE PASSWORD PANEL GUI
+		
+		changePasswordPanel = new InnerPanel();
+		
+		changePassword = new JMenuItem("Change your password");
+		changePasswordInput = new JPasswordField(32);
+		viewPassword = new JButton("Show password");
+		changePasswordLabel = new MenuLabel("Enter your new password");
+		
+		passwordButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
+		passwordButtonPanel.add(returnButton_1);
+		passwordButtonPanel.add(changeButton_1);
+		passwordButtonPanel.add(viewPassword);
+		
+		changePasswordPanel.add(changePasswordLabel, BorderLayout.NORTH);
+		changePasswordPanel.add(changePasswordInput, BorderLayout.CENTER);
+		changePasswordPanel.add(passwordButtonPanel);
 		
 		// the main panel will showcase the defaultPanel first
+		
 		mainPanel.add(defaultPanel);
 	
 		this.setLayout(new BorderLayout());
@@ -99,6 +148,11 @@ public abstract class Menu extends JPanel implements ActionListener {
 		about.addActionListener(menu);
 		help.addActionListener(menu);
 		defaultScreen.addActionListener(menu);
+		changeUsername.addActionListener(this);
+		changePassword.addActionListener(this);
+		changeButton_1.addActionListener(this);
+		returnButton_1.addActionListener(this);
+		viewPassword.addActionListener(this);
 		
 	}
 	
