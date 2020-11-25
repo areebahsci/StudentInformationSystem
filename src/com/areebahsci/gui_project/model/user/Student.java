@@ -75,7 +75,7 @@ public class Student extends User {
 		for (int i=0;i<coursesTaken;i++) {
 			GPA+=enrolledCourses[i][1];
 		}
-		GPA/=100;
+		GPA/=coursesTaken;
 		return GPA;
 	}
 	
@@ -90,24 +90,6 @@ public class Student extends User {
 			System.out.println("Course ID: "+ this.enrolledCourses[i][0]+
 					" Grade: "+ this.enrolledCourses[i][1]);
 		}
-	}
-	
-	/* this ensures we get the length of the course array incase theres an error and the 
-	 * the number of courses isnt updated when we add a course */
-	public int getCoursesTaken() {
-		
-		/* for a 2d array, the length returns the number of rows which, for us, is how many
-		 * courses there are anyway so it is correct */
-		return(coursesTaken=enrolledCourses.length); 
-	}
-
-	/* we will never need to set this value as it should always be equal to the length of the course
-	 * array so this function will just set it to the length of the course array */
-	public void setNumberOfCourses() {
-		
-		/* for a 2d array, the length returns the number of rows which, for us, is how many
-		 * courses there are anyway so it is correct */
-		coursesTaken = enrolledCourses.length;
 	}
 	
 	// GENERIC GETTERS AND SETTERS
@@ -134,6 +116,18 @@ public class Student extends User {
 
 	public void setEnrolledCourses(double[][] enrolledCourses) {
 		this.enrolledCourses = enrolledCourses;
+	}
+
+	public int getCoursesTaken() {
+		return coursesTaken;
+	}
+
+	public void setCoursesTaken(int coursesTaken) {
+		this.coursesTaken = coursesTaken;
+	}
+
+	public static int getMaxCourses() {
+		return MAX_COURSES;
 	}
 	
 }

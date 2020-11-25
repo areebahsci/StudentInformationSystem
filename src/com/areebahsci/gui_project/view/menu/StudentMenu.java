@@ -1,13 +1,14 @@
 package com.areebahsci.gui_project.view.menu;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JLabel;
+import javax.swing.BoxLayout;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
@@ -20,6 +21,11 @@ public class StudentMenu extends Menu {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private JMenuItem viewGPA;
+	private MenuTable gpaTable;
+	private InnerPanel gpaPanel;
+	private MenuLabel gpaLabel;
+	
 	// constructor 
 	public StudentMenu() {
 		
@@ -27,6 +33,16 @@ public class StudentMenu extends Menu {
 		
 		addCourse.setText("Register courses");
 		removeCourse.setText("Drop courses");
+		
+		viewGPA = new JMenuItem("View GPA");
+		viewGPA.addActionListener(this);
+		view.add(viewGPA);
+		view.addSeparator();
+		view.add(allInfo);
+		
+		gpaPanel = new InnerPanel();
+		gpaLabel = new MenuLabel("Your GPA");
+		gpaPanel.add(gpaLabel, BorderLayout.NORTH);
 		
 		mainPanel.setBorder(new TitledBorder("Student Data"));
 		
@@ -69,9 +85,14 @@ public class StudentMenu extends Menu {
 			
 		}
 		
-		else if (e.getSource()==allInfo) {
+		else if (e.getSource()==viewGPA) {
+			createGPAPanel();
+			changeMainPanel(gpaPanel);
+		}
 		
-			
+		else if (e.getSource()==allInfo) {
+			createAllInfoPanel();
+			changeMainPanel(allInfoPanel);
 		}
 		
 		/* if the help menu item is selected it will display information about what each menu item
@@ -103,7 +124,7 @@ public class StudentMenu extends Menu {
 		personalTable = new MenuTable(data, column);
 		
 		// table being added to the inner panel
-		personalPanel.add(new JScrollPane(personalTable), BorderLayout.CENTER);
+		personalPanel.add(personalTable.createJScrollPane());
 	}
 	
 	@Override
@@ -117,8 +138,31 @@ public class StudentMenu extends Menu {
 		courseTable = new MenuTable (data, column);
 		
 		// table being added to the inner panel
-		coursePanel.add(new JScrollPane(courseTable), BorderLayout.CENTER);
+		coursePanel.add(courseTable.createJScrollPane());
 
+	}
+	
+	protected void createGPAPanel() {
+		
+		String[][]data=Controller.displayGPACalculations();
+		String column[]= {"Courses", "Grades"};
+		
+		gpaTable = new MenuTable(data, column);
+		gpaPanel.add(gpaTable.createJScrollPane());
+		
+	}
+	
+	@Override
+	protected void createAllInfoPanel() {
+		allInfoPanel = new JPanel(); 
+		createPersonalPanel();
+		createGPAPanel();
+		createCoursePanel();
+		allInfoPanel.add(personalPanel);
+		allInfoPanel.add(coursePanel);
+		allInfoPanel.add(gpaPanel);
+		allInfoPanel.setLayout((new BoxLayout(allInfoPanel, BoxLayout.Y_AXIS)));
+		
 	}
 }
 

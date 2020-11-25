@@ -113,11 +113,11 @@ public class File {
 				
 				// the function 'addStudent' adds the student to the course 
 				model.getCourse(courseID).addStudent(student);
-				
-				model.getStudentsArray().add(student);
 				k+=2;
-				
 			}
+			
+			// at this point, all the student info is set so we add it to the arraylist of students
+			model.getStudentsArray().add(student);
 		}
 	}
 	

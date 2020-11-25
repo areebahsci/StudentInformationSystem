@@ -76,22 +76,18 @@ public class Professor extends User {
 		}
 	}
 	
-	/* this ensures we get the length of the course array incase theres an error and the 
-	 * the number of courses isnt updated when we add a course */
-	public int getNumberOfCourses() {
-		return(numberOfCourses=coursesTeachingArray.length);
-	}
-
-	/* we will never need to set this value as it should always be equal to the length of the course
-	 * array so this function will just set it to the length of the course array */
-	public void setNumberOfCourses() {
-		numberOfCourses = coursesTeachingArray.length;
-	}
-	
 	// GENERIC GETTERS AND SETTERS
 
 	public String getDepartment() {
 		return department;
+	}
+
+	public int getNumberOfCourses() {
+		return numberOfCourses;
+	}
+
+	public void setNumberOfCourses(int numberOfCourses) {
+		this.numberOfCourses = numberOfCourses;
 	}
 
 	public void setDepartment(String department) {

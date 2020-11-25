@@ -8,11 +8,6 @@ import com.areebahsci.gui_project.view.View;
 
 public class Controller {
 	
-	/* these variables save which student/professor has logged into the system so it is 
-	easier to retreive their information when needed */
-	private static Student studentLoggedIn = null;
-	private static Professor professorLoggedIn = null;
-	
 	// this count is used keeping track of login attempts 
 	private static int loginAttempts=3;
 	
@@ -26,6 +21,11 @@ public class Controller {
 	// we have to create an instance of the model and the view 
 	private static  Model model = new Model();
 	private static View view = new View();
+	
+	/* these variables save which student/professor has logged into the system so it is 
+	easier to retreive their information when needed */
+	private static Student studentLoggedIn = model.getStudentsArray().get(0);
+	private static Professor professorLoggedIn = null;
 	
 	// this is the method called by the view when the user attempts to login 
 	public static int login(String username, String password) {
@@ -177,13 +177,15 @@ public class Controller {
 		String[][]data = {{studentLoggedIn.getID(),studentLoggedIn.getName(),studentLoggedIn.getMajor()}};
 		return data;
 	}
-	/*
 	
+	/* this is the method called within the view when it wants to display the students course
+	 * information to the user */
 	public static String[][] displayStudentCourses(){
 		
-		String [][] data = new String[4][5];
+		String [][] data = new String[3][5];
 		for(int i=0;i<studentLoggedIn.getCoursesTaken();i++) {
 			Course course = model.getCourse(studentLoggedIn.getEnrolledCourses()[i][0]);
+			
 			data[i][0]=(i+"");
 			data[i][1]=(course.getCourseID()+"");
 			data[i][2]=course.getCourseName();
@@ -193,7 +195,22 @@ public class Controller {
 		return data;
 		
 	}
-	*/
+	
+	/* this is the method called within the view when it wants to display the students GPA
+	 * information to the user */
+	public static String[][] displayGPACalculations() {
+		
+		int courseCount= studentLoggedIn.getCoursesTaken();
+		String [][] data = new String[courseCount+1][2];
+		for(int i=0;i<courseCount;i++) {
+			Course course = model.getCourse(studentLoggedIn.getEnrolledCourses()[i][0]);
+			data[i][0]=course.getCourseName();
+			data[i][1]=(studentLoggedIn.getGradeOfCourse(course)+"");
+		}
+		data[courseCount][0]="Your calculated GPA";
+		data[courseCount][1]=(""+studentLoggedIn.calculateGPA());
+		return data;
+	}
 	
 	// GENERIC GETTERS AND SETTERS
 	

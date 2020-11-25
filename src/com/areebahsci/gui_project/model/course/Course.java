@@ -50,7 +50,7 @@ public class Course {
 	this.credits+ " professor: "+this.professor+" studentCount: "+
 				this.studentCount);
 		for (int i=0;i<this.studentCount;i++) {
-			System.out.print("Student"+i+" ID: "+this.studentsEnrolled[i].getID() +" ");
+			System.out.println("Student"+(i+1)+" ID: "+this.studentsEnrolled[i].getID() +" ");
 		}
 	}
 	
@@ -60,22 +60,22 @@ public class Course {
 		studentCount++;
 	}
 	
-	/* this ensures we get the length of the student array incase theres an error and the 
-	 * the number of students isnt updated when we add a student */
-	public int getStudentCount() {
-		return(studentCount=studentsEnrolled.length);
-	}
-
-	/* we will never need to set this value as it should always be equal to the length of the student
-	 * array so this function will just set it to the length of the student array */
-	public void setNumberOfCourses() {
-		studentCount = studentsEnrolled.length;
-	}
-	
 	// GENERIC GETTERS AND SETTERS
 	
 	public Professor getProfessor() {
 		return professor;
+	}
+
+	public int getStudentCount() {
+		return studentCount;
+	}
+
+	public void setStudentCount(int studentCount) {
+		this.studentCount = studentCount;
+	}
+
+	public static int getMaxStudents() {
+		return MAX_STUDENTS;
 	}
 
 	public void setProfessor(Professor professor) {

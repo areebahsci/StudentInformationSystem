@@ -17,16 +17,16 @@ public abstract class Menu extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	// these are the dimensions of the login panel
-	private static final int WIDTH = 800, HEIGHT = 400;
+	private static final int WIDTH = 800, HEIGHT = 620;
 	
 	protected JMenuBar menuBar;
 	protected JMenu view, edit, more;
 	protected JMenuItem about, help, courseInfo, personalInfo, allInfo, addCourse, removeCourse,
 	                    defaultScreen;
 	
-	protected InnerPanel personalPanel, coursePanel, defaultPanel, aboutPanel, allInfoPanel;
-	protected JPanel mainPanel;
-	protected MenuLabel personalLabel, courseLabel, defaultLabel, aboutLabel, allInfoLabel;
+	protected InnerPanel personalPanel, coursePanel, defaultPanel, aboutPanel;
+	protected JPanel allInfoPanel, mainPanel;
+	protected MenuLabel personalLabel, courseLabel, defaultLabel, aboutLabel;
 	protected MenuTable personalTable, courseTable;
 	
 	// constructor 
@@ -57,7 +57,6 @@ public abstract class Menu extends JPanel implements ActionListener {
 		view.addSeparator();
 		view.add(courseInfo);
 		view.addSeparator();
-		view.add(allInfo);
 		
 		edit.add(addCourse);
 		edit.addSeparator();
@@ -116,14 +115,8 @@ public abstract class Menu extends JPanel implements ActionListener {
 	 * functions */
 	protected abstract void createPersonalPanel();
 	protected abstract void createCoursePanel();
-	
-	protected void createAllInfoPanel() {
-		allInfoPanel = new InnerPanel();
-		allInfoLabel=new MenuLabel("Student Personal & Course Data");
-		allInfoPanel.add(allInfoLabel, BorderLayout.NORTH);
-		allInfoPanel.add(personalPanel, BorderLayout.CENTER);
-		allInfoPanel.add(coursePanel, BorderLayout.SOUTH);
-	}
+	// this method will combine personal info table and course info table to display everything
+	protected abstract void createAllInfoPanel(); 
 	
 	/* this method will be called when the about menu item is selected. we created the method here
 	 * so that it could be called in all 3 menus without rewriting the entire code as the about 

@@ -39,11 +39,10 @@ public class Model {
 	}
 	
 	// this method returns the course based on the courseID passed
-	public Course getCourse(double d) {
-		Course course;
+	public Course getCourse(double ID) {
 		for (int i=0;i<getCourseCount();i++) {
-			if ((course=courses.get(i)).getCourseID()==d) {
-				return course;
+			if ((courses.get(i).getCourseID())==ID) {
+				return (courses.get(i));
 			}
 		}
 		return null;
