@@ -81,20 +81,11 @@ private static final long serialVersionUID = 1L;
 		/* if the help menu item is selected it will display information about what each menu item
 		 * is responsible for in attempts to explain and help */
 		else if(e.getSource()==help) {
-			helpLabel = new MenuLabel("<html>In the view menu section, you can view your details.<br/>In the edit menu section, you can either add a course, where the max number of courses you can teach is 3.<br/> You can also stop teaching a course and drop it.<br/>Finally, in the more menu section, you can use it to view for more information about the program as you are doing so now.<html>");
+			helpLabel = new MenuLabel("<html>In the view menu section, you can view your details, and all student and professor details, along with all course details.<br/>In the edit menu section, you can either change your username and password.<br/>Finally, in the more menu section, you can use it to view for more information about the program as you are doing so now.<html>");
 			actionPerformedHelp();
 		}
 		
-		// if the about menu item is selected
-		else if(e.getSource()==about) {
-			actionPerformedAbout();
-		}
-		
-		// if the default menu item is selected 
-		else if (e.getSource()==defaultScreen) {
-			actionPerformedDefaultScreen();
-		}
-		
+		else actionPerformedCommon(e);
 	}
 	
 	@Override

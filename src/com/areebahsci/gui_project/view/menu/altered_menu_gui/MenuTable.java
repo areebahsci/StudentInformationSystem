@@ -50,7 +50,7 @@ public class MenuTable extends JTable {
 	public JScrollPane createJScrollPane() {
 		JScrollPane scrollPane = new JScrollPane(this);
 		Dimension dimension = this.getPreferredSize();
-		scrollPane.setPreferredSize(new Dimension(dimension.width,this.getRowHeight()*(this.getRowCount()-1)));
+		scrollPane.setPreferredSize(new Dimension(dimension.width,this.getRowHeight()*(this.getRowCount()+1)));
 		return scrollPane;
 	}
 

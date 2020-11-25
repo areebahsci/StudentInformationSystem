@@ -85,7 +85,7 @@ public class Login extends JPanel implements ActionListener {
 		
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "static-access" })
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -121,7 +121,7 @@ public class Login extends JPanel implements ActionListener {
 		    	break;
 		    case -3:
 		    	status.setText("Maximum login attempts reached!");
-				JOptionPane.showMessageDialog(View.getFrame(), "Maximum login attempts reached", "ERROR", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Maximum login attempts reached", "ERROR", JOptionPane.ERROR_MESSAGE);
                 loginButton.setEnabled(false);
 		    	break;
 		    }

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -88,6 +89,7 @@ public class ProfessorMenu extends Menu {
 		
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -112,26 +114,64 @@ public class ProfessorMenu extends Menu {
 		}
 		
 		else if (e.getSource()==allInfo) {
+			
 			createAllInfoPanel();
 			changeMainPanel(allInfoPanel);
+		}
+		
+		else if (e.getSource()==changeUsername) {
+			
+			changeMainPanel(changeUsernamePanel);
+		}
+		
+		else if (e.getSource()==changeButton_1) {
+			String username = changeUsernameInput.getText();
+			if (username.isBlank()) {
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You have left the text field empty!!!", "ERROR", JOptionPane.ERROR_MESSAGE); 
+			}
+			Controller.changeProfessorUsername(username);
+			
+		}
+		
+		else if (e.getSource()==changePassword) {
+			
+			changeMainPanel(changePasswordPanel);
+		}
+		
+		else if (e.getSource()==changeButton_2) {
+			
+			String password = changePasswordInput.getText();
+			if (password.isBlank()) {
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You have left the text field empty!!!", "ERROR", JOptionPane.ERROR_MESSAGE); 
+			}
+			Controller.changeProfessorUsername(password);	
+			
+		}
+		
+		else if (e.getSource()==returnButton_2||e.getSource()==returnButton_1) {
+			
+			changeMainPanel(defaultPanel);
+		}
+		
+		else if (e.getSource()==changePassword) {
+			
+			changeMainPanel(changePasswordPanel);
+		}
+		
+		else if (e.getSource()==changeGrade) {
+			
+			createChangeGradePanel();
+			
 		}
 		
 		/* if the help menu item is selected it will display information about what each menu item
 		 * is responsible for in attempts to explain and help */
 		else if(e.getSource()==help) {
-			helpLabel = new MenuLabel("<html>In the view menu section, you can view your details.<br/>In the edit menu section, you can either add a course, where the max number of courses you can teach is 3.<br/> You can also stop teaching a course and drop it.<br/>Finally, in the more menu section, you can use it to view for more information about the program as you are doing so now.<html>");
+			helpLabel = new MenuLabel("<html>In the view menu section, you can view your details.<br/>In the edit menu section, you can either add a course, where the max number of courses you can teach is 3.<br/> You can also stop teaching a course and drop it. Moreover, you can change your username and password. <br/>Finally, in the more menu section, you can use it to view for more information about the program as you are doing so now.<html>");
 			actionPerformedHelp();
 		}
 		
-		// if the about menu item is selected
-		else if(e.getSource()==about) {
-			actionPerformedAbout();
-		}
-		
-		// if the default menu item is selected 
-		else if (e.getSource()==defaultScreen) {
-			actionPerformedDefaultScreen();
-		}
+		else actionPerformedCommon(e);
 		
 	}
 	
@@ -200,4 +240,7 @@ public class ProfessorMenu extends Menu {
 		changeGradePanel.add(changeGradeTable.createJScrollPane(), BorderLayout.CENTER);
 
 	}
+	
+	
+	
 }

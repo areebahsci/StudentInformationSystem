@@ -1,14 +1,19 @@
 package com.areebahsci.gui_project.view.menu;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
@@ -21,31 +26,47 @@ public class StudentMenu extends Menu {
 	private static final long serialVersionUID = 1L;
 	
 	private JMenuItem viewGPA;
-	private MenuTable gpaTable;
-	private InnerPanel gpaPanel;
-	private MenuLabel gpaLabel;
+	private MenuTable gpaTable, addCoursesTable;
+	private InnerPanel gpaPanel, addCoursesPanel;
+	private MenuLabel gpaLabel, addCoursesLabel, removeCoursesLabel;
+	private JButton addCourseButton, goBackButton_1, goBackButton_2, removeCourseButton;
+	private JTextField addCourseInput;
+	private JPanel addCoursesFlowPanel;
 	
 	// constructor 
 	public StudentMenu() {
 		
-		// GENERAL GUI OF MENU 
+		// ADD COURSES GUI
 		
-		addCourse.setText("Register courses");
-		removeCourse.setText("Drop courses");
+		addCoursesPanel = new InnerPanel();
 		
-		viewGPA = new JMenuItem("View GPA");
-		viewGPA.addActionListener(this);
-		view.add(viewGPA);
-		view.addSeparator();
-		view.add(allInfo);
+		addCoursesFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 3));
+		addCourseButton = new JButton("Add the course");
+		addCourseInput = new JTextField();
+		goBackButton_1 = new JButton("Go back");
+		addCoursesFlowPanel.add(addCourseInput);
+		addCoursesFlowPanel.add(addCourseButton);
+		addCoursesFlowPanel.add(goBackButton_1);
+		
+		addCoursesLabel = new MenuLabel("<html>Details of every course offered are shown in the table below.<br/>Please enter the details of the course you want to take below that. <html>");
+		
+		// data of the table
+		String[][]data=Controller.getAllCourses();
+		String column[]= {"Course ID", "Course Name", "Credits"};
+						
+	    // table being set
+		addCoursesTable = new MenuTable (data, column);
+						
+		// table being added to the inner panel
+		addCoursesPanel.add(addCoursesTable.createJScrollPane(), BorderLayout.CENTER);
+		addCoursesPanel.add(addCoursesLabel, BorderLayout.NORTH);
+		addCoursesPanel.add(addCoursesFlowPanel, BorderLayout.SOUTH);
+				
+		// GPA PANEL GUI
 		
 		gpaPanel = new InnerPanel();
 		gpaLabel = new MenuLabel("Your GPA");
 		gpaPanel.add(gpaLabel, BorderLayout.NORTH);
-		
-		mainPanel.setBorder(new TitledBorder("Student Data"));
-		
-		addActionListener(this);
 		
 		// PERSONAL PANEL GUI
 		
@@ -58,6 +79,21 @@ public class StudentMenu extends Menu {
 		courseLabel = new MenuLabel("Student Course Data for " + View.semester);
 		coursePanel = new InnerPanel();
 		coursePanel.add(courseLabel, BorderLayout.NORTH);
+		
+		// GENERAL GUI OF MENU 
+		
+		addCourse.setText("Register courses");
+		removeCourse.setText("Drop courses");
+				
+		viewGPA = new JMenuItem("View GPA");
+		viewGPA.addActionListener(this);
+		view.add(viewGPA);
+		view.addSeparator();
+		view.add(allInfo);
+				
+		mainPanel.setBorder(new TitledBorder("Student Data"));
+				
+		addActionListener(this);
 		
 	}
 
@@ -89,6 +125,11 @@ public class StudentMenu extends Menu {
 			changeMainPanel(gpaPanel);
 		}
 		
+		else if (e.getSource()==addCourse) {
+			
+			changeMainPanel(addCoursesPanel);
+		}
+		
 		else if (e.getSource()==allInfo) {
 			createAllInfoPanel();
 			changeMainPanel(allInfoPanel);
@@ -101,15 +142,7 @@ public class StudentMenu extends Menu {
 			actionPerformedHelp();
 		}
 		
-		// if the about menu item is selected
-		else if(e.getSource()==about) {
-			actionPerformedAbout();
-		}
-		
-		// if the default menu item is selected 
-		else if (e.getSource()==defaultScreen) {
-			actionPerformedDefaultScreen();
-		}
+		else actionPerformedCommon(e);
 		
 	}
 	
@@ -164,5 +197,6 @@ public class StudentMenu extends Menu {
 		allInfoPanel.setLayout((new BoxLayout(allInfoPanel, BoxLayout.Y_AXIS)));
 		
 	}
+	
 }
 

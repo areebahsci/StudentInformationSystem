@@ -31,26 +31,29 @@ public abstract class Menu extends JPanel implements ActionListener {
 	
 	// used only by admin and professor 
 	protected JMenuItem changePassword, changeUsername;
-	protected InnerPanel changePasswordPanel, changeUsernamePanel;
+	protected InnerPanel changePasswordPanel, changeUsernamePanel, passwordInputPanel, usernameInputPanel;
 	protected MenuLabel changePasswordLabel, changeUsernameLabel;
 	protected JTextField changeUsernameInput;
 	protected JPasswordField changePasswordInput;
-	protected JButton changeButton_1, returnButton_1, viewPassword;
-	protected JPanel usernameButtonPanel, passwordButtonPanel;
+	protected JButton changeButton_1, returnButton_1, viewPassword, changeButton_2, returnButton_2;
+	protected JPanel usernameButtonPanel, passwordButtonPanel; 
 	
 	// constructor 
 	public Menu() {
-		
-		// GENERAL MENU GUI
-		
-		menuBar = new JMenuBar();
-	
-		defaultPanel = new InnerPanel();
 
 		mainPanel = new JPanel(new BorderLayout());
 		
+		changeButton_1 = new JButton("Submit");
+		returnButton_1 = new JButton("Go back");
+		changeButton_2 = new JButton("Submit");
+		returnButton_2 = new JButton("Go back");
+		
+		// SETTING THE COMMON MENU UP
+		
+		menuBar = new JMenuBar();
+		
 		view = new JMenu("View Information");
-		edit = new JMenu("Courses");
+		edit = new JMenu("Edit");
 		more = new JMenu("More");
 		
 		courseInfo = new JMenuItem("Course Information");
@@ -81,46 +84,62 @@ public abstract class Menu extends JPanel implements ActionListener {
 		menuBar.add(edit);
 		menuBar.add(more);
 		
+		// DEFAULT PANEL 
+		
+		defaultPanel = new InnerPanel();
 	    defaultLabel= new MenuLabel("Welcome! Use the menu options to perform your desired actions.");
 	    defaultPanel.add(defaultLabel, BorderLayout.CENTER);
-	    
-	    changeButton_1 = new JButton("Submit");
-		returnButton_1 = new JButton("Go back");
 		
-		// CHANGE USERNAME PANEL GUI
+		// CHANGE USERNAME PANEL
 		
 		changeUsernamePanel = new InnerPanel();
-		
 		changeUsername = new JMenuItem("Change your username");
-		changeUsernameInput = new JTextField(32);
-		changeUsernameLabel = new MenuLabel("Enter your new username");
+		
+		usernameInputPanel = new InnerPanel();
+		changeUsernameInput = new JTextField(16);
+		changeUsernameInput.setPreferredSize(new Dimension(90, 40));
+		changeUsernameLabel = new MenuLabel("Enter your new username: ");
+		usernameInputPanel.add(changeUsernameLabel, BorderLayout.WEST);
+		usernameInputPanel.add(changeUsernameInput, BorderLayout.CENTER);
 		
 		usernameButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
 		usernameButtonPanel.add(returnButton_1);
 		usernameButtonPanel.add(changeButton_1);
 		
-		changeUsernamePanel.add(changeUsernameLabel, BorderLayout.NORTH);
-		changeUsernamePanel.add(changeUsernameInput, BorderLayout.CENTER);
-		changeUsernamePanel.add(usernameButtonPanel);
+		changeUsernamePanel.add(usernameInputPanel, BorderLayout.NORTH);
+		changeUsernamePanel.add(usernameButtonPanel, BorderLayout.CENTER);
 		
-		// CHANGE PASSWORD PANEL GUI
+		// CHANGE PASSWORD PANEL
 		
 		changePasswordPanel = new InnerPanel();
-		
 		changePassword = new JMenuItem("Change your password");
-		changePasswordInput = new JPasswordField(32);
-		viewPassword = new JButton("Show password");
-		changePasswordLabel = new MenuLabel("Enter your new password");
 		
+		passwordInputPanel = new InnerPanel();
+		changePasswordInput = new JPasswordField(16);
+		changePasswordInput.setPreferredSize(new Dimension(90, 40));
+		changePasswordLabel = new MenuLabel("Enter your new password: ");
+		passwordInputPanel.add(changePasswordLabel, BorderLayout.WEST);
+		passwordInputPanel.add(changePasswordInput, BorderLayout.CENTER);
+		
+		viewPassword = new JButton("Show password");
 		passwordButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
-		passwordButtonPanel.add(returnButton_1);
-		passwordButtonPanel.add(changeButton_1);
+		passwordButtonPanel.add(returnButton_2);
+		passwordButtonPanel.add(changeButton_2);
 		passwordButtonPanel.add(viewPassword);
 		
-		changePasswordPanel.add(changePasswordLabel, BorderLayout.NORTH);
-		changePasswordPanel.add(changePasswordInput, BorderLayout.CENTER);
-		changePasswordPanel.add(passwordButtonPanel);
+		changePasswordPanel.add(passwordInputPanel, BorderLayout.NORTH);
+		changePasswordPanel.add(passwordButtonPanel, BorderLayout.CENTER);
 		
+		// ABOUT PANEL 
+		
+		aboutPanel = new InnerPanel();
+		aboutLabel= new MenuLabel("This was created as an end-of-course project for my GUI class in my university.");
+        aboutPanel.add(aboutLabel, BorderLayout.CENTER);
+		
+        // HELP PANEL
+        
+        helpPanel = new InnerPanel();
+        
 		// the main panel will showcase the defaultPanel first
 		
 		mainPanel.add(defaultPanel);
@@ -152,6 +171,8 @@ public abstract class Menu extends JPanel implements ActionListener {
 		changePassword.addActionListener(this);
 		changeButton_1.addActionListener(this);
 		returnButton_1.addActionListener(this);
+		changeButton_2.addActionListener(this);
+		returnButton_2.addActionListener(this);
 		viewPassword.addActionListener(this);
 		
 	}
@@ -167,38 +188,6 @@ public abstract class Menu extends JPanel implements ActionListener {
 	// this method will combine personal info table and course info table to display everything
 	protected abstract void createAllInfoPanel(); 
 	
-	/* this method will be called when the about menu item is selected. we created the method here
-	 * so that it could be called in all 3 menus without rewriting the entire code as the about 
-	 * menu option will work the same across all three */
-	protected void actionPerformedAbout() {
-		
-		// it will explain in a line what this project is about 
-		aboutPanel = new InnerPanel();
-		aboutLabel= new MenuLabel("This was created as an end-of-course project for my GUI class in my university.");
-        aboutPanel.add(aboutLabel, BorderLayout.CENTER);
-		changeMainPanel(aboutPanel);
-	}
-	
-	/* this method will be called when the help menu item is selected. we created the method here
-	 * so that it could be called in all 3 menus without rewriting the entire code as the about 
-	 * menu option will work the same across all three */
-	protected void actionPerformedHelp() {
-		
-		// it will provide reduandant information about what the menu options can be used to do 
-		helpPanel = new InnerPanel();
-	    helpPanel.add(helpLabel, BorderLayout.CENTER);
-		changeMainPanel(helpPanel);
-	}
-	
-	/* this method will be called when the default menu item is selected. we created the method here
-	 * so that it could be called in all 3 menus without rewriting the entire code as the defaultscreen 
-	 * menu option will work the same across all three */
-	protected void actionPerformedDefaultScreen() {
-		
-		// it will show the screen that was showed when the window first popped open
-		changeMainPanel(defaultPanel);
-	}
-	
 	/* this method clears the main panel and adds on the panel we want to display and is made so when 
 	 * we want to clear the panel whenever a button is pressed, we dont have to call 4 different methods
 	 * but rather write one function call code to make it more convenient */
@@ -209,9 +198,37 @@ public abstract class Menu extends JPanel implements ActionListener {
         mainPanel.add(panel, BorderLayout.CENTER);
 	}
 	
+	/* i wrote this function so i could just write this one line of code across the three different
+	 * menu GUIs ensuring I wont forget to add the label after setting its text */
+	protected void actionPerformedHelp() {
+		
+		helpPanel.add(helpLabel, BorderLayout.CENTER);
+		changeMainPanel(helpPanel);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		// if the about menu item is selected
+		if(e.getSource()==about) {
+			changeMainPanel(aboutPanel);
+		}
+				
+		// if the default menu item is selected 
+		else if (e.getSource()==defaultScreen) {
+			changeMainPanel(defaultPanel);
+		}
+	}
+	
+	public void actionPerformedCommon(ActionEvent e) {
+		// if the about menu item is selected
+		if(e.getSource()==about) {
+			changeMainPanel(aboutPanel);
+		}
+				
+		// if the default menu item is selected 
+		else if (e.getSource()==defaultScreen) {
+			changeMainPanel(defaultPanel);
+		}
 	}
 	
 	// returns the width of this panel

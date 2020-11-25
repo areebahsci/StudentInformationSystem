@@ -1,7 +1,5 @@
 package com.areebahsci.gui_project.controller;
 
-import org.graalvm.compiler.asm.aarch64.AArch64Assembler.DataCacheOperationType;
-
 import com.areebahsci.gui_project.model.Model;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.model.user.Professor;
@@ -226,8 +224,9 @@ public class Controller {
 	 * information to the user */
 	public static String[][] displayProfessorCourses(){
 		
-		String [][] data = new String[3][5];
-		for(int i=0;i<professorLoggedIn.getNumberOfCourses();i++) {
+		int courseCount = professorLoggedIn.getNumberOfCourses();
+		String [][] data = new String[courseCount][5];
+		for(int i=0;i<courseCount;i++) {
 			Course course = professorLoggedIn.getCoursesTeachingArray()[i];
 			
 			data[i][0]=((i+1)+"");
@@ -264,6 +263,29 @@ public class Controller {
 		return data;
 	}
 	
+	// this method is used to show all the courses to the student when they want to add a course
+	public static String[][] getAllCourses(){
+		
+		int courseCount = model.getCourseCount();
+		String[][]data=new String[courseCount][3];
+		for (int i=0;i<courseCount;i++) {
+			data[i][0]=model.getCoursesArray().get(i).getCourseID()+"";
+			data[i][0]=model.getCoursesArray().get(i).getCourseName();
+			data[i][0]=model.getCoursesArray().get(i).getCredits()+"";
+		}
+		return data;
+	}
+	
+	// this method is called by the view when the professor chooses to change his username
+	public static void changeProfessorUsername(String username) {
+		professorLoggedIn.setUsername(username);
+	}
+	
+	// this method is called by the view when the professor chooses to change his password
+	public static void changeProfessorPassword(String password) {
+		professorLoggedIn.setPassword(password);
+	}
+
 	// GENERIC GETTERS AND SETTERS
 	
 	// this method sets the login attempts 
