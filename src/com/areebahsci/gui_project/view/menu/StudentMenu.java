@@ -1,16 +1,15 @@
 package com.areebahsci.gui_project.view.menu;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuTable;
@@ -50,13 +49,13 @@ public class StudentMenu extends Menu {
 		
 		// PERSONAL PANEL GUI
 		
-		personalLabel = new MenuLabel("Student Personal Data");
+		personalLabel = new MenuLabel("Student Personal Data for " + View.semester);
 		personalPanel = new InnerPanel();
 		personalPanel.add(personalLabel, BorderLayout.NORTH);
 		
 		// COURSE PANEL GUI
 		
-		courseLabel = new MenuLabel("Student Course Data");
+		courseLabel = new MenuLabel("Student Course Data for " + View.semester);
 		coursePanel = new InnerPanel();
 		coursePanel.add(courseLabel, BorderLayout.NORTH);
 		
@@ -98,7 +97,8 @@ public class StudentMenu extends Menu {
 		/* if the help menu item is selected it will display information about what each menu item
 		 * is responsible for in attempts to explain and help */
 		else if(e.getSource()==help) {
-			
+			helpLabel = new MenuLabel("<html>In the view menu section, you can view your details.<br/>In the edit menu section, you can either add a course, where the max number of courses you can take is 5.<br/> You can also withdraw and drop courses.<br/>Finally, in the more menu section, you can use it to view for more information about the program as you are doing so now.<html>");
+			actionPerformedHelp();
 		}
 		
 		// if the about menu item is selected

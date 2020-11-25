@@ -24,9 +24,9 @@ public abstract class Menu extends JPanel implements ActionListener {
 	protected JMenuItem about, help, courseInfo, personalInfo, allInfo, addCourse, removeCourse,
 	                    defaultScreen;
 	
-	protected InnerPanel personalPanel, coursePanel, defaultPanel, aboutPanel;
+	protected InnerPanel personalPanel, coursePanel, defaultPanel, aboutPanel, helpPanel;
 	protected JPanel allInfoPanel, mainPanel;
-	protected MenuLabel personalLabel, courseLabel, defaultLabel, aboutLabel;
+	protected MenuLabel personalLabel, courseLabel, defaultLabel, aboutLabel, helpLabel;
 	protected MenuTable personalTable, courseTable;
 	
 	// constructor 
@@ -34,15 +34,13 @@ public abstract class Menu extends JPanel implements ActionListener {
 		
 		menuBar = new JMenuBar();
 	
-		
-		defaultPanel= new InnerPanel();
-		aboutPanel= new InnerPanel();
+		defaultPanel = new InnerPanel();
 
 		mainPanel = new JPanel(new BorderLayout());
 		
 		view = new JMenu("View Information");
 		edit = new JMenu("Courses");
-		more = new JMenu("Help");
+		more = new JMenu("More");
 		
 		courseInfo = new JMenuItem("Course Information");
 		personalInfo = new JMenuItem("Personal Details");
@@ -71,9 +69,6 @@ public abstract class Menu extends JPanel implements ActionListener {
 		menuBar.add(view);
 		menuBar.add(edit);
 		menuBar.add(more);
-				
-		aboutLabel= new MenuLabel("This was created as an end-of-course project for my GUI class in my university.");
-        aboutPanel.add(aboutLabel, BorderLayout.CENTER);
 		
 	    defaultLabel= new MenuLabel("Welcome! Use the menu options to perform your desired actions.");
 	    defaultPanel.add(defaultLabel, BorderLayout.CENTER);
@@ -124,7 +119,21 @@ public abstract class Menu extends JPanel implements ActionListener {
 	protected void actionPerformedAbout() {
 		
 		// it will explain in a line what this project is about 
+		aboutPanel = new InnerPanel();
+		aboutLabel= new MenuLabel("This was created as an end-of-course project for my GUI class in my university.");
+        aboutPanel.add(aboutLabel, BorderLayout.CENTER);
 		changeMainPanel(aboutPanel);
+	}
+	
+	/* this method will be called when the help menu item is selected. we created the method here
+	 * so that it could be called in all 3 menus without rewriting the entire code as the about 
+	 * menu option will work the same across all three */
+	protected void actionPerformedHelp() {
+		
+		// it will provide reduandant information about what the menu options can be used to do 
+		helpPanel = new InnerPanel();
+	    helpPanel.add(helpLabel, BorderLayout.CENTER);
+		changeMainPanel(helpPanel);
 	}
 	
 	/* this method will be called when the default menu item is selected. we created the method here

@@ -25,7 +25,7 @@ public class Controller {
 	/* these variables save which student/professor has logged into the system so it is 
 	easier to retreive their information when needed */
 	private static Student studentLoggedIn = model.getStudentsArray().get(0);
-	private static Professor professorLoggedIn = null;
+	private static Professor professorLoggedIn = model.getProfessorsArray().get(0);
 	
 	// this is the method called by the view when the user attempts to login 
 	public static int login(String username, String password) {
@@ -186,7 +186,7 @@ public class Controller {
 		for(int i=0;i<studentLoggedIn.getCoursesTaken();i++) {
 			Course course = model.getCourse(studentLoggedIn.getEnrolledCourses()[i][0]);
 			
-			data[i][0]=(i+"");
+			data[i][0]=((i+1)+"");
 			data[i][1]=(course.getCourseID()+"");
 			data[i][2]=course.getCourseName();
 			data[i][3]=(course.getCredits()+"");
@@ -210,6 +210,32 @@ public class Controller {
 		data[courseCount][0]="Your calculated GPA";
 		data[courseCount][1]=(""+studentLoggedIn.calculateGPA());
 		return data;
+	}
+	
+	/* this is the method called within the view when it wants to display the students personal
+	 * information to the user */
+	public static String[][] displayProfessorData(){
+		
+		String[][]data = {{professorLoggedIn.getID(),professorLoggedIn.getName(),professorLoggedIn.getDepartment()}};
+		return data;
+	}
+	
+	/* this is the method called within the view when it wants to display the students course
+	 * information to the user */
+	public static String[][] displayProfessorCourses(){
+		
+		String [][] data = new String[3][5];
+		for(int i=0;i<professorLoggedIn.getNumberOfCourses();i++) {
+			Course course = professorLoggedIn.getCoursesTeachingArray()[i];
+			
+			data[i][0]=((i+1)+"");
+			data[i][1]=(course.getCourseID()+"");
+			data[i][2]=course.getCourseName();
+			data[i][3]=(course.getCredits()+"");
+			data[i][4]=course.getStudentCount()+"";
+		}
+		return data;
+		
 	}
 	
 	// GENERIC GETTERS AND SETTERS
