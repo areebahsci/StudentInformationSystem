@@ -1,8 +1,13 @@
 package com.areebahsci.gui_project.model.utilities;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.model.Model;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.model.user.Professor;
@@ -140,5 +145,17 @@ public class File {
 		      e.printStackTrace();
 		}
 	}
-
+	
+	public static void updateStudentFile(Model model, String path) throws IOException {
+		
+		/* the student's index in the student arraylist in the model can help us find the position
+		 * of the student in the file. The first line in the file is how many studentd there are in
+		 * the system. If for example, the student is on the 4th line in the file, then that means 
+		 * it is the 3rd student and therefore its index in the array is 2 since indexes in arraylists
+		 * start from 0. so vice versa, if the students index in the array is 5 for example, that means
+		 * it is the sixth student and therefore belongs on the 7th line. so 
+		 * indexInArray = line position - 2; */
+		
+		
 }
+

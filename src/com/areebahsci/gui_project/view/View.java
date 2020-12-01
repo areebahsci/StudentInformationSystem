@@ -51,7 +51,7 @@ public class View {
 		//frame.add(userType);
 		
 		frame.setSize(studentMenu.getWidth(), studentMenu.getHeight());
-		frame.add(professorMenu);
+		frame.add(studentMenu);
 		
 		/* it resizes the frame so that all its contents are at or above their 
 		 * preferred sizes so its for a good fit to ensure everything is visible*/

@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuTable;
@@ -37,6 +39,12 @@ public abstract class Menu extends JPanel implements ActionListener {
 	protected JPasswordField changePasswordInput;
 	protected JButton changeButton_1, returnButton_1, viewPassword, changeButton_2, returnButton_2;
 	protected JPanel usernameButtonPanel, passwordButtonPanel; 
+	
+	// used only by student and admin
+	
+	protected InnerPanel allCoursesPanel;
+	protected MenuTable allCoursesTable;
+	protected MenuLabel allCoursesLabel;
 	
 	// constructor 
 	public Menu() {
@@ -185,8 +193,26 @@ public abstract class Menu extends JPanel implements ActionListener {
 	 * functions */
 	protected abstract void createPersonalPanel();
 	protected abstract void createCoursePanel();
+	
 	// this method will combine personal info table and course info table to display everything
 	protected abstract void createAllInfoPanel(); 
+	
+	// this method creates a panel to showcase all courses offered in a table
+	protected void createAllCoursesPanel() {
+		createAllCoursesTable();
+		allCoursesLabel = new MenuLabel("All Courses Offerred In "+View.semester);
+		allCoursesPanel.add(allCoursesLabel, BorderLayout.NORTH);
+		allCoursesPanel.add(allCoursesTable.createJScrollPane(), BorderLayout.CENTER);
+	}
+	
+	protected void createAllCoursesTable() {
+		// data of the table
+		String[][]data=Controller.getAllCourses();
+		String column[]= {"Course Number", "Course ID", "Course Name", "Credits"};
+								
+		// table being set
+		allCoursesTable = new MenuTable (data, column);
+	}
 	
 	/* this method clears the main panel and adds on the panel we want to display and is made so when 
 	 * we want to clear the panel whenever a button is pressed, we dont have to call 4 different methods

@@ -201,7 +201,6 @@ public class ProfessorMenu extends Menu {
 		
 		// table being added to the inner panel
 		coursePanel.add(courseTable.createJScrollPane());
-
 	}
 
 	

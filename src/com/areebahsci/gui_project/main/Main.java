@@ -7,7 +7,10 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// just runs an instance of the controller which handles the model and view 
-		Controller controller = new Controller();
+		new Controller();
+		
+		// NOTES:
+		// STUDENT REMOVE COURSE FUNCTION
 	}
 
 }

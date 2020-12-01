@@ -1,5 +1,7 @@
 package com.areebahsci.gui_project.model.user;
 
+import java.util.ArrayList;
+
 import com.areebahsci.gui_project.model.course.Course;
 
 // professor is a user 
@@ -9,7 +11,7 @@ public class Professor extends User {
 	private String department;
 	
 	// this array holds the courses that the professor teaches 
-	private Course[]coursesTeachingArray;
+	private ArrayList<Course>coursesTeachingArray;
 	
 	// the number of courses the professor is teaching 
 	private int numberOfCourses;
@@ -26,7 +28,7 @@ public class Professor extends User {
 		
 		/* we set the max size of the array of courses the professor teaches to the max number of courses
 		 * they can teach */
-		coursesTeachingArray=new Course[MAX_COURSES];
+		coursesTeachingArray=new ArrayList<Course>();
 		
 		/* when we instantiate the professor, we dont pass the number of courses they teach in the
 		 * constructor, rather the courses a professor teaches is handled by another function 
@@ -58,7 +60,7 @@ public class Professor extends User {
 	
 	// this function is used to add a course to the professor
 	public void addCourse(Course course) {
-		coursesTeachingArray[numberOfCourses]=course;
+		coursesTeachingArray.add(course);
 		numberOfCourses++;
 	}
 	
@@ -70,9 +72,9 @@ public class Professor extends User {
 				" username: "+this.username+" password: "+this.password+" numberofCourses: "+
 				this.numberOfCourses);
 		for (int i=0;i<this.numberOfCourses;i++) {
-			System.out.println("Course ID: "+ this.coursesTeachingArray[i].getCourseID()+
-					" Course Name: "+ this.coursesTeachingArray[i].getCourseName()+
-					" Credits: "+this.coursesTeachingArray[i].getCredits());
+			System.out.println("Course ID: "+ this.coursesTeachingArray.get(i).getCourseID()+
+					" Course Name: "+ this.coursesTeachingArray.get(i).getCourseName()+
+					" Credits: "+this.coursesTeachingArray.get(i).getCredits());
 		}
 	}
 	
@@ -83,22 +85,18 @@ public class Professor extends User {
 	}
 
 	public int getNumberOfCourses() {
-		return numberOfCourses;
-	}
-
-	public void setNumberOfCourses(int numberOfCourses) {
-		this.numberOfCourses = numberOfCourses;
+		return coursesTeachingArray.size();
 	}
 
 	public void setDepartment(String department) {
 		this.department = department;
 	}
 
-	public Course[] getCoursesTeachingArray() {
+	public ArrayList<Course> getCoursesTeachingArray() {
 		return coursesTeachingArray;
 	}
 
-	public void setCoursesTeachingArray(Course[] coursesTeachingArray) {
+	public void setCoursesTeachingArray(ArrayList<Course> coursesTeachingArray) {
 		this.coursesTeachingArray = coursesTeachingArray;
 	}
 

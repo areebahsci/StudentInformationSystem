@@ -103,23 +103,33 @@ public class Login extends JPanel implements ActionListener {
 		    	 * student has successfully logged in so it will switch to the menu for students */
 				View.switchPanel(this, View.getStudentMenu());
 		    	break;
+		    	
 		    case 2:
 		    	/* if the credentials did hit a match, the method will return 2 which indicates a 
 		    	 * professor has successfully logged in so it will switch to the menu for professor */
 				View.switchPanel(this, View.getProfessorMenu());
 		    	break;
+		    	
 		    case 3:
 		    	/* if the credentials did hit a match, the method will return 3 which indicates the 
 		    	 * admin has successfully logged in so it will switch to the menu for student */
 		    	View.switchPanel(this, View.getAdminMenu());
 		    	break;
+		    	
 		    case -1:
+		    	// if the text fields are empty, it will return -1 
 		    	status.setText(Controller.getLoginAttempts()+". (ERROR: Do not leave text fields empty!)");
 		    	break;
+		    	
 		    case -2:
+		    	/* if the credentials did not hit a match but there are login attempts remaining,
+		    	 * the method will return -2 */
 		    	status.setText(Controller.getLoginAttempts()+". Try again.");
 		    	break;
+		    	
 		    case -3:
+		    	/* if the credentials did not hit a match and there aren't any login attempts remaining,
+		    	 * the method will return -3 */
 		    	status.setText("Maximum login attempts reached!");
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Maximum login attempts reached", "ERROR", JOptionPane.ERROR_MESSAGE);
                 loginButton.setEnabled(false);

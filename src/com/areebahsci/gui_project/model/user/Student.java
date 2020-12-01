@@ -58,6 +58,24 @@ public class Student extends User {
 		course.addStudent(this);
 	}
 	
+	// this function is called when the student chooses to withdraw from a course 
+	public void removeCourse(int input) {
+		
+		enrolledCourses[input][0]=0;
+		coursesTaken--;
+		
+		/* after setting the course ID to 0 for the course the student has chosen to drop, we have to
+		 * readjust the array so there are no gaps in it between the courses so what we do is
+		 * every course after the one removed is shifted back */
+		for (int i=input;i<coursesTaken-1;i++) {
+			if (enrolledCourses[i+1][0]!=0) {
+				enrolledCourses[i][0]=enrolledCourses[i+1][0];
+				enrolledCourses[i][1]=enrolledCourses[i+1][1];
+				enrolledCourses[i+1][0]=0;
+			}
+		}
+	}
+	
 	// retrieves the student's grade in a course 
 	public double getGradeOfCourse(Course course) {
 		for (int i=0;i<coursesTaken;i++) {

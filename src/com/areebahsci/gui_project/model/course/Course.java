@@ -1,5 +1,7 @@
 package com.areebahsci.gui_project.model.course;
 
+import java.util.ArrayList;
+
 import com.areebahsci.gui_project.model.user.Professor;
 import com.areebahsci.gui_project.model.user.Student;
 
@@ -21,7 +23,7 @@ public class Course {
 	private int credits;
 	
 	//this array below stores the IDs of students taking the course 
-	private Student[]studentsEnrolled;
+	private ArrayList<Student>studentsEnrolled;
 	
 	// the count of students taking the course 
 	private int studentCount;
@@ -35,7 +37,7 @@ public class Course {
 		this.credits=credits;
 		
 		// setting the size of the array of the students to the max number of students 
-		this.studentsEnrolled=new Student[MAX_STUDENTS];
+		this.studentsEnrolled=new ArrayList<Student>();
 		
 		/* when a course is first instantaited in the controller, the students still havent been 
 		 * added into the course so we set it to 0 so that when this value is being set later by
@@ -50,14 +52,25 @@ public class Course {
 	this.credits+ " professor: "+this.professor+" studentCount: "+
 				this.studentCount);
 		for (int i=0;i<this.studentCount;i++) {
-			System.out.println("Student"+(i+1)+" ID: "+this.studentsEnrolled[i].getID() +" ");
+			System.out.println("Student"+(i+1)+" ID: "+this.studentsEnrolled.get(i).getID() +" ");
 		}
 	}
 	
-	/* this function adds the student taking the course to the array of students taking the course */
+	// this function adds the student taking the course to the array of students taking the course 
 	public void addStudent(Student student) {
-		studentsEnrolled[studentCount]=student;
+		studentsEnrolled.add(student);
 		studentCount++;
+	}
+	
+	// this function removes the student from its array when the student withdraws from the course
+	public void removeStudent(Student student) {
+		for (int i=0;i<studentCount;i++) {
+			if (studentsEnrolled.get(i).getID().equals(student.getID())) {
+				studentsEnrolled.remove(i);
+				studentCount--;
+				return;
+			}
+		}
 	}
 	
 	// GENERIC GETTERS AND SETTERS
@@ -67,13 +80,9 @@ public class Course {
 	}
 
 	public int getStudentCount() {
-		return studentCount;
+		return studentsEnrolled.size();
 	}
-
-	public void setStudentCount(int studentCount) {
-		this.studentCount = studentCount;
-	}
-
+	
 	public static int getMaxStudents() {
 		return MAX_STUDENTS;
 	}
@@ -82,11 +91,11 @@ public class Course {
 		this.professor = professor;
 	}
 
-	public Student[] getStudentsEnrolled() {
+	public ArrayList<Student> getStudentsEnrolled() {
 		return studentsEnrolled;
 	}
 
-	public void setStudentsEnrolled(Student[] studentsEnrolled) {
+	public void setStudentsEnrolled(ArrayList<Student> studentsEnrolled) {
 		this.studentsEnrolled = studentsEnrolled;
 	}
 
