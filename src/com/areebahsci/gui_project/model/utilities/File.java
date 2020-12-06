@@ -146,16 +146,69 @@ public class File {
 		}
 	}
 	
-	public static void updateStudentFile(Model model, String path) throws IOException {
+	/* this function will be very similar to the loadCoursesIntoFile function where, whenever a student
+	 * successfully registers for a course or drops one OR when the professor changes a students
+	 * grade in a course or when the course theyre taking is no longer being offered,
+	 * then the entire file containing all student information gets updated by
+	 * rewriting it with the updated information saved in the model's arraylist */
+	public static void updateStudentFile(Model model, String path) {
+		try {
+			
+			// we create a filewriter object that writes into the path passed into its constructor
+			FileWriter mycin = new FileWriter(path);
+			mycin.write(model.getStudentCount()+"\n");
+			for (int i=0;i<model.getStudentCount();i++) {
+				Student student = model.getStudentsArray().get(i);
+				StringBuilder courseInfo = new StringBuilder();
+				for (int j=0;j<student.getCoursesTaken();j++) {
+					courseInfo.append(student.getEnrolledCourses()[j][0]);
+					courseInfo.append(" ");
+					courseInfo.append(student.getEnrolledCourses()[j][1]);
+				}
+				String courseInfoFinal = courseInfo.toString();
+				mycin.write(student.getID()+" "+student.getName()+" "+student.getUsername()+" "+
+				student.getPassword()+" "+student.getMajor()+" "+student.getGPA()+" "+student.getCoursesTaken()
+				+" "+courseInfoFinal+"\n");
+			}
+			mycin.close();
+		} catch (IOException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		}
+	}
 		
-		/* the student's index in the student arraylist in the model can help us find the position
-		 * of the student in the file. The first line in the file is how many studentd there are in
-		 * the system. If for example, the student is on the 4th line in the file, then that means 
-		 * it is the 3rd student and therefore its index in the array is 2 since indexes in arraylists
-		 * start from 0. so vice versa, if the students index in the array is 5 for example, that means
-		 * it is the sixth student and therefore belongs on the 7th line. so 
-		 * indexInArray = line position - 2; */
-		
-		
+	/* this function will be very similar to the loadStudentsIntoFile function where, whenever a prof
+	 * successfully drops or adds a course, or when they change their username or password, the entire 
+	 * file containing all student information gets updated by rewriting it with the updated information 
+	 * saved in the model's arraylist */
+	public static void updateProfessorFile(Model model, String path) {
+		//203 Professor Three professor3 password3 CAS 2 Writing 204 3 Physics 202 4;
+		try {
+			
+			// we create a filewriter object that writes into the path passed into its constructor
+			FileWriter mycin = new FileWriter(path);
+			mycin.write(model.getProfessorCount()+"\n");
+			for (int i=0;i<model.getProfessorCount();i++) {
+				Professor professor = model.getProfessorsArray().get(i);
+				StringBuilder courseInfo = new StringBuilder();
+				for (int j=0;j<professor.getCoursesTaken();j++) {
+					courseInfo.append(professor.getEnrolledCourses()[j][0]);
+					courseInfo.append(" ");
+					courseInfo.append(professor.getEnrolledCourses()[j][1]);
+				}
+				String courseInfoFinal = courseInfo.toString();
+				mycin.write(professor.getID()+" "+professor.getName()+" "+professor.getUsername()+" "+
+				professor.getPassword()+" "+professor.getDepartment()+" "+professor.getNumberOfCourses()
+				+" "+professor.getCoursesTaken()
+				+" "+courseInfoFinal+"\n");
+			}
+			mycin.close();
+		} catch (IOException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		}
+	}
+	
+	
 }
 
