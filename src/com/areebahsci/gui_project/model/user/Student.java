@@ -63,17 +63,16 @@ public class Student extends User {
 		
 		enrolledCourses[input][0]=0;
 		coursesTaken--;
-		
-		/* after setting the course ID to 0 for the course the student has chosen to drop, we have to
-		 * readjust the array so there are no gaps in it between the courses so what we do is
-		 * every course after the one removed is shifted back */
-		for (int i=input;i<coursesTaken-1;i++) {
-			if (enrolledCourses[i+1][0]!=0) {
-				enrolledCourses[i][0]=enrolledCourses[i+1][0];
-				enrolledCourses[i][1]=enrolledCourses[i+1][1];
-				enrolledCourses[i+1][0]=0;
+		int j=0;
+		double [][]enrolledCourses2=new double[MAX_COURSES][2];
+		for (int i=0;i<MAX_COURSES;i++) {
+			if (enrolledCourses[i][0]!=0) {
+				enrolledCourses2[j][0]=enrolledCourses[i][0];
+				enrolledCourses2[j][1]=enrolledCourses[i][1];
+				j++;
 			}
 		}
+		enrolledCourses=enrolledCourses2;
 	}
 	
 	// retrieves the student's grade in a course 
@@ -87,14 +86,15 @@ public class Student extends User {
 	}
 
 	// this method calculates the GPA of the student 
-	public double calculateGPA() {
+	public void calculateGPA() {
 		
-		double GPA=0;
+		GPA=0;
 		for (int i=0;i<coursesTaken;i++) {
-			GPA+=enrolledCourses[i][1];
+			if (enrolledCourses[i][1]!=-1) {
+				GPA+=enrolledCourses[i][1];
+			}
 		}
 		GPA/=coursesTaken;
-		return GPA;
 	}
 	
 	/* used to print data for validation purposes to ensure the methods are functioning the way they are
@@ -138,10 +138,6 @@ public class Student extends User {
 
 	public int getCoursesTaken() {
 		return coursesTaken;
-	}
-
-	public void setCoursesTaken(int coursesTaken) {
-		this.coursesTaken = coursesTaken;
 	}
 
 	public static int getMaxCourses() {

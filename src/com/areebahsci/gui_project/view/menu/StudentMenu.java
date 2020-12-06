@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.controller.StudentMenuController;
 import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
@@ -26,14 +27,14 @@ public class StudentMenu extends Menu {
 	private static final long serialVersionUID = 1L;
 	
 	private JMenuItem viewGPA;
-	private MenuTable gpaTable, allCoursesTable;
+	private MenuTable gpaTable;
 	private InnerPanel gpaPanel, addCoursesPanel, removeCoursesPanel;
 	private MenuLabel gpaLabel, addCoursesLabel, removeCoursesLabel;
 	private JButton addCourseButton, goBackButton_1, goBackButton_2, removeCourseButton;
 	private JTextField addCourseInput, removeCoursesInput;
 	private JPanel addCoursesFlowPanel, removeCoursesFlowPanel;
 	
-	// constructor 
+	// constructor  
 	public StudentMenu() {
 		
 		// ADD COURSES GUI
@@ -73,7 +74,8 @@ public class StudentMenu extends Menu {
 		removeCoursesLabel = new MenuLabel("<html>Details of all the courses you are currently taking are shown in the table below.<br/>Please enter the number of the course you want to drop below that. <html>");
 				
 		// table being added to the inner panel
-		updateRemoveCourseTable();
+		createCourseTable();
+		removeCoursesPanel.add(courseTable.createJScrollPane(), BorderLayout.CENTER);
 		removeCoursesPanel.add(removeCoursesLabel, BorderLayout.NORTH);
 		removeCoursesPanel.add(removeCoursesFlowPanel, BorderLayout.SOUTH);
 		
@@ -108,6 +110,10 @@ public class StudentMenu extends Menu {
 				
 		mainPanel.setBorder(new TitledBorder("Student Data"));
 				
+		addCourseButton.addActionListener(this);
+		removeCourseButton.addActionListener(this);
+		goBackButton_1.addActionListener(this);
+		goBackButton_2.addActionListener(this);
 		addActionListener(this);
 		
 	}
@@ -143,12 +149,22 @@ public class StudentMenu extends Menu {
 		
 		else if (e.getSource()==addCourse) {
 			
-			if (!Controller.capacityForMoreCourses()) {
+			if (!StudentMenuController.capacityForMoreCourses()) {
 				// this basically checks whether it is possible for the student to add more courses
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not register for more courses! You have already been registered for the max number of courses, being "+Controller.getStudentLoggedIn().getMaxCourses()+".", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			else {
 				changeMainPanel(addCoursesPanel);
+			}
+		}
+		
+		else if (e.getSource()==removeCourse) {
+			if(!StudentMenuController.takingAnyCourses()) {
+				// this basically checks whether it is possible for the student to remove any courses
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not remove any course as you aren't registered for any course!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			else {
+				changeMainPanel(removeCoursesPanel);
 			}
 		}
 		
@@ -160,36 +176,38 @@ public class StudentMenu extends Menu {
 		else if (e.getSource()==addCourseButton) {
 			try {
 				int input = Integer.parseInt(addCourseInput.getText());
-				int output = Controller.addCourseButton(input);
+				switch (StudentMenuController.addCourseButton(input)) {
 				
-				if (output==-1) {
+				case -1:
 					/* if the addCourseButton method returns -1, then that means the student has already
 					 * been registered for the max number of courses he can take */
 					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not register for more courses! You have already been registered for the max number of courses, being "+Controller.getStudentLoggedIn().getMaxCourses()+".", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				else if (output==-2) {
+					break;
+					
+				case -2:
 					/* if the method returns -2, then that means the input entered by the user is not 
 					 * a valid option */
 					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter the number of the course you wish to add!", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				else if (output==-3) {
+					break;
+					
+				case -3:
 					/* if the method returns -4, then that means the student is already taking the course
 					 * which he has tried to register for again */
-				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You are already registered to this course!", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				else if (output==-4) {
+				    JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You are already registered to this course!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				    break;
+				    
+				case -4:
 					/* if the method returns -3, then that means the course is already full
 					 * so you can not register for it */
-				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "The course is full! You can not register to it!", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				else if (output==1){
+				    JOptionPane.showMessageDialog(Controller.getView().getFrame(), "The course is full! You can not register to it!", "ERROR", JOptionPane.ERROR_MESSAGE);
+					break;
+					
+				case 1:
 					/* the last option is for the method to return 1 and that means that the course
 					 * has been successfully added */
 					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Course has been added!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					break;
+				
 				}
 			}
 			catch(NumberFormatException nfe) {
@@ -200,30 +218,31 @@ public class StudentMenu extends Menu {
 		else if (e.getSource()==removeCourseButton) {
 			try {
 				int input = Integer.parseInt(removeCoursesInput.getText());
-				int output = Controller.removeCourseButton(input);
+				switch (StudentMenuController.removeCourseButton(input)) {
 				
-				if (output==-1) {
+				case -1:
 					/* if the addCourseButton method returns -1, then that means the student isnt taking
 					 * any courses so he cant drop any */
 					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not drop a course as you aren't taking any!!", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				else if (output==-2) {
+				    break;
+				case -2:
 					/* if the method returns -2, then that means the input entered by the user is not 
 					 * a valid option */
-					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter the number of the course you wish to add!", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				else if (output==1) {
-
+					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter the number of the course you wish to remove!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				    break;
+				case 1: 
 					/* the last option is for the method to return 1 and that means that the course
 					 * has been successfully removed */
 					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Course has been removed!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 					updateRemoveCourseTable();
+					changeMainPanel(removeCoursesPanel);
+					break;
+				
 				}
+			
 			}
 			catch(NumberFormatException nfe) {
-				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter the number of the course you wish to add!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter the number of the course you wish to remove!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
@@ -246,7 +265,7 @@ public class StudentMenu extends Menu {
 	protected void createPersonalPanel() {
 		
 		// data of the table
-		String[][]data=Controller.displayStudentData();   
+		String[][]data=StudentMenuController.displayStudentData();   
 		String column[]= {"ID","NAME","MAJOR"}; 
 					
 		// table being set
@@ -268,7 +287,7 @@ public class StudentMenu extends Menu {
 	// this method creates a table to show all the courses the student is currently taking
 	protected void createCourseTable() {
 		// data of the table
-		String[][]data=Controller.displayStudentCourses();
+		String[][]data=StudentMenuController.displayStudentCourses();
 		String column[]= {"Courses", "Name", "ID", "Credits", "Grade"};
 				
 		// table being set
@@ -277,7 +296,7 @@ public class StudentMenu extends Menu {
 	
 	protected void createGPAPanel() {
 		
-		String[][]data=Controller.displayGPACalculations();
+		String[][]data=StudentMenuController.displayGPACalculations();
 		String column[]= {"Courses", "Grades"};
 		
 		gpaTable = new MenuTable(data, column);
@@ -289,8 +308,8 @@ public class StudentMenu extends Menu {
 	protected void createAllInfoPanel() {
 		allInfoPanel = new JPanel(); 
 		createPersonalPanel();
-		createGPAPanel();
-		createCoursePanel();
+		createGPAPanel(); 
+		createCoursePanel(); 
 		allInfoPanel.add(personalPanel);
 		allInfoPanel.add(coursePanel);
 		allInfoPanel.add(gpaPanel);
@@ -299,6 +318,7 @@ public class StudentMenu extends Menu {
 	}
 	
 	protected void updateRemoveCourseTable() {
+		removeCoursesPanel.remove(courseTable);
 		createCourseTable();
 		removeCoursesPanel.add(courseTable.createJScrollPane(), BorderLayout.CENTER);
 	}

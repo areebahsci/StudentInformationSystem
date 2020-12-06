@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.controller.ProfessorMenuController;
 import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
@@ -92,7 +93,7 @@ private static final long serialVersionUID = 1L;
 	protected void createPersonalPanel() {
 		
 		// data of the table
-		String[][]data=Controller.displayProfessorData();   
+		String[][]data=ProfessorMenuController.displayProfessorData();   
 		String column[]= {"ID","NAME","DEPARTMENT"}; 
 					
 		// table being set
@@ -106,7 +107,7 @@ private static final long serialVersionUID = 1L;
 	protected void createCoursePanel() {
 		
 		// data of the table
-		String[][]data=Controller.displayProfessorCourses();
+		String[][]data=ProfessorMenuController.displayProfessorCourses();
 		String column[]= {"Courses", "Name", "ID", "Credits", "Student Number"};
 		
 		// table being set

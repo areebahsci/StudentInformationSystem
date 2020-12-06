@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.controller.ProfessorMenuController;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
@@ -128,8 +129,8 @@ public class ProfessorMenu extends Menu {
 			String username = changeUsernameInput.getText();
 			if (username.isBlank()) {
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You have left the text field empty!!!", "ERROR", JOptionPane.ERROR_MESSAGE); 
-			}
-			Controller.changeProfessorUsername(username);
+			} 
+			ProfessorMenuController.changeProfessorUsername(username);
 			
 		}
 		
@@ -144,7 +145,7 @@ public class ProfessorMenu extends Menu {
 			if (password.isBlank()) {
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You have left the text field empty!!!", "ERROR", JOptionPane.ERROR_MESSAGE); 
 			}
-			Controller.changeProfessorUsername(password);	
+			ProfessorMenuController.changeProfessorUsername(password);	
 			
 		}
 		
@@ -179,7 +180,7 @@ public class ProfessorMenu extends Menu {
 	protected void createPersonalPanel() {
 		
 		// data of the table
-		String[][]data=Controller.displayProfessorData();   
+		String[][]data=ProfessorMenuController.displayProfessorData();   
 		String column[]= {"ID","NAME","DEPARTMENT"}; 
 					
 		// table being set
@@ -193,7 +194,7 @@ public class ProfessorMenu extends Menu {
 	protected void createCoursePanel() {
 		
 		// data of the table
-		String[][]data=Controller.displayProfessorCourses();
+		String[][]data=ProfessorMenuController.displayProfessorCourses();
 		String column[]= {"Courses", "Name", "ID", "Credits", "Student Number"};
 		
 		// table being set
@@ -216,7 +217,7 @@ public class ProfessorMenu extends Menu {
 	}
 	
 	protected void createChangeGradePanel() {
-		Course[] courses = Controller.getTeachingCourseArray();
+		Course[] courses = ProfessorMenuController.getTeachingCourseArray();
 		for (int i=0;i<courses.length;i++) {
 			JRadioButton radioButton = new JRadioButton(courses[i].getCourseName());
 			courseSelectionPanel.add(radioButton);
@@ -229,7 +230,7 @@ public class ProfessorMenu extends Menu {
 	
 	protected void createGradeTable(Course course) {
 		// data of the table
-		String[][]data=Controller.getAllGradesInCourse(course);
+		String[][]data=ProfessorMenuController.getAllGradesInCourse(course);
 		String column[]= {"Student ID", "Student Name", "Grade"};
 				
 	    // table being set

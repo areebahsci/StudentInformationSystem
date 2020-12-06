@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.controller.LoginController;
 import com.areebahsci.gui_project.view.View;
 
 // login is a panel and implements actionlistener 
@@ -96,7 +97,7 @@ public class Login extends JPanel implements ActionListener {
 			String username = this.usernameInput.getText();
 		    String password = this.passwordInput.getText();
 		    
-		    switch(Controller.login(username, password)) {
+		    switch(LoginController.login(username, password)) {
 		    
 		    case 1:
 		    	/* if the credentials did hit a match, the method will return 1 which indicates a 

@@ -8,7 +8,7 @@ public class LoginController extends Controller {
 	public static int login(String username, String password) {
 		
 		// this if statement deals with if any text fields were empty when we tried logging in
-		if (username.isBlank()||password.isBlank()) {
+		if (username.isBlank()||password.isBlank()) { 
 			
 			// it returns -1 if any text fields are empty when logging in
 			return -1;

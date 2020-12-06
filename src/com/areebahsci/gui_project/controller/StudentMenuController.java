@@ -1,6 +1,7 @@
 package com.areebahsci.gui_project.controller;
 
 import com.areebahsci.gui_project.model.course.Course;
+import com.areebahsci.gui_project.model.utilities.File;
 
 /* this class has all the static methods needed for the view when a student has logged in and is using the
  * application */
@@ -13,7 +14,7 @@ public class StudentMenuController extends Controller {
 		
 		String[][]data = {{studentLoggedIn.getID(),studentLoggedIn.getName(),studentLoggedIn.getMajor()}};
 		return data;
-	}
+	} 
 	
 	/* this is the method called within the view when it wants to display the students course
 	 * information to the user */
@@ -46,7 +47,7 @@ public class StudentMenuController extends Controller {
 			data[i][1]=(studentLoggedIn.getGradeOfCourse(course)+"");
 		}
 		data[courseCount][0]="Your calculated GPA";
-		data[courseCount][1]=(""+studentLoggedIn.calculateGPA());
+		data[courseCount][1]=(""+studentLoggedIn.getGPA());
 		return data;
 	}
 	
@@ -90,7 +91,10 @@ public class StudentMenuController extends Controller {
 		 * student */
 		
 		studentLoggedIn.addCourse(course);
-		// when the course is added successfully, the method returns 1.
+		/* when the course is added successfully, the methid updates the student file and returns 1.
+		 * also we do not update the GPA as you havent recieved a grade for the course you have JUST 
+		 * added */
+		File.updateStudentFile(model, "resources/Student_info");
 		return 1;
 	}
 	
@@ -98,7 +102,7 @@ public class StudentMenuController extends Controller {
 	public static int removeCourseButton(int input) {
 		
 		int courseCount = studentLoggedIn.getCoursesTaken();
-		if (courseCount==0) {
+		if (!takingAnyCourses()) {
 			// if there are no courses for the student to drop, it will return -1
 			return -1;
 		}
@@ -112,6 +116,9 @@ public class StudentMenuController extends Controller {
 			Course course = model.getCourse(studentLoggedIn.getEnrolledCourses()[input-1][0]);
 			studentLoggedIn.removeCourse(input-1);
 			course.removeStudent(studentLoggedIn);
+			 // we also have to update the GPA and the student file
+			studentLoggedIn.calculateGPA();
+			File.updateStudentFile(model, "resources/Student_info");
 			return 1;
 		}
 	}
@@ -124,5 +131,14 @@ public class StudentMenuController extends Controller {
 		}
 		return false;
 	}
+	
+	// this method checks if the student is taking any courses at all
+		public static boolean takingAnyCourses() {
+			
+			if (studentLoggedIn.getCoursesTaken()>0) {
+				return true;
+			}
+			return false;
+		}
 	
 }

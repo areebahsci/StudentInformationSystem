@@ -1,13 +1,14 @@
 package com.areebahsci.gui_project.main;
 
-import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.controller.LoginController;
+import com.areebahsci.gui_project.controller.StudentMenuController;
 
-public class Main {
+public class Main { 
 
 	public static void main(String[] args) {
 		
 		// just runs an instance of the controller which handles the model and view 
-		new Controller();
+		new StudentMenuController();
 		
 		// NOTES:
 		// STUDENT REMOVE COURSE FUNCTION

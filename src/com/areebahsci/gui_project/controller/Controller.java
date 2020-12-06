@@ -21,9 +21,8 @@ public class Controller {
 	 * type=3 --> admin */
 	protected static int type = 0; 
 	
-	// we have to create an instance of the model and the view 
+	// we have to create an instance of the model
 	protected static  Model model = new Model();
-	protected static View view = new View();
 	
     // these int values save the index of the student or professors position in the arraylist 
 	protected static int studentLoggedInIndex = 0;
@@ -33,6 +32,9 @@ public class Controller {
 	easier to retreive their information when needed */
 	protected static Student studentLoggedIn = model.getStudentsArray().get(0);
 	protected static Professor professorLoggedIn = model.getProfessorsArray().get(0);
+	
+	// we have to create an instance of the view 
+	protected static View view = new View();
 	
 	/* this method is used to show all the courses to the student when they want to add a course
 	 * or when the admin wants to view all the courses offered */

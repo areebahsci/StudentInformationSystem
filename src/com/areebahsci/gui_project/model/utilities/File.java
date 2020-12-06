@@ -156,19 +156,20 @@ public class File {
 			
 			// we create a filewriter object that writes into the path passed into its constructor
 			FileWriter mycin = new FileWriter(path);
-			mycin.write(model.getStudentCount()+"\n");
+			mycin.write(model.getStudentCount()+";\n");
 			for (int i=0;i<model.getStudentCount();i++) {
 				Student student = model.getStudentsArray().get(i);
 				StringBuilder courseInfo = new StringBuilder();
 				for (int j=0;j<student.getCoursesTaken();j++) {
-					courseInfo.append(student.getEnrolledCourses()[j][0]);
+					courseInfo.append(" ");
+					courseInfo.append((int)(student.getEnrolledCourses()[j][0]));
 					courseInfo.append(" ");
 					courseInfo.append(student.getEnrolledCourses()[j][1]);
 				}
 				String courseInfoFinal = courseInfo.toString();
 				mycin.write(student.getID()+" "+student.getName()+" "+student.getUsername()+" "+
 				student.getPassword()+" "+student.getMajor()+" "+student.getGPA()+" "+student.getCoursesTaken()
-				+" "+courseInfoFinal+"\n");
+				+courseInfoFinal+";\n");
 			}
 			mycin.close();
 		} catch (IOException e) {
@@ -187,20 +188,23 @@ public class File {
 			
 			// we create a filewriter object that writes into the path passed into its constructor
 			FileWriter mycin = new FileWriter(path);
-			mycin.write(model.getProfessorCount()+"\n");
+			mycin.write(model.getProfessorCount()+";\n");
 			for (int i=0;i<model.getProfessorCount();i++) {
 				Professor professor = model.getProfessorsArray().get(i);
 				StringBuilder courseInfo = new StringBuilder();
-				for (int j=0;j<professor.getCoursesTaken();j++) {
-					courseInfo.append(professor.getEnrolledCourses()[j][0]);
+				for (int j=0;j<professor.getNumberOfCourses();j++) {
+					Course course = professor.getCoursesTeachingArray().get(j);
 					courseInfo.append(" ");
-					courseInfo.append(professor.getEnrolledCourses()[j][1]);
+					courseInfo.append(course.getCourseName());
+					courseInfo.append(" ");
+					courseInfo.append(course.getCourseID());
+					courseInfo.append(" ");
+					courseInfo.append(course.getCredits());
 				}
 				String courseInfoFinal = courseInfo.toString();
 				mycin.write(professor.getID()+" "+professor.getName()+" "+professor.getUsername()+" "+
 				professor.getPassword()+" "+professor.getDepartment()+" "+professor.getNumberOfCourses()
-				+" "+professor.getCoursesTaken()
-				+" "+courseInfoFinal+"\n");
+				+courseInfoFinal+";\n");
 			}
 			mycin.close();
 		} catch (IOException e) {
