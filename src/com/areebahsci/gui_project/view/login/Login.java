@@ -94,8 +94,8 @@ public class Login extends JPanel implements ActionListener {
 		if (e.getSource() == loginButton) {
 			
 			// we get the text entered into the fields 
-			String username = this.usernameInput.getText();
-		    String password = this.passwordInput.getText();
+			String username = usernameInput.getText();
+		    String password = passwordInput.getText();
 		    
 		    switch(LoginController.login(username, password)) {
 		    

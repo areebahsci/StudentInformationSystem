@@ -20,7 +20,7 @@ public abstract class Menu extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	// these are the dimensions of the login panel
-	private static final int WIDTH = 800, HEIGHT = 620;
+	private static final int WIDTH = 850, HEIGHT = 620;
 	
 	protected JMenuBar menuBar;
 	protected JMenu view, edit, more;
@@ -29,32 +29,11 @@ public abstract class Menu extends JPanel implements ActionListener {
 	protected InnerPanel personalPanel, coursePanel, defaultPanel, aboutPanel, helpPanel;
 	protected JPanel allInfoPanel, mainPanel;
 	protected MenuLabel personalLabel, courseLabel, defaultLabel, aboutLabel, helpLabel;
-	protected MenuTable personalTable, courseTable;
-	
-	// used only by admin and professor 
-	protected JMenuItem changePassword, changeUsername;
-	protected InnerPanel changePasswordPanel, changeUsernamePanel, passwordInputPanel, usernameInputPanel;
-	protected MenuLabel changePasswordLabel, changeUsernameLabel;
-	protected JTextField changeUsernameInput;
-	protected JPasswordField changePasswordInput;
-	protected JButton changeButton_1, returnButton_1, viewPassword, changeButton_2, returnButton_2;
-	protected JPanel usernameButtonPanel, passwordButtonPanel; 
-	
-	// used only by student and admin
-	
-	protected InnerPanel allCoursesPanel;
-	protected MenuTable allCoursesTable;
-	protected MenuLabel allCoursesLabel;
-	
+
 	// constructor 
 	public Menu() {
 
 		mainPanel = new JPanel(new BorderLayout());
-		
-		changeButton_1 = new JButton("Submit");
-		returnButton_1 = new JButton("Go back");
-		changeButton_2 = new JButton("Submit");
-		returnButton_2 = new JButton("Go back");
 		
 		// SETTING THE COMMON MENU UP
 		
@@ -98,46 +77,6 @@ public abstract class Menu extends JPanel implements ActionListener {
 	    defaultLabel= new MenuLabel("Welcome! Use the menu options to perform your desired actions.");
 	    defaultPanel.add(defaultLabel, BorderLayout.CENTER);
 		
-		// CHANGE USERNAME PANEL
-		
-		changeUsernamePanel = new InnerPanel();
-		changeUsername = new JMenuItem("Change your username");
-		
-		usernameInputPanel = new InnerPanel();
-		changeUsernameInput = new JTextField(16);
-		changeUsernameInput.setPreferredSize(new Dimension(90, 40));
-		changeUsernameLabel = new MenuLabel("Enter your new username: ");
-		usernameInputPanel.add(changeUsernameLabel, BorderLayout.WEST);
-		usernameInputPanel.add(changeUsernameInput, BorderLayout.CENTER);
-		
-		usernameButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
-		usernameButtonPanel.add(returnButton_1);
-		usernameButtonPanel.add(changeButton_1);
-		
-		changeUsernamePanel.add(usernameInputPanel, BorderLayout.NORTH);
-		changeUsernamePanel.add(usernameButtonPanel, BorderLayout.CENTER);
-		
-		// CHANGE PASSWORD PANEL
-		
-		changePasswordPanel = new InnerPanel();
-		changePassword = new JMenuItem("Change your password");
-		
-		passwordInputPanel = new InnerPanel();
-		changePasswordInput = new JPasswordField(16);
-		changePasswordInput.setPreferredSize(new Dimension(90, 40));
-		changePasswordLabel = new MenuLabel("Enter your new password: ");
-		passwordInputPanel.add(changePasswordLabel, BorderLayout.WEST);
-		passwordInputPanel.add(changePasswordInput, BorderLayout.CENTER);
-		
-		viewPassword = new JButton("Show password");
-		passwordButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
-		passwordButtonPanel.add(returnButton_2);
-		passwordButtonPanel.add(changeButton_2);
-		passwordButtonPanel.add(viewPassword);
-		
-		changePasswordPanel.add(passwordInputPanel, BorderLayout.NORTH);
-		changePasswordPanel.add(passwordButtonPanel, BorderLayout.CENTER);
-		
 		// ABOUT PANEL 
 		
 		aboutPanel = new InnerPanel();
@@ -147,6 +86,10 @@ public abstract class Menu extends JPanel implements ActionListener {
         // HELP PANEL
         
         helpPanel = new InnerPanel();
+        
+        // ALLINFO PANEL
+        
+        allInfoPanel = new JPanel();
         
 		// the main panel will showcase the defaultPanel first
 		
@@ -165,23 +108,16 @@ public abstract class Menu extends JPanel implements ActionListener {
 	
 	/* this method is used to add actionlistener without having to type it out 3 different types for the
 	 * 3 different menues */
-	protected void addActionListener(Menu menu) {
+	protected void addActionListener() {
 		
-		courseInfo.addActionListener(menu);
-		personalInfo.addActionListener(menu);
-		allInfo.addActionListener(menu);
-		addCourse.addActionListener(menu);
-		removeCourse.addActionListener(menu);
-		about.addActionListener(menu);
-		help.addActionListener(menu);
-		defaultScreen.addActionListener(menu);
-		changeUsername.addActionListener(this);
-		changePassword.addActionListener(this);
-		changeButton_1.addActionListener(this);
-		returnButton_1.addActionListener(this);
-		changeButton_2.addActionListener(this);
-		returnButton_2.addActionListener(this);
-		viewPassword.addActionListener(this);
+		courseInfo.addActionListener(this);
+		personalInfo.addActionListener(this);
+		allInfo.addActionListener(this);
+		addCourse.addActionListener(this);
+		removeCourse.addActionListener(this);
+		about.addActionListener(this);
+		help.addActionListener(this);
+		defaultScreen.addActionListener(this);
 		
 	}
 	
@@ -197,21 +133,14 @@ public abstract class Menu extends JPanel implements ActionListener {
 	// this method will combine personal info table and course info table to display everything
 	protected abstract void createAllInfoPanel(); 
 	
-	// this method creates a panel to showcase all courses offered in a table
-	protected void createAllCoursesPanel() {
-		createAllCoursesTable();
-		allCoursesLabel = new MenuLabel("All Courses Offerred In "+View.semester);
-		allCoursesPanel.add(allCoursesLabel, BorderLayout.NORTH);
-		allCoursesPanel.add(allCoursesTable.createJScrollPane(), BorderLayout.CENTER);
-	}
-	
-	protected void createAllCoursesTable() {
+	// this table will be used by both the admin and the student 
+	protected MenuTable createAllCoursesTable() {
 		// data of the table
 		String[][]data=Controller.getAllCourses();
 		String column[]= {"Course Number", "Course ID", "Course Name", "Credits"};
 								
 		// table being set
-		allCoursesTable = new MenuTable (data, column);
+		return new MenuTable (data, column);
 	}
 	
 	/* this method clears the main panel and adds on the panel we want to display and is made so when 
@@ -244,19 +173,7 @@ public abstract class Menu extends JPanel implements ActionListener {
 			changeMainPanel(defaultPanel);
 		}
 	}
-	
-	public void actionPerformedCommon(ActionEvent e) {
-		// if the about menu item is selected
-		if(e.getSource()==about) {
-			changeMainPanel(aboutPanel);
-		}
-				
-		// if the default menu item is selected 
-		else if (e.getSource()==defaultScreen) {
-			changeMainPanel(defaultPanel);
-		}
-	}
-	
+
 	// returns the width of this panel
 	public int getWidth() {
 		return WIDTH;

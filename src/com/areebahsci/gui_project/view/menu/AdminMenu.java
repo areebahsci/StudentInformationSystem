@@ -16,7 +16,7 @@ import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuTable;
 
 /* adminmenu is a menu which is a panel so adminmenu is also a panel
  * also since menu implements actionlistener, so does adminmenu */
-public class AdminMenu extends Menu {
+public class AdminMenu extends ProfandAdminCommon {
 
 private static final long serialVersionUID = 1L;
 	
@@ -47,7 +47,8 @@ private static final long serialVersionUID = 1L;
 		edit.addSeparator();
 		edit.add(changePassword);
 			
-		addActionListener(this);
+		addActionListener();
+		addActionListenerMore();
 		
 	}
 

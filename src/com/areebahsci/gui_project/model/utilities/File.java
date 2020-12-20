@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.model.Model;
@@ -132,18 +133,34 @@ public class File {
 		try {
 			
 			// we create a filewriter object that writes into the path passed into its constructor
-			FileWriter mycin = new FileWriter(path);
+			FileWriter mycout = new FileWriter(path);
 		
 			for (int i=0;i<model.getCourseCount();i++) {
 				Course course = model.getCoursesArray().get(i);
-				mycin.write(course.getCourseID()+"; "+course.getCourseName()+"; "+
+				mycout.write(course.getCourseID()+"; "+course.getCourseName()+"; "+
 						course.getCredits()+";\n");
 			}
-			mycin.close();
+			mycout.close();
 		} catch (IOException e) {
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
 		}
+	}
+	
+	// this function writes a new course that a professor has registered to teach into the file
+	public static void addCourse(Model model, String path) {
+		try {
+			BufferedWriter mycout = new BufferedWriter(new FileWriter(path, true));
+			Course course = model.getCoursesArray().get(model.getCourseCount()-1);
+			mycout.write(course.getCourseID()+"; "+course.getCourseName()+"; "+
+					course.getCredits()+";\n");
+			mycout.close();
+		}
+		catch (IOException e) {
+			 System.out.println("An error occurred.");
+		      e.printStackTrace();
+		}
+		
 	}
 	
 	/* this function will be very similar to the loadCoursesIntoFile function where, whenever a student
@@ -155,8 +172,8 @@ public class File {
 		try {
 			
 			// we create a filewriter object that writes into the path passed into its constructor
-			FileWriter mycin = new FileWriter(path);
-			mycin.write(model.getStudentCount()+";\n");
+			FileWriter mycout = new FileWriter(path);
+			mycout.write(model.getStudentCount()+";\n");
 			for (int i=0;i<model.getStudentCount();i++) {
 				Student student = model.getStudentsArray().get(i);
 				StringBuilder courseInfo = new StringBuilder();
@@ -167,11 +184,11 @@ public class File {
 					courseInfo.append(student.getEnrolledCourses()[j][1]);
 				}
 				String courseInfoFinal = courseInfo.toString();
-				mycin.write(student.getID()+" "+student.getName()+" "+student.getUsername()+" "+
+				mycout.write(student.getID()+" "+student.getName()+" "+student.getUsername()+" "+
 				student.getPassword()+" "+student.getMajor()+" "+student.getGPA()+" "+student.getCoursesTaken()
 				+courseInfoFinal+";\n");
 			}
-			mycin.close();
+			mycout.close();
 		} catch (IOException e) {
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
@@ -187,8 +204,8 @@ public class File {
 		try {
 			
 			// we create a filewriter object that writes into the path passed into its constructor
-			FileWriter mycin = new FileWriter(path);
-			mycin.write(model.getProfessorCount()+";\n");
+			FileWriter mycout = new FileWriter(path);
+			mycout.write(model.getProfessorCount()+";\n");
 			for (int i=0;i<model.getProfessorCount();i++) {
 				Professor professor = model.getProfessorsArray().get(i);
 				StringBuilder courseInfo = new StringBuilder();
@@ -202,17 +219,16 @@ public class File {
 					courseInfo.append(course.getCredits());
 				}
 				String courseInfoFinal = courseInfo.toString();
-				mycin.write(professor.getID()+" "+professor.getName()+" "+professor.getUsername()+" "+
+				mycout.write(professor.getID()+" "+professor.getName()+" "+professor.getUsername()+" "+
 				professor.getPassword()+" "+professor.getDepartment()+" "+professor.getNumberOfCourses()
 				+courseInfoFinal+";\n");
 			}
-			mycin.close();
+			mycout.close();
 		} catch (IOException e) {
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
 		}
 	}
-	
 	
 }
 

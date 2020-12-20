@@ -1,7 +1,9 @@
 package com.areebahsci.gui_project.view.menu;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
@@ -14,7 +16,9 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
+import com.areebahsci.gui_project.controller.LoginController;
 import com.areebahsci.gui_project.controller.ProfessorMenuController;
+import com.areebahsci.gui_project.controller.StudentMenuController;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
@@ -23,7 +27,7 @@ import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuTable;
 
 /* professormenu is a menu which is a panel so adminmenu is also a panel
  * also since menu implements actionlistener, so does professormenu */
-public class ProfessorMenu extends Menu {
+public class ProfessorMenu extends ProfandAdminCommon {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -34,6 +38,12 @@ public class ProfessorMenu extends Menu {
 	private MenuLabel studentIDLabel, gradeLabel;
 	private JButton changeButton_2, returnButton_2, showGrades;
 	private JPanel changeGradeButtonPanel, courseSelectionPanel;
+	
+	private InnerPanel addCoursePanel;
+	private JPanel inputPanelLabels, inputPanelFields, buttonPanel, inputPanel;
+	private JButton backButton_1, resetButton, addCourseButton;
+	private MenuLabel courseNameLabel, courseIDLabel, courseCreditsLabel;
+	private JTextField courseNameInput, courseIDInput, courseCreditsInput;
 	
 	// constructor 
 	public ProfessorMenu() {
@@ -50,22 +60,50 @@ public class ProfessorMenu extends Menu {
 		coursePanel = new InnerPanel();
 		coursePanel.add(courseLabel, BorderLayout.NORTH);
 		
-		// GENERAL GUI OF MENU 
+		// ADD COURSE PANEL
 		
-		mainPanel.setBorder(new TitledBorder("Professor Data"));
+        addCoursePanel = new InnerPanel();
+        
+        backButton_1 = new JButton("Back");
+        resetButton = new JButton("Reset text fields");
+        addCourseButton = new JButton("Add course");
+        
+        courseNameLabel = new MenuLabel("Course Name:");
+        courseIDLabel = new MenuLabel("Course ID:");
+        courseCreditsLabel = new MenuLabel("Course Credits:");
+        
+        courseNameInput = new JTextField(16);
+        courseIDInput = new JTextField(16);
+        courseCreditsInput = new JTextField(16);
+        
+        inputPanelLabels = new JPanel(new GridLayout(3, 1, 3, 3));
+		inputPanelLabels.add(courseNameLabel);
+		inputPanelLabels.add(courseIDLabel);
+		inputPanelLabels.add(courseCreditsLabel);
 		
-	    addCourse.setText("Register to teach courses");
-		removeCourse.setText("Drop courses");
+		inputPanelFields = new JPanel(new GridLayout(3, 1, 3, 3));
+		inputPanelFields.add(courseNameInput);
+		inputPanelFields.add(courseIDInput);
+		inputPanelFields.add(courseCreditsInput);
 		
-		view.add(allInfo);
-		edit.addSeparator();
-		edit.add(changeUsername);
-		edit.addSeparator();
-		edit.add(changePassword);
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 2));
+		buttonPanel.add(backButton_1);
+		buttonPanel.add(resetButton);
+		buttonPanel.add(addCourseButton);
+		
+		inputPanel = new JPanel(new BorderLayout(5,0));
+		inputPanel.add(inputPanelLabels, BorderLayout.WEST);
+        inputPanel.add(inputPanelFields, BorderLayout.CENTER);
+        inputPanel.setPreferredSize(new Dimension(150, 150));
+        inputPanel.setMaximumSize(new Dimension(150, 150));
+        inputPanel.setMinimumSize(new Dimension(150, 150));
+
+        addCoursePanel.add(inputPanel, BorderLayout.NORTH);
+        addCoursePanel.add(buttonPanel, BorderLayout.CENTER);
 		
 		// CHANGE GRADE OF STUDENTS GUI 
 		
-		changeGrade = new JMenuItem("Change Students Grade");
+		changeGrade = new JMenuItem("Change a student's grade");
 		
 		changeGradePanel = new InnerPanel();
 		studentIDInput = new JTextField(10);
@@ -81,12 +119,27 @@ public class ProfessorMenu extends Menu {
 		changeGradeButtonPanel.add(returnButton_2);
 		changeGradeButtonPanel.add(changeButton_2);
 		
-		// MORE GENERAL GUI
+		// GENERAL GUI OF MENU 
+		
+		mainPanel.setBorder(new TitledBorder("Professor Data"));
+				
+		addCourse.setText("Register to teach courses");
+		removeCourse.setText("Drop courses");
+		
+		view.add(allInfo);
+		edit.addSeparator();
+		edit.add(changeUsername);
+		edit.addSeparator();
+		edit.add(changePassword);
 		
 		edit.addSeparator();
 		edit.add(changeGrade);
 			
-		addActionListener(this);
+		backButton_1.addActionListener(this);
+		resetButton.addActionListener(this);
+		addCourseButton.addActionListener(this);
+		addActionListener();
+		addActionListenerMore();
 		
 	}
 
@@ -120,49 +173,91 @@ public class ProfessorMenu extends Menu {
 			changeMainPanel(allInfoPanel);
 		}
 		
-		else if (e.getSource()==changeUsername) {
+		else if (e.getSource()==changeButton_u) {
+			switch(ProfessorMenuController.changeProfessorUsername(changeUsernameInput.getText())) {
 			
-			changeMainPanel(changeUsernamePanel);
-		}
-		
-		else if (e.getSource()==changeButton_1) {
-			String username = changeUsernameInput.getText();
-			if (username.isBlank()) {
-				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You have left the text field empty!!!", "ERROR", JOptionPane.ERROR_MESSAGE); 
-			} 
-			ProfessorMenuController.changeProfessorUsername(username);
+			case 1:
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Your username has been successfully changed!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				break;
+				
+			case -1:
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "ERROR: You have left the text field empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				break;
 			
-		}
-		
-		else if (e.getSource()==changePassword) {
-			
-			changeMainPanel(changePasswordPanel);
-		}
-		
-		else if (e.getSource()==changeButton_2) {
-			
-			String password = changePasswordInput.getText();
-			if (password.isBlank()) {
-				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You have left the text field empty!!!", "ERROR", JOptionPane.ERROR_MESSAGE); 
 			}
-			ProfessorMenuController.changeProfessorUsername(password);	
-			
 		}
 		
-		else if (e.getSource()==returnButton_2||e.getSource()==returnButton_1) {
-			
-			changeMainPanel(defaultPanel);
-		}
-		
-		else if (e.getSource()==changePassword) {
-			
-			changeMainPanel(changePasswordPanel);
+		else if (e.getSource()==changeButton_p) {
+			switch(ProfessorMenuController.changeProfessorPassword(changePasswordInput.getText())) {
+			case 1:
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Your password has been successfully changed!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				break;
+				
+			case -1:
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "ERROR: You have left the text field empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				break;
+			}
 		}
 		
 		else if (e.getSource()==changeGrade) {
 			
 			createChangeGradePanel();
 			
+		}
+		
+		else if (e.getSource()==addCourse) {
+			if(!ProfessorMenuController.canAddCourse()) {
+				// this basically checks whether it is possible for the student to remove any courses
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not register to teach any more courses as you are already registered to teach 3 courses, which is the limit!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			else {
+				changeMainPanel(addCoursePanel);
+			}
+		}
+		
+		else if (e.getSource()==addCourseButton) {
+			// we get the text entered into the fields 
+			String courseName = courseNameInput.getText();
+		    String courseID = courseIDInput.getText();
+		    String courseCredits = courseCreditsInput.getText();
+		    
+		    switch(ProfessorMenuController.addCourse(courseName, courseID, courseCredits)) {
+		    
+		    case -1:
+		    	// if the text fields are empty, it will return -1 
+		    	JOptionPane.showMessageDialog(Controller.getView().getFrame(), "ERROR: Do not leave text fields empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				break;
+		    
+		    case -2:
+		    	JOptionPane.showMessageDialog(Controller.getView().getFrame(), "ERROR: Ensure the CourseID and CourseCredit fields are numeric!", "ERROR", JOptionPane.ERROR_MESSAGE);
+		    	break;
+		    
+		    case -3:
+		    	JOptionPane.showMessageDialog(Controller.getView().getFrame(), "ERROR: Course Credits should be between 0 and 5", "ERROR", JOptionPane.ERROR_MESSAGE);
+		    	break;
+		    	
+		    case -4:
+		    	JOptionPane.showMessageDialog(Controller.getView().getFrame(), "ERROR: The course ID you have entered already belongs to a pre-existing course!", "ERROR", JOptionPane.ERROR_MESSAGE);
+		    	break;
+		    	
+		    case -5:
+		    	JOptionPane.showMessageDialog(Controller.getView().getFrame(), "ERROR: The course Name you have entered already belongs to a pre-existing course!", "ERROR", JOptionPane.ERROR_MESSAGE);
+		    	break;
+		    	
+		    case 0:
+		    	JOptionPane.showMessageDialog(Controller.getView().getFrame(), "ERROR: You are already registered to teach the max number of courses you can teach, which is 3!", "ERROR", JOptionPane.ERROR_MESSAGE);
+		    	break;
+		    	
+		    case 1:
+		    	JOptionPane.showMessageDialog(Controller.getView().getFrame(), "The course has been successfully registered!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				break;
+		    }
+		}
+		
+		else if (e.getSource()==resetButton) {
+			courseNameInput.setText("");
+			courseIDInput.setText("");
+			courseCreditsInput.setText("");
 		}
 		
 		/* if the help menu item is selected it will display information about what each menu item
@@ -172,8 +267,14 @@ public class ProfessorMenu extends Menu {
 			actionPerformedHelp();
 		}
 		
-		else actionPerformedCommon(e);
-		
+		else if(e.getSource()==about) {
+			changeMainPanel(aboutPanel);
+		}
+				
+		// if the default menu item is selected 
+		else if (e.getSource()==defaultScreen) {
+			changeMainPanel(defaultPanel);
+		}
 	}
 	
 	@Override
@@ -184,7 +285,7 @@ public class ProfessorMenu extends Menu {
 		String column[]= {"ID","NAME","DEPARTMENT"}; 
 					
 		// table being set
-		personalTable = new MenuTable(data, column);
+		MenuTable personalTable = new MenuTable(data, column);
 		
 		// table being added to the inner panel
 		personalPanel.add(personalTable.createJScrollPane());
@@ -192,28 +293,35 @@ public class ProfessorMenu extends Menu {
 	
 	@Override
 	protected void createCoursePanel() {
+		coursePanel.removeAll();
+		coursePanel.revalidate();
+		coursePanel.repaint();
+		// table being added to the inner panel
+		coursePanel.add(createCourseTable().createJScrollPane());
+	}
+	
+	private MenuTable createCourseTable() {
 		
 		// data of the table
 		String[][]data=ProfessorMenuController.displayProfessorCourses();
 		String column[]= {"Courses", "Name", "ID", "Credits", "Student Number"};
 		
 		// table being set
-		courseTable = new MenuTable (data, column);
-		
-		// table being added to the inner panel
-		coursePanel.add(courseTable.createJScrollPane());
+		return new MenuTable (data, column);
 	}
 
 	
 	@Override
 	protected void createAllInfoPanel() {
-		allInfoPanel = new JPanel(); 
+		
+		allInfoPanel.removeAll();
+		allInfoPanel.revalidate();
+		allInfoPanel.repaint();
 		createPersonalPanel();
-		createCoursePanel();
+		createCoursePanel(); 
 		allInfoPanel.add(personalPanel);
 		allInfoPanel.add(coursePanel);
 		allInfoPanel.setLayout((new BoxLayout(allInfoPanel, BoxLayout.Y_AXIS)));
-		
 	}
 	
 	protected void createChangeGradePanel() {
@@ -240,7 +348,5 @@ public class ProfessorMenu extends Menu {
 		changeGradePanel.add(changeGradeTable.createJScrollPane(), BorderLayout.CENTER);
 
 	}
-	
-	
 	
 }

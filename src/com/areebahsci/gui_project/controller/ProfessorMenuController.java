@@ -1,6 +1,7 @@
 package com.areebahsci.gui_project.controller;
 
 import com.areebahsci.gui_project.model.course.Course;
+import com.areebahsci.gui_project.model.utilities.File;
 
 /* this class has all the static methods needed for the view when a professor has logged in and is using
  * the application */
@@ -61,13 +62,84 @@ public class ProfessorMenuController extends Controller {
 	}
 	
 	// this method is called by the view when the professor chooses to change his username
-	public static void changeProfessorUsername(String username) {
+	public static int changeProfessorUsername(String username) {
+		if (username.isBlank()) {
+			return -1;
+		}
 		professorLoggedIn.setUsername(username);
+		File.updateProfessorFile(model, "resources/Professor_info");
+		return 1;
 	}
 	
 	// this method is called by the view when the professor chooses to change his password
-	public static void changeProfessorPassword(String password) {
+	public static int changeProfessorPassword(String password) {
+		
+		if (password.isBlank()) {
+			return -1;
+		}
 		professorLoggedIn.setPassword(password);
+		File.updateProfessorFile(model, "resources/Professor_info");
+		return 1;
+	}
+	
+	public static int addCourse(String courseName, String courseID, String courseCredits) {
+		
+		int credits, ID; 
+		
+		if (!canAddCourse()) {
+			return 0;
+		}
+		
+		// this if statement deals with if any text fields were empty when we tried logging in
+		if (courseName.isBlank()||courseID.isBlank()||courseCredits.isBlank()) { 
+			
+			// it returns -1 if any text fields are empty when logging in
+			return -1;
+		}
+		
+		// this try-catch block of code will check if the ID and credit amounts entered were numeric 
+		try {
+			ID = Integer.parseInt(courseID);
+			credits = Integer.parseInt(courseCredits);
+		}
+		catch(NumberFormatException nfe) {
+			// if they are not numeric, we return -2
+			return -2;
+		}
+		
+		// this checks whether the credit amounts entered were reasonable, between 0 and 5
+		if (credits>5||credits<0) {
+			return -3;
+		}
+		
+		// this checks if the ID entered already belongs to a pre existing course 
+		for (int i=0;i<model.getCourseCount();i++) {
+			if (ID==model.getCoursesArray().get(i).getCourseID()) {
+				return -4;
+			}
+		}
+		
+		// this checks if the name entered already belongs to a pre existing course
+		for (int i=0;i<model.getCourseCount();i++) {
+			if (courseName.equals(model.getCoursesArray().get(i).getCourseName())) {
+				return -5;
+			}
+		}
+		Course course = new Course (professorLoggedIn, ID, courseName, credits);
+		model.getCoursesArray().add(course);
+		professorLoggedIn.addCourse(course);
+		File.updateProfessorFile(model, "resources/Professor_info");
+		File.addCourse(model, "resources/Course_info");
+		return 1;
+	}
+	
+	/* this method informs us whether the professor can register to teach any more courses, which is 
+	 * possible as long as he hasnt reached the limit of courses he can teach, which is 3 */
+	public static boolean canAddCourse() {
+		if (professorLoggedIn.getNumberOfCourses()!=3) {
+			return true;
+		}
+		return false;
 	}
 	
 }

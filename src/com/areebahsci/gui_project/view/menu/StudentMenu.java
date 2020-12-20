@@ -27,7 +27,6 @@ public class StudentMenu extends Menu {
 	private static final long serialVersionUID = 1L;
 	
 	private JMenuItem viewGPA;
-	private MenuTable gpaTable;
 	private InnerPanel gpaPanel, addCoursesPanel, removeCoursesPanel;
 	private MenuLabel gpaLabel, addCoursesLabel, removeCoursesLabel;
 	private JButton addCourseButton, goBackButton_1, goBackButton_2, removeCourseButton;
@@ -52,12 +51,6 @@ public class StudentMenu extends Menu {
 		
 		addCoursesLabel = new MenuLabel("<html>Details of every course offered are shown in the table below.<br/>Please enter the number of the course you want to take below that. <html>");
 		
-		// table being added to the inner panel
-		createAllCoursesTable();
-		addCoursesPanel.add(allCoursesTable.createJScrollPane(), BorderLayout.CENTER);
-		addCoursesPanel.add(addCoursesLabel, BorderLayout.NORTH);
-		addCoursesPanel.add(addCoursesFlowPanel, BorderLayout.SOUTH);
-		
 		// REMOVE COURSES GUI
 		
 		removeCoursesPanel = new InnerPanel();
@@ -72,18 +65,11 @@ public class StudentMenu extends Menu {
 		removeCoursesFlowPanel.add(goBackButton_2);
 				
 		removeCoursesLabel = new MenuLabel("<html>Details of all the courses you are currently taking are shown in the table below.<br/>Please enter the number of the course you want to drop below that. <html>");
-				
-		// table being added to the inner panel
-		createCourseTable();
-		removeCoursesPanel.add(courseTable.createJScrollPane(), BorderLayout.CENTER);
-		removeCoursesPanel.add(removeCoursesLabel, BorderLayout.NORTH);
-		removeCoursesPanel.add(removeCoursesFlowPanel, BorderLayout.SOUTH);
 		
-		// GPA PANEL GUI
+		// PANEL SETUPS
 		
 		gpaPanel = new InnerPanel();
 		gpaLabel = new MenuLabel("Your GPA");
-		gpaPanel.add(gpaLabel, BorderLayout.NORTH);
 		
 		// PERSONAL PANEL GUI
 		
@@ -95,7 +81,6 @@ public class StudentMenu extends Menu {
 		
 		courseLabel = new MenuLabel("Student Course Data for " + View.semester);
 		coursePanel = new InnerPanel();
-		coursePanel.add(courseLabel, BorderLayout.NORTH);
 		
 		// GENERAL GUI OF MENU 
 		
@@ -114,7 +99,7 @@ public class StudentMenu extends Menu {
 		removeCourseButton.addActionListener(this);
 		goBackButton_1.addActionListener(this);
 		goBackButton_2.addActionListener(this);
-		addActionListener(this);
+		addActionListener();
 		
 	}
 
@@ -154,6 +139,7 @@ public class StudentMenu extends Menu {
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not register for more courses! You have already been registered for the max number of courses, being "+Controller.getStudentLoggedIn().getMaxCourses()+".", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			else {
+				createAddCoursesPanel();
 				changeMainPanel(addCoursesPanel);
 			}
 		}
@@ -164,6 +150,7 @@ public class StudentMenu extends Menu {
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not remove any course as you aren't registered for any course!", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			else {
+				createRemoveCoursesPanel();
 				changeMainPanel(removeCoursesPanel);
 			}
 		}
@@ -234,7 +221,7 @@ public class StudentMenu extends Menu {
 					/* the last option is for the method to return 1 and that means that the course
 					 * has been successfully removed */
 					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Course has been removed!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-					updateRemoveCourseTable();
+					createRemoveCoursesPanel();
 					changeMainPanel(removeCoursesPanel);
 					break;
 				
@@ -257,8 +244,14 @@ public class StudentMenu extends Menu {
 			actionPerformedHelp();
 		}
 		
-		else actionPerformedCommon(e);
-		
+		else if(e.getSource()==about) {
+			changeMainPanel(aboutPanel);
+		}
+				
+		// if the default menu item is selected 
+		else if (e.getSource()==defaultScreen) {
+			changeMainPanel(defaultPanel);
+		}
 	}
 	
 	@Override
@@ -269,44 +262,82 @@ public class StudentMenu extends Menu {
 		String column[]= {"ID","NAME","MAJOR"}; 
 					
 		// table being set
-		personalTable = new MenuTable(data, column);
+		MenuTable personalTable = new MenuTable(data, column);
 		
 		// table being added to the inner panel
 		personalPanel.add(personalTable.createJScrollPane());
 	}
 	
-	@Override
-	protected void createCoursePanel() {
-		
-		createCourseTable();
-		// table being added to the inner panel
-		coursePanel.add(courseTable.createJScrollPane());
-
-	}
-	
 	// this method creates a table to show all the courses the student is currently taking
-	protected void createCourseTable() {
+	private MenuTable createCourseTable() {
 		// data of the table
 		String[][]data=StudentMenuController.displayStudentCourses();
 		String column[]= {"Courses", "Name", "ID", "Credits", "Grade"};
 				
 		// table being set
-		courseTable = new MenuTable (data, column);
-	}
-	
-	protected void createGPAPanel() {
-		
-		String[][]data=StudentMenuController.displayGPACalculations();
-		String column[]= {"Courses", "Grades"};
-		
-		gpaTable = new MenuTable(data, column);
-		gpaPanel.add(gpaTable.createJScrollPane());
+		return new MenuTable (data, column);
 		
 	}
 	
 	@Override
+	protected void createCoursePanel() {
+		
+		coursePanel.removeAll();
+		coursePanel.revalidate();
+		coursePanel.repaint();
+		coursePanel.add(courseLabel, BorderLayout.NORTH);
+		// table being added to the inner panel
+		coursePanel.add(createCourseTable().createJScrollPane());
+
+	}
+	
+	private void createRemoveCoursesPanel() {
+		
+		removeCoursesPanel.removeAll();
+		removeCoursesPanel.revalidate();
+		removeCoursesPanel.repaint();
+		removeCoursesPanel.add(removeCoursesLabel, BorderLayout.NORTH);
+		removeCoursesPanel.add(removeCoursesFlowPanel, BorderLayout.SOUTH);
+		// table being added to the inner panel
+		removeCoursesPanel.add(createCourseTable().createJScrollPane(), BorderLayout.CENTER);
+
+	}
+	
+	private MenuTable createGPATable() {
+		String[][]data=StudentMenuController.displayGPACalculations();
+		String column[]= {"Courses", "Grades"};
+		
+		return new MenuTable(data, column);
+	}
+	
+	private void createGPAPanel() {
+		
+		gpaPanel.removeAll();
+		gpaPanel.revalidate();
+		gpaPanel.repaint();
+		
+		gpaPanel.add(gpaLabel, BorderLayout.NORTH);
+		
+		// table being added to the inner panel
+		gpaPanel.add(createGPATable().createJScrollPane(), BorderLayout.CENTER);
+		
+	}
+	
+	private void createAddCoursesPanel() {
+		
+		addCoursesPanel.removeAll();
+		addCoursesPanel.revalidate();
+		addCoursesPanel.repaint();
+		addCoursesPanel.add(createAllCoursesTable().createJScrollPane(), BorderLayout.CENTER);
+		addCoursesPanel.add(addCoursesLabel, BorderLayout.NORTH);
+		addCoursesPanel.add(addCoursesFlowPanel, BorderLayout.SOUTH);
+	}
+	
+	@Override
 	protected void createAllInfoPanel() {
-		allInfoPanel = new JPanel(); 
+		allInfoPanel.removeAll();
+		allInfoPanel.revalidate();
+		allInfoPanel.repaint();
 		createPersonalPanel();
 		createGPAPanel(); 
 		createCoursePanel(); 
@@ -315,12 +346,6 @@ public class StudentMenu extends Menu {
 		allInfoPanel.add(gpaPanel);
 		allInfoPanel.setLayout((new BoxLayout(allInfoPanel, BoxLayout.Y_AXIS)));
 		
-	}
-	
-	protected void updateRemoveCourseTable() {
-		removeCoursesPanel.remove(courseTable);
-		createCourseTable();
-		removeCoursesPanel.add(courseTable.createJScrollPane(), BorderLayout.CENTER);
 	}
 	
 }
