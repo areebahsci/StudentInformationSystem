@@ -25,12 +25,12 @@ public class Controller {
 	protected static  Model model = new Model();
 	
     // these int values save the index of the student or professors position in the arraylist 
-	protected static int studentLoggedInIndex = 0;
+	protected static int studentLoggedInIndex = 1;
 	protected static int professorLoggedInIndex= 0;
 	
 	/* these variables save which student/professor has logged into the system so it is 
 	easier to retreive their information when needed */
-	protected static Student studentLoggedIn = model.getStudentsArray().get(0);
+	protected static Student studentLoggedIn = model.getStudentsArray().get(1);
 	protected static Professor professorLoggedIn = model.getProfessorsArray().get(0);
 	
 	// we have to create an instance of the view 

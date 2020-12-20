@@ -1,6 +1,7 @@
 package com.areebahsci.gui_project.controller;
 
 import com.areebahsci.gui_project.model.course.Course;
+import com.areebahsci.gui_project.model.user.Student;
 import com.areebahsci.gui_project.model.utilities.File;
 
 /* this class has all the static methods needed for the view when a professor has logged in and is using
@@ -82,7 +83,47 @@ public class ProfessorMenuController extends Controller {
 		return 1;
 	}
 	
-	public static int addCourse(String courseName, String courseID, String courseCredits) {
+	public static int removeCourseButton(int input) {
+		
+		int courseCount = professorLoggedIn.getNumberOfCourses();
+		if (!teachingAnyCourses()) {
+			// if there are no courses for the professor to drop, it will return -1
+			return -1;
+		}
+		if (!(input>0 && input<=courseCount)) {
+			// if the input is invalid, it will return -2
+			return -2;
+		}
+		else {
+			/* otherwise it is valid for the prof to remove the course and it will do so and return
+			 * 1 to indicate success */
+			Course course = professorLoggedIn.getCoursesTeachingArray().get(input-1);
+			professorLoggedIn.removeCourse(input-1);
+			
+			// now we have to remove students from the course, and update their GPAs
+			for (int i=0;i<course.getStudentCount();i++) {
+				Student student = course.getStudentsEnrolled().get(i);
+				for (int j=0;j<student.getCoursesTaken();j++) {
+					if(course.getCourseID()==student.getEnrolledCourses()[j][0]) {
+						course.getStudentsEnrolled().get(i).removeCourse(j);
+						course.getStudentsEnrolled().get(i).calculateGPA();
+					}
+				}
+			}
+			
+			// now remove course from array
+			model.getCoursesArray().remove(course);
+			
+			// now update files 
+			File.updateStudentFile(model, "resources/Student_info");
+			File.updateProfessorFile(model, "resources/Professor_info");
+			File.loadCoursesIntoFile(model, "resources/Course_info");
+			return 1;
+		}
+		
+	}
+	
+	public static int addCourseButton(String courseName, String courseID, String courseCredits) {
 		
 		int credits, ID; 
 		
@@ -140,6 +181,15 @@ public class ProfessorMenuController extends Controller {
 			return true;
 		}
 		return false;
+	}
+	
+	/* this method informs us whether the professor can drop any courses, which is possible as long as
+	 * he is teaching a course */
+	public static boolean teachingAnyCourses() {
+		if (professorLoggedIn.getNumberOfCourses()==0) {
+			return false;
+		}
+		return true;
 	}
 	
 }

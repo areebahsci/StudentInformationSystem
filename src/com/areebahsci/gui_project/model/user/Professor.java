@@ -64,6 +64,11 @@ public class Professor extends User {
 		numberOfCourses++;
 	}
 	
+	public void removeCourse(int input) {
+		coursesTeachingArray.remove(input);
+		numberOfCourses--;
+	}
+	
 	/* used to print data for validation purposes to ensure the methods are functioning the way they are
 	 * supposed to be */
 	@Override

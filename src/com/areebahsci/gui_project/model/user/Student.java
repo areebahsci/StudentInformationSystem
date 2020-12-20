@@ -89,12 +89,14 @@ public class Student extends User {
 	public void calculateGPA() {
 		
 		GPA=0;
+		int courseWithGradesCount=0;
 		for (int i=0;i<coursesTaken;i++) {
 			if (enrolledCourses[i][1]!=-1) {
 				GPA+=enrolledCourses[i][1];
+				courseWithGradesCount++;
 			}
 		}
-		GPA/=coursesTaken;
+		GPA/=courseWithGradesCount;
 	}
 	
 	/* used to print data for validation purposes to ensure the methods are functioning the way they are
