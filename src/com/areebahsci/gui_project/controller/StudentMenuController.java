@@ -35,7 +35,7 @@ public class StudentMenuController extends Controller {
 		
 	}
 	
-	/* this is the method called within the view when it wants to display the students GPA
+	/* this is the method called within the view when it wants to display the students GPAs
 	 * information to the user */
 	public static String[][] displayGPACalculations() {
 		

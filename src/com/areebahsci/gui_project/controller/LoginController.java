@@ -105,7 +105,8 @@ public class LoginController extends Controller {
 		for (int i=0;i<model.getStudentCount();i++) {
 			if (model.getStudentsArray().get(i).getUsername().equals(username)) {
 				if (model.getStudentsArray().get(i).getPassword().equals(password)) {
-					studentLoggedIn=model.getStudentsArray().get(studentLoggedInIndex=i);
+					studentLoggedIn=model.getStudentsArray().get(i);
+					Controller.userLoggedIn=studentLoggedIn;
 					return true;
 				}
 				/* if the username hits a match but the password doesnt, that means 
@@ -124,7 +125,8 @@ public class LoginController extends Controller {
 		for (int i=0;i<model.getProfessorCount();i++) {
 			if (model.getProfessorsArray().get(i).getUsername().equals(username)) {
 				if (model.getProfessorsArray().get(i).getPassword().equals(password)) {
-					professorLoggedIn=model.getProfessorsArray().get(professorLoggedInIndex);
+					professorLoggedIn=model.getProfessorsArray().get(i);
+					Controller.userLoggedIn=professorLoggedIn;
 					return true;
 				}
 				/* if the username hits a match but the password doesnt, that means 
@@ -142,6 +144,7 @@ public class LoginController extends Controller {
 	public static boolean loginAdmin(String username, String password) {
 		if (model.getAdmin().getUsername().equals(username) &&
 				model.getAdmin().getPassword().equals(password)) {
+			Controller.userLoggedIn=model.getAdmin();
 			return true;
 		}
 		return false;

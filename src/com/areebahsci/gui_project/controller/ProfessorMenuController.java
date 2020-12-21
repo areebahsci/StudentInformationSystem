@@ -3,11 +3,14 @@ package com.areebahsci.gui_project.controller;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.model.user.Student;
 import com.areebahsci.gui_project.model.utilities.File;
+import com.areebahsci.gui_project.model.utilities.Utilities;
 
 /* this class has all the static methods needed for the view when a professor has logged in and is using
  * the application */
 
 public class ProfessorMenuController extends Controller {
+	
+	public static int inputCourseNumber=-1;
 
 	/* this is the method called within the view when it wants to display the students personal
 	 * information to the user */
@@ -50,8 +53,9 @@ public class ProfessorMenuController extends Controller {
 	
 	/* this is the method called within the view when it wants to display all grades in a course
 	 * to the professor */
-	public static String[][]getAllGradesInCourse(Course course){
+	public static String[][]getAllGradesInCourse(){
 		
+		Course course = professorLoggedIn.getCoursesTeachingArray().get(inputCourseNumber-1);
 		int numberOfStudents = course.getStudentCount();
 		String[][]data = new String [numberOfStudents][3];
 		for (int i=0;i<numberOfStudents;i++) {
@@ -100,7 +104,7 @@ public class ProfessorMenuController extends Controller {
 			Course course = professorLoggedIn.getCoursesTeachingArray().get(input-1);
 			professorLoggedIn.removeCourse(input-1);
 			
-			// now we have to remove students from the course, and update their GPAs
+			// now we have to remove students from the course, and update their gpas
 			for (int i=0;i<course.getStudentCount();i++) {
 				Student student = course.getStudentsEnrolled().get(i);
 				for (int j=0;j<student.getCoursesTaken();j++) {
@@ -190,6 +194,36 @@ public class ProfessorMenuController extends Controller {
 			return false;
 		}
 		return true;
+	}
+	
+	public static boolean changeGradeInput_1(int input) {
+		if (!(input>0&&input<=professorLoggedIn.getNumberOfCourses())) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static int changeGradeInput_2(int ID, double grade) {
+		
+		// this if statement checks if the grade is an unreasonable number 
+		if (grade<0||grade>100) {
+			return -1;
+		}
+		
+		Course course = professorLoggedIn.getCoursesTeachingArray().get(inputCourseNumber-1);
+		for (int i=0;i<course.getStudentCount();i++) {
+			if (ID==Utilities.parseInt(course.getStudentsEnrolled().get(i).getID())) {
+				course.getStudentsEnrolled().get(i).setGradeOfCourse(course, grade);
+				course.getStudentsEnrolled().get(i).calculateGPA();
+				File.updateStudentFile(model, "resources/Student_info");
+				// it will return 1 when the change is successful
+				return 1;
+			}
+		}
+		/* if we reach this part of the code, that means the for loop didnt find a match for the ID 
+		 * entered with the ID's of the students taking the course so that means the ID is invalid */
+		return -2;
+		
 	}
 	
 }

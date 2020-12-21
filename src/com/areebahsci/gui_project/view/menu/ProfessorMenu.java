@@ -11,15 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
-import com.areebahsci.gui_project.controller.LoginController;
 import com.areebahsci.gui_project.controller.ProfessorMenuController;
-import com.areebahsci.gui_project.controller.StudentMenuController;
-import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
@@ -31,20 +27,23 @@ public class ProfessorMenu extends ProfandAdminCommon {
 	
 	private static final long serialVersionUID = 1L;
 	
+	// for changeGrade panel 
 	private JMenuItem changeGrade;
-	private InnerPanel changeGradePanel_1;
-	private MenuTable changeGradeTable;
-	private JTextField studentIDInput, gradeInput;
-	private MenuLabel studentIDLabel, gradeLabel;
-	private JButton changeButton, returnButton_change1, showGrades, returnButton_change2;
-	private JPanel changeGradeButtonPanel;
+	private InnerPanel changeGradePanel_1,changeGradePanel_2;
+	private JTextField studentIDInput, studentGradeInput, changeGradeInput_1;
+	private MenuLabel studentIDLabel, gradeLabel, changeGradeLabel_1, changeGradeLabel_2;
+	private JButton changeGradeButton, returnButton_change1, showGradesButton, returnButton_change2;
+	private JPanel changeGradeButtonPanel_2, changeGradeButtonPanel_1, inputPanelLabels_change, 
+	inputPanelFields_change, inputPanel_change;
 	
+	// for adding courses panel 
 	private InnerPanel addCoursePanel, removeCoursePanel;
 	private JPanel inputPanelLabels, inputPanelFields, buttonPanel, inputPanel;
 	private JButton backButton_add, resetButton, addCourseButton;
 	private MenuLabel courseNameLabel, courseIDLabel, courseCreditsLabel;
 	private JTextField courseNameInput, courseIDInput, courseCreditsInput;
 	
+	// for removing courses panel
 	private JPanel removeCoursesFlowPanel;
     private JButton removeCourseButton, backButton_remove;
     private JTextField removeCoursesInput;
@@ -121,23 +120,50 @@ public class ProfessorMenu extends ProfandAdminCommon {
  				
  		removeCoursesLabel = new MenuLabel("<html>Details of all the courses you are currently teaching are shown in the table below.<br/>Please enter the number of the course you want to drop below that. <html>");
         
-		// CHANGE GRADE OF STUDENTS GUI 
+		// CHANGE GRADE OF STUDENTS GUI WINDOW 1
+ 		
+ 		changeGradePanel_1 = new InnerPanel();
+ 		
+ 		changeGradeLabel_1 = new MenuLabel("Enter the course number below of which you'd like to view and change grades of students from");
+ 		changeGradeButtonPanel_1= new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
+ 		changeGradeInput_1 = new JTextField(16);
+ 		changeGradeInput_1.setPreferredSize(new Dimension(200, 25));
+ 		returnButton_change1 = new JButton("Go back");
+ 		showGradesButton = new JButton("Display All Grades");
+ 		changeGradeButtonPanel_1.add(changeGradeInput_1);
+ 		changeGradeButtonPanel_1.add(showGradesButton);
+ 		changeGradeButtonPanel_1.add(returnButton_change1);
+ 		
+ 		// CHANGE GRADE OF STUDENTS WINDOW 2
 		
-		changeGrade = new JMenuItem("Change a student's grade");
-		
-		changeGradePanel_1 = new InnerPanel();
-		studentIDInput = new JTextField(10);
-		gradeInput = new JTextField(10);
+ 		changeGradePanel_2=new InnerPanel(); 		
+ 		
+		changeGradeLabel_2 = new MenuLabel("Change a student's grade");
+		studentIDInput = new JTextField(16);
+		studentGradeInput = new JTextField(16);
 		studentIDLabel = new MenuLabel("Enter the ID of the student whose grade you wish to change: ");
 		gradeLabel = new MenuLabel("Enter the new grade: ");
-		changeButton = new JButton("Change Grade");
-		returnButton_change1 = new JButton("Go back");
+		changeGradeButton = new JButton("Change Grade");
 		returnButton_change2 = new JButton("Go back");
-		showGrades = new JButton("Display All Grades");
-
-		changeGradeButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
-		changeGradeButtonPanel.add(returnButton_change1);
-		changeGradeButtonPanel.add(changeButton);
+		changeGradeButtonPanel_2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
+		changeGradeButtonPanel_2.add(returnButton_change2);
+		changeGradeButtonPanel_2.add(changeGradeButton);
+		
+		inputPanelLabels_change = new JPanel(new GridLayout(2, 1, 3, 3));
+		inputPanelLabels_change.add(studentIDLabel);
+		inputPanelLabels_change.add(gradeLabel);
+		
+		inputPanelFields_change = new JPanel(new GridLayout(2, 1, 3, 3));
+		inputPanelFields_change.add(studentIDInput);
+		inputPanelFields_change.add(studentGradeInput);
+		
+		inputPanel_change = new JPanel(new BorderLayout(5,0));
+		inputPanel_change.add(inputPanelLabels_change, BorderLayout.WEST);
+		inputPanel_change.add(inputPanelFields_change, BorderLayout.CENTER);
+		inputPanel_change.add(changeGradeButtonPanel_2, BorderLayout.SOUTH);
+		inputPanel_change.setPreferredSize(new Dimension(150, 90));
+		inputPanel_change.setMaximumSize(new Dimension(150, 90));
+		inputPanel_change.setMinimumSize(new Dimension(150, 90));
 		
 		// GENERAL GUI OF MENU 
 		
@@ -145,6 +171,7 @@ public class ProfessorMenu extends ProfandAdminCommon {
 				
 		addCourse.setText("Register to teach courses");
 		removeCourse.setText("Drop courses");
+		changeGrade= new JMenuItem("Change a student's grade");
 		
 		view.add(allInfo);
 		edit.addSeparator();
@@ -161,6 +188,11 @@ public class ProfessorMenu extends ProfandAdminCommon {
 		backButton_remove.addActionListener(this);
 		removeCourseButton.addActionListener(this);
 		changeGrade.addActionListener(this);
+		changeGradeButton.addActionListener(this);
+		showGradesButton.addActionListener(this);
+		returnButton_change2.addActionListener(this);
+		returnButton_change1.addActionListener(this);
+		
 		addActionListener();
 		addActionListenerMore();
 		
@@ -201,6 +233,8 @@ public class ProfessorMenu extends ProfandAdminCommon {
 			
 			case 1:
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Your username has been successfully changed!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				previousUsernameLabel_2.setText(Controller.getUserLoggedIn().getUsername());
+				changeUsernameInput.setText("");
 				break;
 				
 			case -1:
@@ -214,6 +248,8 @@ public class ProfessorMenu extends ProfandAdminCommon {
 			switch(ProfessorMenuController.changeProfessorPassword(changePasswordInput.getText())) {
 			case 1:
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Your password has been successfully changed!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				previousPasswordLabel_2.setText(Controller.getUserLoggedIn().getPassword());
+				changePasswordInput.setText("");
 				break;
 				
 			case -1:
@@ -222,14 +258,54 @@ public class ProfessorMenu extends ProfandAdminCommon {
 			}
 		}
 		
-		else if (e.getSource()==changeGrade) {
+		else if (e.getSource()==changeGrade||e.getSource()==returnButton_change2) {
 			
-			createChangeGradePanel();
+			createChangeGradePanel_1();
 			changeMainPanel(changeGradePanel_1);
 		}
 		
-		else if (e.getSource()==showGrades) {
-			
+		else if (e.getSource()==showGradesButton) {
+			try {
+				int input = Integer.parseInt(changeGradeInput_1.getText());
+				if (ProfessorMenuController.changeGradeInput_1(input)) {
+					ProfessorMenuController.inputCourseNumber=input;
+					createChangeGradePanel_2();
+					changeMainPanel(changeGradePanel_2);
+				}
+				else {
+					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter the number of the course you wish to remove!", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			catch(NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter the number of the course you wish to remove!", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		else if (e.getSource()==changeGradeButton) {
+			try {
+				int ID = Integer.parseInt(studentIDInput.getText());
+				double grade = Double.parseDouble(studentGradeInput.getText());
+				switch (ProfessorMenuController.changeGradeInput_2(ID, grade)) {
+				
+				case 1:
+					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Grade has been changed!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					createChangeGradePanel_2();
+					changeMainPanel(changeGradePanel_2);
+					break;
+					
+				case -1:
+					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter an appropriate grade between 0 and 100!", "ERROR", JOptionPane.ERROR_MESSAGE);
+					break;
+					
+				case -2:
+					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter a valid student ID from the table above!", "ERROR", JOptionPane.ERROR_MESSAGE);
+					break;
+				
+				}
+			}
+			catch(NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Invalid Input!! Please enter appropriate numeric values in the text fields!", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		else if (e.getSource()==removeCourse) {
@@ -279,7 +355,8 @@ public class ProfessorMenu extends ProfandAdminCommon {
 			}
 		}
 		
-		else if (e.getSource()==backButton_remove||e.getSource()==backButton_add) {
+		else if (e.getSource()==backButton_remove||e.getSource()==backButton_add||
+				e.getSource()==returnButton_change1) {
 			changeMainPanel(defaultPanel);
 		}
 		
@@ -343,6 +420,8 @@ public class ProfessorMenu extends ProfandAdminCommon {
 		else if (e.getSource()==defaultScreen) {
 			changeMainPanel(defaultPanel);
 		}
+		
+		else actionPerformedUsernamePassword(e);
 	}
 	
 	@Override
@@ -396,24 +475,32 @@ public class ProfessorMenu extends ProfandAdminCommon {
 		changeGradePanel_1.removeAll();
 		changeGradePanel_1.revalidate();
 		changeGradePanel_1.repaint();
-		changeGradePanel_1.add(changeGradeLabel, BorderLayout.NORTH);
-		changeGradePanel_1.add(changeGradeFlowPanel, BorderLayout.SOUTH);
+		changeGradePanel_1.add(changeGradeLabel_1, BorderLayout.NORTH);
+		changeGradePanel_1.add(changeGradeButtonPanel_1, BorderLayout.SOUTH);
 		// table being added to the inner panel
-		removeCoursePanel.add(createCourseTable().createJScrollPane(), BorderLayout.CENTER);
+		changeGradePanel_1.add(createCourseTable().createJScrollPane(), BorderLayout.CENTER);
 
 	}
 	
-	protected void createGradeTable(Course course) {
+	protected void createChangeGradePanel_2() {
+		
+		changeGradePanel_2.removeAll();
+		changeGradePanel_2.revalidate();
+		changeGradePanel_2.repaint();
+		changeGradePanel_2.add(changeGradeLabel_2, BorderLayout.NORTH);
+ 		changeGradePanel_2.add(inputPanel_change, BorderLayout.SOUTH);
+		// table being added to the inner panel
+		changeGradePanel_2.add(createGradeTable().createJScrollPane(), BorderLayout.CENTER);
+
+	}
+	
+	protected MenuTable createGradeTable() {
 		// data of the table
-		String[][]data=ProfessorMenuController.getAllGradesInCourse(course);
+		String[][]data=ProfessorMenuController.getAllGradesInCourse();
 		String column[]= {"Student ID", "Student Name", "Grade"};
 				
 	    // table being set
-		changeGradeTable = new MenuTable (data, column);
-				
-		// table being added to the inner panel
-		changeGradePanel_1.add(changeGradeTable.createJScrollPane(), BorderLayout.CENTER);
-
+		return new MenuTable (data, column);
 	}
 	
 	private void createRemoveCoursesPanel() {

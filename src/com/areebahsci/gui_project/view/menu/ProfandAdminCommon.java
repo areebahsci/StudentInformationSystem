@@ -3,6 +3,7 @@ package com.areebahsci.gui_project.view.menu;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
 
@@ -21,14 +23,15 @@ public class ProfandAdminCommon extends Menu {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	
 	protected JMenuItem changePassword, changeUsername;
 	protected InnerPanel changePasswordPanel, changeUsernamePanel, passwordInputPanel, usernameInputPanel;
-	protected MenuLabel changePasswordLabel, changeUsernameLabel;
-	protected JTextField changeUsernameInput;
+	protected MenuLabel changePasswordLabel, changeUsernameLabel,previousUsernameLabel_1,
+	 previousPasswordLabel_1;
+	protected JTextField changeUsernameInput,previousUsernameLabel_2,previousPasswordLabel_2;
 	protected JPasswordField changePasswordInput;
 	protected JButton changeButton_u, returnButton_u, viewPassword, changeButton_p, returnButton_p, generateRandomPass;
-	protected JPanel usernameButtonPanel, passwordButtonPanel;
+	protected JPanel usernameButtonPanel, passwordButtonPanel, inputPanelLabels_u, inputPanelFields_u,
+	inputPanelLabels_p, inputPanelFields_p;
 	
 	public ProfandAdminCommon(){
 		
@@ -46,8 +49,21 @@ public class ProfandAdminCommon extends Menu {
 		changeUsernameInput = new JTextField(16);
 		changeUsernameInput.setPreferredSize(new Dimension(90, 40));
 		changeUsernameLabel = new MenuLabel("Enter your new username: ");
-		usernameInputPanel.add(changeUsernameLabel, BorderLayout.WEST);
-		usernameInputPanel.add(changeUsernameInput, BorderLayout.CENTER);
+		
+		previousUsernameLabel_1 = new MenuLabel("Your current username: ");
+		previousUsernameLabel_2 = new JTextField(Controller.getUserLoggedIn().getUsername());
+		previousUsernameLabel_2.setEditable(false);
+		
+		inputPanelLabels_u = new JPanel(new GridLayout(2, 1, 3, 3));
+		inputPanelLabels_u.add(previousUsernameLabel_1);
+		inputPanelLabels_u.add(changeUsernameLabel);
+		
+		inputPanelFields_u = new JPanel(new GridLayout(2, 1, 3, 3));
+		inputPanelFields_u.add(previousUsernameLabel_2);
+		inputPanelFields_u.add(changeUsernameInput);
+		
+		usernameInputPanel.add(inputPanelLabels_u, BorderLayout.WEST);
+		usernameInputPanel.add(inputPanelFields_u, BorderLayout.CENTER);
 		
 		usernameButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
 		usernameButtonPanel.add(returnButton_u);
@@ -57,6 +73,7 @@ public class ProfandAdminCommon extends Menu {
 		changeUsernamePanel.add(usernameButtonPanel, BorderLayout.CENTER);
 		
 		// CHANGE PASSWORD PANEL
+		
 		changePasswordPanel = new InnerPanel();
 		changePassword = new JMenuItem("Change your password");
 		
@@ -64,8 +81,21 @@ public class ProfandAdminCommon extends Menu {
 		changePasswordInput = new JPasswordField(16);
 		changePasswordInput.setPreferredSize(new Dimension(90, 40));
 		changePasswordLabel = new MenuLabel("Enter your new password: ");
-		passwordInputPanel.add(changePasswordLabel, BorderLayout.WEST);
-		passwordInputPanel.add(changePasswordInput, BorderLayout.CENTER);
+		
+		previousPasswordLabel_1 = new MenuLabel("Your current password: ");
+		previousPasswordLabel_2 = new JTextField(Controller.getUserLoggedIn().getPassword());
+		previousPasswordLabel_2.setEditable(false);
+		
+		inputPanelLabels_p = new JPanel(new GridLayout(2, 1, 3, 3));
+		inputPanelLabels_p.add(previousPasswordLabel_1);
+		inputPanelLabels_p.add(changePasswordLabel);
+		
+		inputPanelFields_p = new JPanel(new GridLayout(2, 1, 3, 3));
+		inputPanelFields_p.add(previousPasswordLabel_2);
+		inputPanelFields_p.add(changePasswordInput);
+		
+		passwordInputPanel.add(inputPanelLabels_p, BorderLayout.WEST);
+		passwordInputPanel.add(inputPanelFields_p, BorderLayout.CENTER);
 		
 		viewPassword = new JButton("Show password");
 		passwordButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
@@ -91,17 +121,12 @@ public class ProfandAdminCommon extends Menu {
 	
 	protected void actionPerformedUsernamePassword(ActionEvent e) {
 		if (e.getSource()==changePassword) {
-			
+			changePasswordInput.setText("");
 			changeMainPanel(changePasswordPanel);
 		}
 		
 		else if (e.getSource()==changeUsername) {
-			
-			changeMainPanel(changeUsernamePanel);
-		}
-		
-		else if (e.getSource()==changeUsername) {
-			
+			changeUsernameInput.setText("");
 			changeMainPanel(changeUsernamePanel);
 		}
 		
@@ -127,7 +152,6 @@ public class ProfandAdminCommon extends Menu {
 		else if (e.getSource()==viewPassword) {
 			changePasswordInput.setEchoChar((char)0); 
 		}
-		
 		
 	}
 	

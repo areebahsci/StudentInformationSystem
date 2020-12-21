@@ -84,6 +84,14 @@ public class Student extends User {
 		}
 		return 0;
 	}
+	
+	public void setGradeOfCourse(Course course, double grade) {
+		for (int i=0;i<coursesTaken;i++) {
+			if (course.getCourseID()==enrolledCourses[i][0]) {
+				enrolledCourses[i][1]=grade;
+			}
+		}
+	}
 
 	// this method calculates the GPA of the student 
 	public void calculateGPA() {
@@ -97,6 +105,7 @@ public class Student extends User {
 			}
 		}
 		GPA/=courseWithGradesCount;
+
 	}
 	
 	/* used to print data for validation purposes to ensure the methods are functioning the way they are

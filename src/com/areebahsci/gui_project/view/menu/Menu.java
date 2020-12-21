@@ -20,7 +20,7 @@ public abstract class Menu extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	// these are the dimensions of the login panel
-	private static final int WIDTH = 850, HEIGHT = 620;
+	private static final int WIDTH = 900, HEIGHT = 620;
 	
 	protected JMenuBar menuBar;
 	protected JMenu view, edit, more;

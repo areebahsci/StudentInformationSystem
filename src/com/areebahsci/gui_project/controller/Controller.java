@@ -4,6 +4,7 @@ import com.areebahsci.gui_project.model.Model;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.model.user.Professor;
 import com.areebahsci.gui_project.model.user.Student;
+import com.areebahsci.gui_project.model.user.User;
 import com.areebahsci.gui_project.view.View;
 
 /* this class will contain all the variables needed for the controllers and any common functions between
@@ -25,14 +26,16 @@ public class Controller {
 	protected static  Model model = new Model();
 	
     // these int values save the index of the student or professors position in the arraylist 
-	protected static int studentLoggedInIndex = 1;
-	protected static int professorLoggedInIndex= 0;
+	//protected static int studentLoggedInIndex = 0;
+	//protected static int professorLoggedInIndex = 0;
 	
 	/* these variables save which student/professor has logged into the system so it is 
 	easier to retreive their information when needed */
-	protected static Student studentLoggedIn = model.getStudentsArray().get(1);
+	protected static Student studentLoggedIn = model.getStudentsArray().get(0);
 	protected static Professor professorLoggedIn = model.getProfessorsArray().get(0);
 	
+	protected static User userLoggedIn = model.getProfessorsArray().get(0);
+
 	// we have to create an instance of the view 
 	protected static View view = new View();
 	
@@ -54,10 +57,19 @@ public class Controller {
 
 	// GENERIC GETTERS AND SETTERS
 	
+	public static User getUserLoggedIn() {
+		return userLoggedIn;
+	}
+
+	public static void setUserLoggedIn(User userLoggedIn) {
+		Controller.userLoggedIn = userLoggedIn;
+	}
+	
 	public static void setLoginAttempts(int number) {
 		loginAttempts=number;
 	}
 	
+	/* 
 	public static int getStudentLoggedInIndex() {
 		return studentLoggedInIndex;
 	}
@@ -73,7 +85,8 @@ public class Controller {
 	public static void setProfessorLoggedInIndex(int professorLoggedInIndex) {
 		Controller.professorLoggedInIndex = professorLoggedInIndex;
 	}
-
+	*/
+	
 	public static int getLoginAttempts() {
 		return loginAttempts;
 	}
