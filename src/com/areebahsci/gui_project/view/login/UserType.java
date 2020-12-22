@@ -10,9 +10,6 @@ import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.view.View;
-import com.areebahsci.gui_project.view.menu.Menu;
-import com.areebahsci.gui_project.view.menu.ProfessorMenu;
-import com.areebahsci.gui_project.view.menu.StudentMenu;
 
 // usertype is a panel and implements actionlistener 
 public class UserType extends JPanel implements ActionListener {
@@ -84,14 +81,6 @@ public class UserType extends JPanel implements ActionListener {
 	// returns the height of this panel
 	public int getHeight() {
 		return HEIGHT;
-	}
-
-	public static Menu getMenu() {
-		return menu;
-	}
-
-	public static void setMenu(Menu menu) {
-		UserType.menu = menu;
 	}
 	
 }

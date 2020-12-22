@@ -13,7 +13,6 @@ import javax.swing.border.TitledBorder;
 import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.controller.LoginController;
 import com.areebahsci.gui_project.view.View;
-import com.areebahsci.gui_project.view.menu.Menu;
 import com.areebahsci.gui_project.view.menu.ProfessorMenu;
 import com.areebahsci.gui_project.view.menu.StudentMenu;
 
@@ -160,7 +159,6 @@ public class Login extends JPanel implements ActionListener {
 		else if(e.getSource()==showButton) {
 			passwordInput.setEchoChar((char)0); 
 		}
-		
 	}
 
 	// returns the height of this panel
