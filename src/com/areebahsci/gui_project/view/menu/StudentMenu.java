@@ -84,6 +84,8 @@ public class StudentMenu extends Menu {
 		
 		// GENERAL GUI OF MENU 
 		
+		edit.setText("Manage Courses");
+		
 		addCourse.setText("Register courses");
 		removeCourse.setText("Drop courses");
 				

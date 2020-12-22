@@ -35,8 +35,8 @@ public abstract class Menu extends JPanel implements ActionListener {
 		
 		menuBar = new JMenuBar();
 		
-		view = new JMenu("View Information");
-		edit = new JMenu("Edit");
+		view = new JMenu("View Your Information");
+		edit = new JMenu();
 		more = new JMenu("More");
 		
 		courseInfo = new JMenuItem("Course Information");

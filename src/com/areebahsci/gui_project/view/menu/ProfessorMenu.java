@@ -213,7 +213,7 @@ public class ProfessorMenu extends Menu {
  		
  		changeGradePanel_1 = new InnerPanel();
  		
- 		changeGradeLabel_1 = new MenuLabel("Enter the course number below of which you'd like to view and change grades of students from");
+ 		changeGradeLabel_1 = new MenuLabel("Enter the course number below of which you'd like to view and/or change grades of students from");
  		changeGradeButtonPanel_1= new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
  		changeGradeInput_1 = new JTextField(16);
  		changeGradeInput_1.setPreferredSize(new Dimension(200, 25));
@@ -227,7 +227,7 @@ public class ProfessorMenu extends Menu {
 		
  		changeGradePanel_2=new InnerPanel(); 		
  		
-		changeGradeLabel_2 = new MenuLabel("Change a student's grade");
+		changeGradeLabel_2 = new MenuLabel("Student's grade");
 		studentIDInput = new JTextField(16);
 		studentGradeInput = new JTextField(16);
 		studentIDLabel = new MenuLabel("Enter the ID of the student whose grade you wish to change: ");
@@ -256,11 +256,13 @@ public class ProfessorMenu extends Menu {
 		
 		// GENERAL GUI OF MENU 
 		
+		edit.setText("Manage Data");
+		
 		mainPanel.setBorder(new TitledBorder("Professor Data"));
 				
 		addCourse.setText("Register to teach courses");
 		removeCourse.setText("Drop courses");
-		changeGrade= new JMenuItem("Change a student's grade");
+		changeGrade= new JMenuItem("View and/or change a student's grade");
 		
 		view.add(allInfo);
 		edit.addSeparator();
