@@ -4,7 +4,6 @@ import com.areebahsci.gui_project.model.Model;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.model.user.Professor;
 import com.areebahsci.gui_project.model.user.Student;
-import com.areebahsci.gui_project.model.user.User;
 import com.areebahsci.gui_project.view.View;
 
 /* this class will contain all the variables needed for the controllers and any common functions between
@@ -15,26 +14,19 @@ public class Controller {
 	// this count is used keeping track of login attempts 
 	protected static int loginAttempts=3;
 	
-	/* the type variable will be used to store whether the system is being used by a student, a professor
-	 * or the admin. this is needed to show them their appropriate windows.
+	/* the type variable will be used to store whether the system is being used by a student or a 
+	 * professor. this is needed to show them their appropriate windows.
 	 * type=1 --> means student 
-	 * type=2 --> means professor
-	 * type=3 --> admin */
+	 * type=2 --> means professor */
 	protected static int type = 0; 
 	
 	// we have to create an instance of the model
 	protected static  Model model = new Model();
 	
-    // these int values save the index of the student or professors position in the arraylist 
-	//protected static int studentLoggedInIndex = 0;
-	//protected static int professorLoggedInIndex = 0;
-	
 	/* these variables save which student/professor has logged into the system so it is 
 	easier to retreive their information when needed */
 	protected static Student studentLoggedIn = model.getStudentsArray().get(0);
 	protected static Professor professorLoggedIn = model.getProfessorsArray().get(0);
-	
-	protected static User userLoggedIn = model.getProfessorsArray().get(0);
 
 	// we have to create an instance of the view 
 	protected static View view = new View();
@@ -56,14 +48,6 @@ public class Controller {
 	}
 
 	// GENERIC GETTERS AND SETTERS
-	
-	public static User getUserLoggedIn() {
-		return userLoggedIn;
-	}
-
-	public static void setUserLoggedIn(User userLoggedIn) {
-		Controller.userLoggedIn = userLoggedIn;
-	}
 	
 	public static void setLoginAttempts(int number) {
 		loginAttempts=number;

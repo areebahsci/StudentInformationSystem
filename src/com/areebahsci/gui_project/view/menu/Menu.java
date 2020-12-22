@@ -2,17 +2,13 @@ package com.areebahsci.gui_project.view.menu;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import com.areebahsci.gui_project.controller.Controller;
-import com.areebahsci.gui_project.view.View;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.InnerPanel;
 import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuLabel;
-import com.areebahsci.gui_project.view.menu.altered_menu_gui.MenuTable;
 
 // menu is a panel and implements actionlistener 
 public abstract class Menu extends JPanel implements ActionListener {
@@ -132,16 +128,6 @@ public abstract class Menu extends JPanel implements ActionListener {
 	
 	// this method will combine personal info table and course info table to display everything
 	protected abstract void createAllInfoPanel(); 
-	
-	// this table will be used by both the admin and the student 
-	protected MenuTable createAllCoursesTable() {
-		// data of the table
-		String[][]data=Controller.getAllCourses();
-		String column[]= {"Course Number", "Course ID", "Course Name", "Credits"};
-								
-		// table being set
-		return new MenuTable (data, column);
-	}
 	
 	/* this method clears the main panel and adds on the panel we want to display and is made so when 
 	 * we want to clear the panel whenever a button is pressed, we dont have to call 4 different methods

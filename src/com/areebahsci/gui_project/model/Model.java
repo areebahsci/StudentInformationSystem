@@ -2,9 +2,7 @@ package com.areebahsci.gui_project.model;
 
 import java.util.ArrayList;
 
-import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.model.course.Course;
-import com.areebahsci.gui_project.model.user.Administrator;
 import com.areebahsci.gui_project.model.user.Professor;
 import com.areebahsci.gui_project.model.user.Student;
 import com.areebahsci.gui_project.model.utilities.File;
@@ -16,7 +14,6 @@ public class Model {
 	private ArrayList<Professor>professors;
 	private ArrayList<Student>students;
 	private ArrayList<Course>courses;
-	private Administrator admin;
 	
 	// constructor 
 	public Model() {
@@ -32,9 +29,6 @@ public class Model {
 		
 		// this function that is called loads all the course information into a file 
 		File.loadCoursesIntoFile(this, "resources/Course_info");
-		
-		// creates the only admin within the system 
-		admin = new Administrator("0000", "Admin", "Admin", "Password");
 		
 	}
 	
@@ -105,12 +99,4 @@ public class Model {
 		this.courses = courses;
 	}
 
-	public Administrator getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(Administrator admin) {
-		this.admin = admin;
-	}
-	
 }

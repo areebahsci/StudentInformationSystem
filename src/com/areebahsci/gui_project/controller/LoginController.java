@@ -45,7 +45,7 @@ public class LoginController extends Controller {
 			else return 1;
 		}
 		
-		else if (type==2) {
+		else {
 			
 			// this if statement checks whether the credentials entered matched with any records
 			if (!LoginController.loginProfessor(username, password)) {
@@ -70,32 +70,6 @@ public class LoginController extends Controller {
 			 * professors */
 			else return 2;
 		}
-		
-		else {
-			
-			// this if statement checks whether the credentials entered matched with any records
-			if (!LoginController.loginAdmin(username, password)) {
-				
-				// if the credentials didnt match with any records then..
-				if(loginAttempts!=0) {
-					
-					/* if the credentials are incorrect but we still have login attempts remaining
-					 * it will return -2 */
-					return -2;
-				}
-				
-				else {
-					
-					// incase all login attempts were used up, it will return -3
-					return -3;
-				}
-			}
-			
-			/* if the credentials for the admin did hit a match, the method will return 3 which 
-			 * indicates the admin has successfully logged in so it will switch to the menu for 
-			 * the admin */
-			else return 3;
-		}
 	}
 
 	/* this is the method called by the login method in the LoginController when the login button is 
@@ -106,7 +80,6 @@ public class LoginController extends Controller {
 			if (model.getStudentsArray().get(i).getUsername().equals(username)) {
 				if (model.getStudentsArray().get(i).getPassword().equals(password)) {
 					studentLoggedIn=model.getStudentsArray().get(i);
-					Controller.userLoggedIn=studentLoggedIn;
 					return true;
 				}
 				/* if the username hits a match but the password doesnt, that means 
@@ -126,7 +99,6 @@ public class LoginController extends Controller {
 			if (model.getProfessorsArray().get(i).getUsername().equals(username)) {
 				if (model.getProfessorsArray().get(i).getPassword().equals(password)) {
 					professorLoggedIn=model.getProfessorsArray().get(i);
-					Controller.userLoggedIn=professorLoggedIn;
 					return true;
 				}
 				/* if the username hits a match but the password doesnt, that means 
@@ -137,17 +109,4 @@ public class LoginController extends Controller {
 			}
 		} return false;
 	}
-	
-	/* this is the method called by the login method in the LoginController when the login button is 
-	 * pressed in the view and the admin is logging in. it checks whether the credentials entered are 
-	 * accurate or not */
-	public static boolean loginAdmin(String username, String password) {
-		if (model.getAdmin().getUsername().equals(username) &&
-				model.getAdmin().getPassword().equals(password)) {
-			Controller.userLoggedIn=model.getAdmin();
-			return true;
-		}
-		return false;
-	}
-	
 }

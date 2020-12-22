@@ -1,14 +1,8 @@
 package com.areebahsci.gui_project.model.utilities;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-
-import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.model.Model;
 import com.areebahsci.gui_project.model.course.Course;
 import com.areebahsci.gui_project.model.user.Professor;

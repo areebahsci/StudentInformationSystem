@@ -1,6 +1,5 @@
 package com.areebahsci.gui_project.main;
 
-import com.areebahsci.gui_project.controller.LoginController;
 import com.areebahsci.gui_project.controller.StudentMenuController;
 
 public class Main { 

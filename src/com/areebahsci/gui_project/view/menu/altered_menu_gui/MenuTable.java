@@ -2,12 +2,10 @@ package com.areebahsci.gui_project.view.menu.altered_menu_gui;
 
 import java.awt.Dimension;
 
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
 public class MenuTable extends JTable {
 	

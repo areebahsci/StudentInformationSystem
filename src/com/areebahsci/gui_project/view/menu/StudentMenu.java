@@ -30,7 +30,7 @@ public class StudentMenu extends Menu {
 	private InnerPanel gpaPanel, addCoursesPanel, removeCoursesPanel;
 	private MenuLabel gpaLabel, addCoursesLabel, removeCoursesLabel;
 	private JButton addCourseButton, goBackButton_1, goBackButton_2, removeCourseButton;
-	private JTextField addCourseInput, removeCoursesInput;
+	private JTextField addCourseInput, removeCourseInput;
 	private JPanel addCoursesFlowPanel, removeCoursesFlowPanel;
 	
 	// constructor  
@@ -57,10 +57,10 @@ public class StudentMenu extends Menu {
 				
 		removeCoursesFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 3));
 		removeCourseButton = new JButton("Drop the course");
-		removeCoursesInput = new JTextField(16);
-		removeCoursesInput.setPreferredSize(new Dimension(200, 25));
+		removeCourseInput = new JTextField(16);
+		removeCourseInput.setPreferredSize(new Dimension(200, 25));
 		goBackButton_2 = new JButton("Go back");
-		removeCoursesFlowPanel.add(removeCoursesInput);
+		removeCoursesFlowPanel.add(removeCourseInput);
 		removeCoursesFlowPanel.add(removeCourseButton);
 		removeCoursesFlowPanel.add(goBackButton_2);
 				
@@ -139,6 +139,7 @@ public class StudentMenu extends Menu {
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not register for more courses! You have already been registered for the max number of courses, being "+Controller.getStudentLoggedIn().getMaxCourses()+".", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			else {
+				addCourseInput.setText("");
 				createAddCoursesPanel();
 				changeMainPanel(addCoursesPanel);
 			}
@@ -150,6 +151,7 @@ public class StudentMenu extends Menu {
 				JOptionPane.showMessageDialog(Controller.getView().getFrame(), "You can not remove any course as you aren't registered for any course!", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			else {
+				removeCourseInput.setText("");
 				createRemoveCoursesPanel();
 				changeMainPanel(removeCoursesPanel);
 			}
@@ -193,6 +195,7 @@ public class StudentMenu extends Menu {
 					/* the last option is for the method to return 1 and that means that the course
 					 * has been successfully added */
 					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Course has been added!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					addCourseInput.setText("");
 					break;
 				
 				}
@@ -204,7 +207,7 @@ public class StudentMenu extends Menu {
 		
 		else if (e.getSource()==removeCourseButton) {
 			try {
-				int input = Integer.parseInt(removeCoursesInput.getText());
+				int input = Integer.parseInt(removeCourseInput.getText());
 				switch (StudentMenuController.removeCourseButton(input)) {
 				
 				case -1:
@@ -221,6 +224,7 @@ public class StudentMenu extends Menu {
 					/* the last option is for the method to return 1 and that means that the course
 					 * has been successfully removed */
 					JOptionPane.showMessageDialog(Controller.getView().getFrame(), "Course has been removed!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					removeCourseInput.setText("");
 					createRemoveCoursesPanel();
 					changeMainPanel(removeCoursesPanel);
 					break;
@@ -347,6 +351,14 @@ public class StudentMenu extends Menu {
 		allInfoPanel.setLayout((new BoxLayout(allInfoPanel, BoxLayout.Y_AXIS)));
 		
 	}
-	
+		
+	protected MenuTable createAllCoursesTable() {
+		// data of the table
+		String[][]data=Controller.getAllCourses();
+		String column[]= {"Course Number", "Course ID", "Course Name", "Credits"};
+								
+		// table being set
+		return new MenuTable (data, column);
+	}
 }
 

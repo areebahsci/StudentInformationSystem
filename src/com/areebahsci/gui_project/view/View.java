@@ -3,10 +3,8 @@ package com.areebahsci.gui_project.view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.view.login.Login;
 import com.areebahsci.gui_project.view.login.UserType;
-import com.areebahsci.gui_project.view.menu.AdminMenu;
 import com.areebahsci.gui_project.view.menu.Menu;
 import com.areebahsci.gui_project.view.menu.ProfessorMenu;
 import com.areebahsci.gui_project.view.menu.StudentMenu;
@@ -38,7 +36,6 @@ public class View {
 		userType = new UserType();
 		studentMenu = new StudentMenu();
 		professorMenu = new ProfessorMenu();
-		adminMenu = new AdminMenu();
 
 		// important for closing games to ensure they dont run in the bg
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
