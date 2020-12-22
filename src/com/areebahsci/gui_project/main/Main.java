@@ -8,9 +8,5 @@ public class Main {
 		
 		// just runs an instance of the controller which handles the model and view 
 		new StudentMenuController();
-		
-		// NOTES:
-		// STUDENT REMOVE COURSE FUNCTION
 	}
-
 }
