@@ -1,2 +1,5 @@
 
 bin/com/areebahsci/gui_project/
+.settings
+.classpath
+.project
