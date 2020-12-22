@@ -121,7 +121,7 @@ public abstract class Menu extends JPanel implements ActionListener {
 	 * students, professors and admin. These are made into their own functions so that we dont have 
 	 * to rewrite the code as the same code will be needed to display all information which includes 
 	 * personal and course information. These functions are made to be abstract because all
-	 * three types of menus; the studentmenu, professormenu and adminmenu, should implement these
+	 * two types of menus; the studentmenu and professormenu should implement these
 	 * functions */
 	protected abstract void createPersonalPanel();
 	protected abstract void createCoursePanel();

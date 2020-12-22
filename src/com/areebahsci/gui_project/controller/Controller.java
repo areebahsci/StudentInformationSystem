@@ -25,8 +25,8 @@ public class Controller {
 	
 	/* these variables save which student/professor has logged into the system so it is 
 	easier to retreive their information when needed */
-	protected static Student studentLoggedIn = model.getStudentsArray().get(0);
-	protected static Professor professorLoggedIn = model.getProfessorsArray().get(0);
+	protected static Student studentLoggedIn;
+	protected static Professor professorLoggedIn;
 
 	// we have to create an instance of the view 
 	protected static View view = new View();

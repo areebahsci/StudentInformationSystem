@@ -13,6 +13,9 @@ import javax.swing.border.TitledBorder;
 import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.controller.LoginController;
 import com.areebahsci.gui_project.view.View;
+import com.areebahsci.gui_project.view.menu.Menu;
+import com.areebahsci.gui_project.view.menu.ProfessorMenu;
+import com.areebahsci.gui_project.view.menu.StudentMenu;
 
 // login is a panel and implements actionlistener 
 public class Login extends JPanel implements ActionListener {
@@ -102,19 +105,13 @@ public class Login extends JPanel implements ActionListener {
 		    case 1:
 		    	/* if the credentials did hit a match, the method will return 1 which indicates a 
 		    	 * student has successfully logged in so it will switch to the menu for students */
-				View.switchPanel(this, View.getStudentMenu());
+				View.switchPanel(this, new StudentMenu());
 		    	break;
 		    	
 		    case 2:
 		    	/* if the credentials did hit a match, the method will return 2 which indicates a 
 		    	 * professor has successfully logged in so it will switch to the menu for professor */
-				View.switchPanel(this, View.getProfessorMenu());
-		    	break;
-		    	
-		    case 3:
-		    	/* if the credentials did hit a match, the method will return 3 which indicates the 
-		    	 * admin has successfully logged in so it will switch to the menu for student */
-		    	View.switchPanel(this, View.getAdminMenu());
+				View.switchPanel(this, new ProfessorMenu());
 		    	break;
 		    	
 		    case -1:
@@ -153,7 +150,8 @@ public class Login extends JPanel implements ActionListener {
 			Controller.setLoginAttempts(3);
 			loginButton.setEnabled(true);
 			status.setText(Controller.getLoginAttempts()+"");
-			
+			usernameInput.setText("");
+			passwordInput.setText("");
 			// it switches back to the user type selection window panel
 			View.switchPanel(this, View.getUserType());
 		}

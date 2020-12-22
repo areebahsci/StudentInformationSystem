@@ -5,9 +5,6 @@ import javax.swing.JPanel;
 
 import com.areebahsci.gui_project.view.login.Login;
 import com.areebahsci.gui_project.view.login.UserType;
-import com.areebahsci.gui_project.view.menu.Menu;
-import com.areebahsci.gui_project.view.menu.ProfessorMenu;
-import com.areebahsci.gui_project.view.menu.StudentMenu;
 
 /* this class holds the main frame shown to the users and is responsible for switching between the panels
  * dependant on what we want to show the user next */
@@ -23,7 +20,6 @@ public class View {
 	private static JFrame frame; // used to create a window on the screen
 	private static Login login;
 	private static UserType userType;
-	private static Menu studentMenu, professorMenu, adminMenu;
 	
 	// this variable stores which semester we are currently in
 	public static String semester = "Spring 2020";
@@ -34,8 +30,6 @@ public class View {
 	    frame = new JFrame("Student Information System");
 		login = new Login();
 		userType = new UserType();
-		studentMenu = new StudentMenu();
-		professorMenu = new ProfessorMenu();
 
 		// important for closing games to ensure they dont run in the bg
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,8 +41,8 @@ public class View {
 		//frame.setSize(userType.getWidth(), userType.getHeight());
 		//frame.add(userType);
 		
-		frame.setSize(studentMenu.getWidth(), studentMenu.getHeight());
-		frame.add(professorMenu);
+		frame.setSize(userType.getWidth(), userType.getHeight());
+		frame.add(userType);
 		
 		/* it resizes the frame so that all its contents are at or above their 
 		 * preferred sizes so its for a good fit to ensure everything is visible*/
@@ -99,30 +93,6 @@ public class View {
 
 	public static void setUserType(UserType userType) {
 		View.userType = userType;
-	}
-
-	public static Menu getStudentMenu() {
-		return studentMenu;
-	}
-
-	public static void setStudentMenu(Menu studentMenu) {
-		View.studentMenu = studentMenu;
-	}
-
-	public static Menu getProfessorMenu() {
-		return professorMenu;
-	}
-
-	public static void setProfessorMenu(Menu professorMenu) {
-		View.professorMenu = professorMenu;
-	}
-
-	public static Menu getAdminMenu() {
-		return adminMenu;
-	}
-
-	public static void setAdminMenu(Menu adminMenu) {
-		View.adminMenu = adminMenu;
 	}
 	
 }

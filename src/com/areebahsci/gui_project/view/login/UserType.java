@@ -10,6 +10,9 @@ import javax.swing.border.TitledBorder;
 
 import com.areebahsci.gui_project.controller.Controller;
 import com.areebahsci.gui_project.view.View;
+import com.areebahsci.gui_project.view.menu.Menu;
+import com.areebahsci.gui_project.view.menu.ProfessorMenu;
+import com.areebahsci.gui_project.view.menu.StudentMenu;
 
 // usertype is a panel and implements actionlistener 
 public class UserType extends JPanel implements ActionListener {
@@ -21,7 +24,7 @@ public class UserType extends JPanel implements ActionListener {
 			                HEIGHT = 250;
 	
 	private JLabel welcomeMessage, purposeMessage;
-	private JButton studentButton, professorButton, adminButton;
+	private JButton studentButton, professorButton;
 	
 	// constructor 
 	public UserType() {
@@ -34,18 +37,15 @@ public class UserType extends JPanel implements ActionListener {
 		
 		studentButton = new JButton("Student");
 		professorButton = new JButton("Professor");
-		adminButton = new JButton("Administrator");
 		
 		studentButton.addActionListener(this);
 		professorButton.addActionListener(this);
-		adminButton.addActionListener(this);
 		
-		this.setLayout(new GridLayout(5,1,0,5));
+		this.setLayout(new GridLayout(4,1,0,5));
 		this.add(welcomeMessage);
 		this.add(purposeMessage);
 		this.add(studentButton);
 		this.add(professorButton);
-		this.add(adminButton);
 		
 	    this.setBorder(new TitledBorder("User"));
 	    this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -62,16 +62,13 @@ public class UserType extends JPanel implements ActionListener {
 		// if the user selects student, it sets the type variable to 1 
 		if (e.getSource() == studentButton) {
 			Controller.setType(1);
+			
 		}
 		
 		// if the user selects professor, it sets the type variable to 2
-		else if(e.getSource()==professorButton) {
+		else {
 			Controller.setType(2);
-		}
-		
-		// if the user selects admin, it sets the type variable to 3
-		else if(e.getSource()==adminButton) {
-			Controller.setType(3);
+			
 		}
 		
 		// regardless of which selection was made, the same login will be shown so it switches to that panel
@@ -87,6 +84,14 @@ public class UserType extends JPanel implements ActionListener {
 	// returns the height of this panel
 	public int getHeight() {
 		return HEIGHT;
+	}
+
+	public static Menu getMenu() {
+		return menu;
+	}
+
+	public static void setMenu(Menu menu) {
+		UserType.menu = menu;
 	}
 	
 }

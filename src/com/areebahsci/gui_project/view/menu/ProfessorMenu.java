@@ -78,7 +78,7 @@ public class ProfessorMenu extends Menu {
 		changeUsernameLabel = new MenuLabel("Enter your new username: ");
 		
 		previousUsernameLabel_1 = new MenuLabel("Your current username: ");
-		previousUsernameLabel_2 = new JTextField(Controller.getProfessorLoggedIn().getUsername());
+		previousUsernameLabel_2 = new JTextField();
 		previousUsernameLabel_2.setEditable(false);
 		
 		inputPanelLabels_u = new JPanel(new GridLayout(2, 1, 3, 3));
@@ -114,7 +114,7 @@ public class ProfessorMenu extends Menu {
 		changePasswordLabel = new MenuLabel("Enter your new password: ");
 		
 		previousPasswordLabel_1 = new MenuLabel("Your current password: ");
-		previousPasswordLabel_2 = new JTextField(Controller.getProfessorLoggedIn().getPassword());
+		previousPasswordLabel_2 = new JTextField();
 		previousPasswordLabel_2.setEditable(false);
 		
 		inputPanelLabels_p = new JPanel(new GridLayout(2, 1, 3, 3));
@@ -533,11 +533,13 @@ public class ProfessorMenu extends Menu {
 		}
 		
 		else if (e.getSource()==changePassword) {
+			previousPasswordLabel_2.setText(Controller.getProfessorLoggedIn().getPassword());
 			changePasswordInput.setText("");
 			changeMainPanel(changePasswordPanel);
 		}
 		
 		else if (e.getSource()==changeUsername) {
+			previousUsernameLabel_2.setText(Controller.getProfessorLoggedIn().getUsername());
 			changeUsernameInput.setText("");
 			changeMainPanel(changeUsernamePanel);
 		}
